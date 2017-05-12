@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. シナリオ1: センサーデータの送信 &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
+    <link rel="next" title="6. シナリオ1＋: センサーデータの送信" href="06.html" />
+    <link rel="prev" title="4. AWS IoT基本設定" href="04.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="06.html" title="6. シナリオ1＋: センサーデータの送信"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="4. AWS IoT基本設定"
+             accesskey="P">前へ</a> |</li>
+        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="id1">
+<h1>5. シナリオ1: センサーデータの送信<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ntel Edisonに接続された照度センサーと温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきDynamoDBへ保存します。また、AWS IoTはルールに基づき、しきい値を下回った場合はSNSを使ってE-mailでアラートを送信します。WebサイトはS3で別途用意済みで、Webブラウザで開きDynamoDBに保存されたデータを確認できます。</p>
+<img alt="images/scenario1.png" src="images/scenario1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>送信するセンサーデータは以下のJSONフォーマットとします。</p>
+<div class="highlight-python"><pre>{
+   "timestamp": "2015-10-24T14:16:37.305Z", ← ISO8601形式
+   "illuminance": "300"                     ← 照度センサーのアナログ値
+   "temperature": "200"                     ← 温度センサーのアナログ値
+ }</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>使用するDynamoDBのテーブルやメール通知の設定は「2. AWS環境の準備」で作成したCloud Formationのスタックに含まれています。</p>
+<div class="section" id="dynamodbaws-iot">
+<h2>5.1. DynamoDB保存のAWS IoT ルールを作成<a class="headerlink" href="#dynamodbaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[AWS IoT]をクリックして開きます。</p>
+<img alt="images/4-servicemenu&#64;2x.png" src="images/4-servicemenu&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>DynamoDBに保存するルールを作成します。メニューから[Rules]を選択します。以下の様な画面が表示された場合は、[Create a rule]をクリックします。</p>
+<img alt="images/5-create-rule-1&#64;2x.png" src="images/5-create-rule-1&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>あるいは、ルールの一覧が表示された場合は[Create]をクリックします。</p>
+<img alt="images/5-create-rule-2&#64;2x.png" src="images/5-create-rule-2&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>以下の項目について値を入力します。[Add action]をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">設定項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>SaveToDynamoDB_&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Attribute</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr><td>Topic Filter</td>
+<td>place-a/position-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="images/5-create-rule-3&#64;2x.png" src="images/5-create-rule-3&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Insert a message into a DynamoDB table]を選択し、[Configure action]をクリックします。</p>
+<img alt="images/5-create-rule-4&#64;2x.png" src="images/5-create-rule-4&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>以下の項目について値を入力します。[Role name]はリストから選択します。入力後[Add action]をクリックします。</p>
+<img alt="images/5-create-rule-5&#64;2x.png" src="images/5-create-rule-5&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Insert a message into a DynamoDB table]が追加されたことを確認し、[Create rule]をクリックします。</p>
+<img alt="images/5-create-rule-6&#64;2x.png" src="images/5-create-rule-6&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>作成されたルールの情報が表示されます。[←]をクリックします。</p>
+<img alt="images/5-create-rule-7&#64;2x.png" src="images/5-create-rule-7&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ルール一覧が表示され、作成したルールが表示されている事を確認します。</p>
+<img alt="images/5-create-rule-8&#64;2x.png" src="images/5-create-rule-8&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="aws-iot">
+<h2>5.2. メール通知のAWS IoT ルールを作成<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ルールの一覧が表示された画面で、[Create]をクリックします。</p>
+<img alt="images/5-create-rule-2&#64;2x.png" src="images/5-create-rule-2&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>以下の項目について値を入力します。[Add action]をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>NotifyToAdmin_&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Attribute</td>
+<td><a href="#id2"><span class="problematic" id="id3">*</span></a>, topic(1) AS place, topic(2) AS position</td>
+</tr>
+<tr><td>Topic Filter</td>
+<td>place-a/position-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Condition</td>
+<td>illuminance &lt; 30</td>
+</tr>
+</tbody>
+</table>
+<img alt="images/5-create-rule-9&#64;2x.png" src="images/5-create-rule-9&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Send a message as an SNS push notification]を選択し、[Configure action]をクリックします。</p>
+<img alt="images/5-create-rule-10&#64;2x.png" src="images/5-create-rule-10&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>以下の項目について値を入力します。[Role name]はリストから選択します。入力後[Add action]をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>SNS target</td>
+<td>AWSIoTHandsonStack-&lt;参加者番号&gt;-NotifyToAdminTopic-&lt;英数字&gt; (リストから選択)</td>
+</tr>
+<tr><td>IAM Role name</td>
+<td>AWSIoTHandsonStack-&lt;参加者番号&gt;-NotifyToSNSRole-&lt;英数字&gt; (リストから選択)</td>
+</tr>
+</tbody>
+</table>
+<img alt="images/5-create-rule-11&#64;2x.png" src="images/5-create-rule-11&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[SNS Action]が追加されたことを確認し、[Create rule]をクリックします。</p>
+<img alt="images/5-create-rule-12&#64;2x.png" src="images/5-create-rule-12&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>作成されたルールの情報が表示されます。[←]をクリックします。</p>
+<img alt="images/5-create-rule-13&#64;2x.png" src="images/5-create-rule-13&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ルール一覧が表示され、作成したルールが表示されている事を確認します。</p>
+<img alt="images/5-create-rule-14&#64;2x.png" src="images/5-create-rule-14&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>CloudFormationでStack作成時にメール通知の宛先確認メールが届いているため、メール内の確認リンク[Confirm subscription]をクリックします。</p>
+<img alt="images/5-email&#64;2x.png" src="images/5-email&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>5.3. プログラムの実行<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-dojo-basicの配下scenario1にシナリオ1用のNode.jsプログラムがあります。プログラムを実行します。5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。</p>
+<div class="highlight-python"><pre># cd ~/aws-iot-handson-dojo-basic/scenario1/
+ # node main.js
+ Connected to Message Broker
+ Publishing: {"timestamp":"2016-04-06T07:05:08.973Z","illuminance":343,"temperature":510}
+ Publishing: {"timestamp":"2016-04-06T07:05:14.035Z","illuminance":343,"temperature":512}
+ Publishing: {"timestamp":"2016-04-06T07:05:19.084Z","illuminance":343,"temperature":512}</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>5.4. データの受信を確認する<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWS IoTのTestにて、&#8221;Subscription topic&#8221;に &#8220;place-a/position-&lt;任意の番号&gt;&#8221; を入力し、[Subscribe to topic]をクリックすれば、左側の&#8221;Subscribe to a topic&#8221;欄に、&#8221;place-a/position-&lt;任意の番号&gt;&#8221;が、表示されます。
+トピックが受信できていれば、&#8221;place-a/position-&lt;任意の番号&gt;&#8221;の左側に赤字で <em>●</em> が表示されます。</p>
+<img alt="images/5-test-1.png" src="images/5-test-1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&#8220;place-a/position-&lt;任意の番号&gt;&#8221;をクリックすると、デバイスから送信されているセンサーデータがリアルタイムで表示されます。</p>
+<img alt="images/5-test-2.png" src="images/5-test-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="dynamodb">
+<h2>5.5. DynamoDBに保存されたデータの確認<a class="headerlink" href="#dynamodb" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWSマネージメントコンソールのサービス一覧から[DynamoDB]をクリックして開きます。左側のメニューから[テーブル]をクリックし、テーブル一覧から”AWSIoTHandsonStack-&lt;参加者番号&gt;-SensorDataTable-&lt;英数字&gt;”をクリックします。タブの[項目]を選択すると、テーブル内のデータが表示されます。</p>
+<img alt="images/5-dynamodb-1&#64;2x.png" src="images/5-dynamodb-1&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>DynamoDBに保存されたデータをS3に保存されているWebサイトでも確認する事ができます。Webブラウザに読み込まれたJavaScriptはWebブラウザ上で動作して、CognitoでAWSにアクセスするための一時クレデンシャルを取得し、DynamoDBに直接アクセスしてデータを取得しグラフ表示します。</p>
+<p>以下のURLをブラウザで開きます。</p>
+<p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/scenario1/IoT+HandsOn+Dojo+Basic+-+Scenario+1_+Sensor+Graph.html">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/scenario1/IoT+HandsOn+Dojo+Basic+-+Scenario+1_+Sensor+Graph.html</a></p>
+<p>[Cognito Identity Pool ID]に「2.2. Cognito Identityを手動作成」で作成したCognito Identityの[Identity Pool ID]を入力し、[Cognito Unauth Login]をクリックします。JavaScriptがバックグラウンドで定期的にDynamoDBにアクセスして新しいセンサー情報が得られればグラフは自動更新されます。</p>
+<img alt="images/5-webapp-1&#64;2x.png" src="images/5-webapp-1&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>5.6. メール通知の確認<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>照度センサーを手で覆い、30以下の照度になることをLCDで待ちます。その後、通知メールが届いている事を確認します。</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">目次</a></h3>
+            <ul>
+<li><a class="reference external" href="#">5. シナリオ1: センサーデータの送信</a><ul>
+<li><a class="reference external" href="#dynamodbaws-iot">5.1. DynamoDB保存のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#aws-iot">5.2. メール通知のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#id4">5.3. プログラムの実行</a></li>
+<li><a class="reference external" href="#id5">5.4. データの受信を確認する</a></li>
+<li><a class="reference external" href="#dynamodb">5.5. DynamoDBに保存されたデータの確認</a></li>
+<li><a class="reference external" href="#id6">5.6. メール通知の確認</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>前のトピックへ</h4>
+            <p class="topless"><a href="04.html"
+                                  title="前の章へ">4. AWS IoT基本設定</a></p>
+            <h4>次のトピックへ</h4>
+            <p class="topless"><a href="06.html"
+                                  title="次の章へ">6. シナリオ1＋: センサーデータの送信</a></p>
+            <h3>このページ</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/05.txt"
+                     rel="nofollow">ソースコードを表示</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>クイック検索</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="検索" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="06.html" title="6. シナリオ1＋: センサーデータの送信"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="04.html" title="4. AWS IoT基本設定"
+             >前へ</a> |</li>
+        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2017, ikeyoshy.
+      このドキュメントは <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5 で生成しました。
+    </div>
+  </body>
+</html>

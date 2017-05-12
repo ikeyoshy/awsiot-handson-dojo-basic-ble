@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. イントロダクション &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '#',
+        VERSION:     '0.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
+    <link rel="next" title="2. AWS環境の準備" href="02.html" />
+    <link rel="prev" title="AWS IoT ハンズオン Dojo ~基本編~" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="02.html" title="2. AWS環境の準備"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="AWS IoT ハンズオン Dojo ~基本編~"
+             accesskey="P">前へ</a> |</li>
+        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="id1">
+<h1>1. イントロダクション<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>1.1. ハンズオンシナリオ<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><strong>シナリオ1: センサーデータの送信</strong></p>
+<p>Edisonに接続された照度センサー、温度センサーの情報をAWS IoTに送り、Webブラウザから確認できるようにします。また、一定の照度を下回るとE-Mailでアラートを受け取れるようにします。</p>
+<img alt="images/01/scenario1.png" src="images/01/scenario1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>1.2. 利用するデバイス、アプリケーション、サービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><strong>レンジャーシステムズ</strong></p>
+<dl class="docutils">
+<dt>Intel社が提供する開発用のシングルボードコンピュータです。本ハンズオンではセンサーからのデータ取得してAWS IoTへのデータ送信、LEDの制御に利用します。</dt>
+<dd><a class="reference external" href="http://www.intel.co.jp/content/www/jp/ja/do-it-yourself/edison.html">http://www.intel.co.jp/content/www/jp/ja/do-it-yourself/edison.html</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Speeed Studio Groveスターターキット</strong></p>
+<dl class="docutils">
+<dt>Aruduinoなどの開発用ボードに接続可能なセンサーやケーブルが同梱されたキット。本ハンズオンではスターターキットの中のセンサーを選んでIntel Edisonに接続し、センサーデータを取得します。</dt>
+<dd><a class="reference external" href="http://www.seeedstudio.com/document/Grove%20Starter%20Kit.pdf">http://www.seeedstudio.com/document/Grove%20Starter%20Kit.pdf</a> <a class="reference external" href="http://www.seeedstudio.com/wiki/GROVE_System">http://www.seeedstudio.com/wiki/GROVE_System</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>AWSアカウント</strong></p>
+<dl class="docutils">
+<dt>センサーデータの保存先、LEDのリモート制御に使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらのとおりです。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/register-flow/">https://aws.amazon.com/jp/register-flow/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>AWS IoT</strong></p>
+<dl class="docutils">
+<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンではデバイスからのデータ受信、デバイスのリモート制御などで利用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Amazon DynamoDB</strong></p>
+<dl class="docutils">
+<dt>マネージド型のNoSQLサービスで、高速で予測可能なパフォーマンスとシームレスな拡張性が特長です。本ハンズオンでは照度センサーで測定したデータを格納する時系列データベースとして利用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/dynamodb/">https://aws.amazon.com/jp/dynamodb/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Amazon Elasticsearch Service</strong></p>
+<dl class="docutils">
+<dt>オープンソースのElasticsearchを利用できるマネージド型のサービスです。本ハンズオンではデータのストアとElasticsearchで利用できるKibanaを利用してデータの可視化に利用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/elasticsearch-service/">https://aws.amazon.com/jp/elasticsearch-service/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Amazon SNS (Simple Notification Service)</strong></p>
+<dl class="docutils">
+<dt>メッセージを複数の方式でpub-subが行えるサービスです。本ハンズオンの1では簡易的なメール通知に利用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/sns/">https://aws.amazon.com/jp/sns/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Amazon S3 (Simple Storage Service)</strong></p>
+<dl class="docutils">
+<dt>スケーラブルなクラウドストレージです。Webのコンテンツを配置してWebサーバとしても利用できます。本ハンズオンでは、HTMLファイル、画像ファイル、JavaScriptが保管された別途用意済みのS3を使用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/sns/">https://aws.amazon.com/jp/sns/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Amazon Cognito</strong></p>
+<dl class="docutils">
+<dt>ユーザーアイデンティティおよびデータ同期の機能を提供するサービスです。本ハンズオンでは、Webブラウザからのアクセスに匿名ユーザとしてDynamoDBやLambdaにアクセスできる限定的な権限を付与するのに使用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/cognito/">https://aws.amazon.com/jp/cognito/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>AWS Lambda</strong></p>
+<dl class="docutils">
+<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Webブラウザからのリクエストに応じてAWS IoTの情報を返したり、情報を伝えたりするのに使用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/lambda/">https://aws.amazon.com/jp/lambda/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Amazon CloudWatch</strong></p>
+<dl class="docutils">
+<dt>AWSクラウドリソースとAWSで実行するアプリケーションのモニタリングサービスです。メトリクスの収集、ログファイルの収集が可能です。本ハンズオンではCloudWatch Logsを利用してAWS IoTのログを収集、閲覧します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/cloudwatch/">https://aws.amazon.com/jp/cloudwatch/</a></dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">目次</a></h3>
+            <ul>
+<li><a class="reference external" href="#">1. イントロダクション</a><ul>
+<li><a class="reference external" href="#id2">1.1. ハンズオンシナリオ</a></li>
+<li><a class="reference external" href="#id3">1.2. 利用するデバイス、アプリケーション、サービス</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>前のトピックへ</h4>
+            <p class="topless"><a href="index.html"
+                                  title="前の章へ">AWS IoT ハンズオン Dojo ~基本編~</a></p>
+            <h4>次のトピックへ</h4>
+            <p class="topless"><a href="02.html"
+                                  title="次の章へ">2. AWS環境の準備</a></p>
+            <h3>このページ</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/01.txt"
+                     rel="nofollow">ソースコードを表示</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>クイック検索</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="検索" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="02.html" title="2. AWS環境の準備"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="AWS IoT ハンズオン Dojo ~基本編~"
+             >前へ</a> |</li>
+        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2017, ikeyoshy.
+      このドキュメントは <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.5 で生成しました。
+    </div>
+  </body>
+</html>
