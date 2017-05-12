@@ -49,7 +49,48 @@
   <div class="section" id="aws">
 <h1>2. AWS環境の準備<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="aws-iot">
-<h2>2.1. AWS IoTの設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>2.1. AWS IoT用の証明書を作成<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWSマネージメントコンソールを開き、右上のリージョン一覧から[米国東部（バージニア北部）]を選択します。</p>
+<img alt="_images/regions-us&#64;2x.png" src="_images/regions-us&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
+<img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>AWS IoTのダッシュボードが表示されます。</p>
+<img alt="_images/iot-dashboard&#64;2x.png" src="_images/iot-dashboard&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記の画面が表示された場合は、[Get started]をクリックします。</p>
+<img alt="_images/iot-get-started.png" src="_images/iot-get-started.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>証明書を作成します。メニューから[Security]-[Cetificate]をクリックします。以下の様な画面が表示された場合は、[Create a ertificate]をクリックします。</p>
+<img alt="_images/crreate-certificate.png" src="_images/crreate-certificate.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>以下の様な画面が表示された場合は、[One-click certificate creation]右の[reate certificate]をクリックします。</p>
+<img alt="_images/crreate-certificate-2.png" src="_images/crreate-certificate-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記の様に、&#8221;Certificate created!&#8221;と表示されたら、証明書(Certificate)とプライベートキー(Private key)をダウンロードします。これらは、後ほど、BLEゲートウェイにアップロードします。最後に[Activate]をクリックして証明書を有効にして下さい。</p>
+<img alt="_images/certificate-created.png" src="_images/certificate-created.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>最後に、左上の[←]を２回押して、戻って下さい。先ほど作成した証明書が 表示され、&#8221;<strong>ACTIVATE</strong>&#8220;状態になっている確認して下さい。</p>
+<img alt="_images/confirm-certificate.png" src="_images/confirm-certificate.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>これで、証明書の作成は終了です。</p>
 </div>
 </div>
 
@@ -62,7 +103,7 @@
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">2. AWS環境の準備</a><ul>
-<li><a class="reference external" href="#aws-iot">2.1. AWS IoTの設定</a></li>
+<li><a class="reference external" href="#aws-iot">2.1. AWS IoT用の証明書を作成</a></li>
 </ul>
 </li>
 </ul>

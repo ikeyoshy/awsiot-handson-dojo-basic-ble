@@ -7,7 +7,7 @@
 
 **シナリオ1: センサーデータの送信**
 
-BLE Gatewayに接続された温度／湿度センサーの情報をAWS IoTに送り、S3に保存し、Kibanaでセンサーの情報をグラフ化します。
+BLEゲートウェイに接続された温度／湿度センサーの情報をAWS IoTに送り、S3に保存し、Kibanaでセンサーの情報をグラフ化します。
 
 .. image:: images/01/overview.png
 
