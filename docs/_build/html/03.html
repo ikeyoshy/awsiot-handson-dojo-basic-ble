@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. インテルEdisonの設定 &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>3. BLEゲートウェイの設定 &mdash; awsiot-handson-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -46,116 +46,15 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="edison">
-<h1>3. インテルEdisonの設定<a class="headerlink" href="#edison" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>インテルEdisonの準備を行います。</p>
+  <div class="section" id="ble">
+<h1>3. BLEゲートウェイの設定<a class="headerlink" href="#ble" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>レンジャーシステムズ製のBLEゲートウェイの設定を行います。</p>
 <div class="section" id="id1">
-<h2>3.1. センサーの接続<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Grove Kitの中から照度センサーと温度センサー、ボタン、LED、LCDを取出します。</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>照度センサーはこちらです。(LIGHTと書いてあります）</p>
-<img alt="images/3-illuminance-1.png" src="images/3-illuminance-1.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>温度センサーはこちらです。(裏にTemperature Sensorと書いてあります)</p>
-<img alt="images/3-temp-1.png" src="images/3-temp-1.png" />
-<img alt="images/3-temp-2.png" src="images/3-temp-2.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>ボタンはこちらです。(裏にButtonと書いてあります)</p>
-<img alt="images/3-button.jpg" src="images/3-button.jpg" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>LEDは組み立て式となります。袋からLEDを取り出してボードに装着します。ピンが長い方が+です。+側の穴に刺します。</p>
-<img alt="images/3-led-1.png" src="images/3-led-1.png" />
-<img alt="images/3-led-2.png" src="images/3-led-2.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>LCDはこちらです。</p>
-<img alt="images/3-lcd-1.png" src="images/3-lcd-1.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>次に、Arduino互換ボードをEdisonに装着します。(Arduino互換ボードの図)</p>
-<a class="reference external image-reference" href="images/3-arduino-1.png"><img alt="images/3-arduino-1.png" src="images/3-arduino-1.png" style="width: 379.0px; height: 292.5px;" /></a>
-<a class="reference external image-reference" href="images/3-arduino-2.png"><img alt="images/3-arduino-2.png" src="images/3-arduino-2.png" style="width: 530.5px; height: 359.0px;" /></a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Arduino互換ボードにセンサーとLED、LCDを接続します。以下のように接続してください。</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<img alt="images/3-edison-1.png" src="images/3-edison-1.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="id2">
-<h2>3.2. シリアルポート接続<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Edisonへ接続します。まず、Edisonにシリアルポート経由で接続します。USBケーブルでPCとEdisonを接続し、シリアルコンソールを開きます。</p>
-<p>USBケーブルとACアダプタを図のように接続します。</p>
-<img alt="images/usb-win.png" src="images/usb-win.png" />
-<p>ターミナルソフトでEdisonに接続してください。接続に必要な情報はこちらです。<strong>特にBaud Rateにご注意ください!</strong></p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="8%" />
-<col width="92%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">設定</th>
-<th class="head">設定項目</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Port</td>
-<td>EEdisonが接続されているUSBポート (Windowsはデバイスマネージャで、Macであれば”ls /dev/tty.usbserial-<a href="#id3"><span class="problematic" id="id4">*</span></a>”で確認)</td>
-</tr>
-<tr><td>Baud Rate</td>
-<td>115200</td>
-</tr>
-<tr><td>Data Bits</td>
-<td>8</td>
-</tr>
-<tr><td>Stop Bits</td>
-<td>1</td>
-</tr>
-<tr><td>Parity</td>
-<td>none</td>
-</tr>
-</tbody>
-</table>
-<p>Teratermをご利用の場合、メニューの[設定]-[シリアルポート]からスピードを”115200”に変更します。
-MacOSをご利用の場合は、ターミナルから以下のコマンドを入力することで接続が可能です。</p>
-<div class="highlight-python"><pre>$ sudo screen /dev/tty.usbserial-XXXXXXX 115200</pre>
-</div>
-<p>または、</p>
-<div class="highlight-python"><pre>$ sudo cu -s 115200 -l /dev/tty.usbserial-XXXXXXX
- Password: ← MacOSのrootパスワードを入力</pre>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>プロンプトが表示されれば接続成功です。loginのプロンプトで、ユーザ名”root”、パスワード”Password1”でログインします。</p>
-<div class="highlight-python"><pre>edison login: root
- Password: ******** ←パスワードを入力
- root@edison1: ~#</pre>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<h2>3.1. 電源投入<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。BLEゲートウェイにマイクロUSBケーブルを接続し、電源を投入します。</p>
 </div>
 <div class="section" id="wifi">
-<h2>3.3. WiFi設定<a class="headerlink" href="#wifi" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>3.2. WiFi設定<a class="headerlink" href="#wifi" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>WiFiの設定を行います。ログイン後、<strong>configure_edison &#8211;wifi</strong> コマンドでSSIDとPSK(パスワード)の設定を実施してください。</p>
 <div class="highlight-python"><pre>configure_edison --wifi
 
@@ -219,8 +118,8 @@ MacOSをご利用の場合は、ターミナルから以下のコマンドを入
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h2>3.4. Edison環境のクリーンアップ<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="edison">
+<h2>3.3. Edison環境のクリーンアップ<a class="headerlink" href="#edison" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ハンズオンで利用するユーザーディレクトリのクリーンアップを行います。</p>
 <div class="highlight-python"><pre># cd
  # rm -rf *
@@ -232,7 +131,7 @@ MacOSをご利用の場合は、ターミナルから以下のコマンドを入
 </div>
 </div>
 <div class="section" id="aws-sdk">
-<h2>3.5. AWS SDKの準備<a class="headerlink" href="#aws-sdk" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>3.4. AWS SDKの準備<a class="headerlink" href="#aws-sdk" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>Edison上でAWS IoTデバイスSDK、AWS SDK、その他のモジュールをインストールします。</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># npm install aws-iot-device-sdk</span>
  <span class="c1"># npm install aws-sdk</span>
@@ -244,8 +143,8 @@ MacOSをご利用の場合は、ターミナルから以下のコマンドを入
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>3.6. 環境変数の設定<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id2">
+<h2>3.5. 環境変数の設定<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>参加者番号を設定します。以下の01となっている箇所を各自の参加者番号に変更して実行します。</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># echo &quot;export HandsOnNumber=01&quot; &gt;&gt; .profile</span>
  <span class="c1"># source ./.profile</span>
@@ -255,8 +154,8 @@ MacOSをご利用の場合は、ターミナルから以下のコマンドを入
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>3.7. ハンズオン用コード、証明書の準備<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h2>3.6. ハンズオン用コード、証明書の準備<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>Edison上で以下のコマンドを実行し、本ハンズオン用に用意されているzipファイルのダウンロードと解凍を行います。</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># cd</span>
  <span class="c1"># wget https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/aws-iot-handson-dojo-basic.zip</span>
@@ -306,14 +205,13 @@ MacOSをご利用の場合は、ターミナルから以下のコマンドを入
         <div class="sphinxsidebarwrapper">
             <h3><a href="index.html">目次</a></h3>
             <ul>
-<li><a class="reference external" href="#">3. インテルEdisonの設定</a><ul>
-<li><a class="reference external" href="#id1">3.1. センサーの接続</a></li>
-<li><a class="reference external" href="#id2">3.2. シリアルポート接続</a></li>
-<li><a class="reference external" href="#wifi">3.3. WiFi設定</a></li>
-<li><a class="reference external" href="#id5">3.4. Edison環境のクリーンアップ</a></li>
-<li><a class="reference external" href="#aws-sdk">3.5. AWS SDKの準備</a></li>
-<li><a class="reference external" href="#id6">3.6. 環境変数の設定</a></li>
-<li><a class="reference external" href="#id7">3.7. ハンズオン用コード、証明書の準備</a></li>
+<li><a class="reference external" href="#">3. BLEゲートウェイの設定</a><ul>
+<li><a class="reference external" href="#id1">3.1. 電源投入</a></li>
+<li><a class="reference external" href="#wifi">3.2. WiFi設定</a></li>
+<li><a class="reference external" href="#edison">3.3. Edison環境のクリーンアップ</a></li>
+<li><a class="reference external" href="#aws-sdk">3.4. AWS SDKの準備</a></li>
+<li><a class="reference external" href="#id2">3.5. 環境変数の設定</a></li>
+<li><a class="reference external" href="#id3">3.6. ハンズオン用コード、証明書の準備</a></li>
 </ul>
 </li>
 </ul>

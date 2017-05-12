@@ -21,14 +21,22 @@
 本書はAWS IoTおよびAWSの各サービスを利用してIoTの基本的なシステムを構築するためのハンズオン手順 について記述しております。
 
 前提条件
-========
-* Intel Edison Kit for Arduino、GROVE Starter Kit、電源アダプタ、USBケーブル
-* Wi-Fiでインターネットに接続できる環境 (WPA-PSK)
+=======
+
+* レンジャーシステムズ製 BLE Gateway、BLE センサー、USBケーブル
+* Wi-Fiでインターネットに接続できる環境
+	* 企業内のWiFiは、証明書を使って接続するものが多いですが、ハンズオンキットはこれに対応していません。
+	* Guest WiFiの様なパスワード(WPA-PSK方式)で接続可能なWiFi環境が必要です。
 * AWSアカウント
+	* 基本的に参加者お一人様につき、個別のAWSアカウント持って頂くことが前提です。
+	* 一つのアカウントでの実施も可能です。その場合。事前にIAMユーザーを作って頂くことになります。
+* PC、もしくは Mac
+	* Windows PCもしくは、Macを使用します。参加者お一人に1台のマシンをご用意して頂きます。
+* ACコンセント
+	* 参加者お一人につき、ハンズオンキットとPC用にAC電源が、2口必要です。
 * 対象者として以下の方を想定
 	* IoTを活用したアプリケーション構築をご検討されているデベロッパーの方
 	* AWSクラウドを活用したシステム・アプリケーション開発に従事されている方
-	* UNIXの基本的なコマンドの利用経験がある方
 
 
 注意事項
@@ -39,36 +47,7 @@
 * ハンズオンに必要な機材は貸出品となりますので、終了後は必ず返却をお願いします。
 
 
-事前準備
-========
-EdisonにUSBでシリアル接続するのに必要なドライバを以下のURLからダウンロードし、インストールをお願いします。
-
-**Windowsの場合**
-
-* `Intel Edisonドライバのインストール <https://s3-ap-northeast-1.amazonaws.com/toshiake-iot-handson/classmethod-devday/tools/win/IntelEdisonDriverSetup1.2.1.exe>`_
-
-* `Windows FTDI ドライバのインストール <http://www.ftdichip.com/Drivers/CDM/CDM%20v2.10.00%20WHQL%20Certified.exe>`_
-
-Windowsの設定によっては、インストール出来ない場合があります。
-その場合、インストーラーを"管理者として実行"してみて下さい。
-
-**MacOSの場合**
-
-* `MacOS FTDI ドライバのインストール <https://s3-ap-northeast-1.amazonaws.com/toshiake-iot-handson/classmethod-devday/tools/mac/FTDIUSBSerialDriver_v2_2_18.dmg>`_
-
-
-サンプルプログラム
-==================
-
-本ハンズオンで利用するサンプルプログラムです。Edison上で利用します。
-
-https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/aws-iot-handson-dojo-basic.zip
-
 参考情報
 =======
 
-* `Intel Edison Board Software Downloads <https://software.intel.com/en-us/iot/hardware/edison/downloads>`_
-* `Intel libmraa (Low Level Skeleton Library for Communication on GNU/Linux platforms) <https://github.com/intel-iot-devkit/mraa>`_
-* `Intel UPM (Useful Packages & Modules) Sensor/Actuator repository for MRAA <https://github.com/intel-iot-devkit/upm>`_
-* `AWS IoT SDK for JavaScript <https://github.com/aws/aws-iot-device-sdk-js>`_
-* `AWS IoT Embedded-C SDK <https://github.com/aws/aws-iot-device-sdk-embedded-C>`_
+* `レンジャーシステムズ株式会社　IoTコネクティングサービス<http://www.ranger-systems.co.jp/iot/>`_

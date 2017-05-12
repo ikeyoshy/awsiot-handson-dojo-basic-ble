@@ -51,33 +51,25 @@
 <div class="section" id="id2">
 <h2>1.1. ハンズオンシナリオ<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><strong>シナリオ1: センサーデータの送信</strong></p>
-<p>Edisonに接続された照度センサー、温度センサーの情報をAWS IoTに送り、Webブラウザから確認できるようにします。また、一定の照度を下回るとE-Mailでアラートを受け取れるようにします。</p>
-<img alt="images/01/scenario1.png" src="images/01/scenario1.png" />
+<p>BLE Gatewayに接続された温度／湿度センサーの情報をAWS IoTに送り、Kibanaでセンサーの情報をグラフ化します。</p>
+<img alt="_images/overview.png" src="_images/overview.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
 <div class="section" id="id3">
 <h2>1.2. 利用するデバイス、アプリケーション、サービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><strong>レンジャーシステムズ</strong></p>
+<p><strong>レンジャーシステムズ BLE Gatewat (iBS01W, 02W)</strong></p>
 <dl class="docutils">
-<dt>Intel社が提供する開発用のシングルボードコンピュータです。本ハンズオンではセンサーからのデータ取得してAWS IoTへのデータ送信、LEDの制御に利用します。</dt>
-<dd><a class="reference external" href="http://www.intel.co.jp/content/www/jp/ja/do-it-yourself/edison.html">http://www.intel.co.jp/content/www/jp/ja/do-it-yourself/edison.html</a></dd>
-</dl>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p><strong>Speeed Studio Groveスターターキット</strong></p>
-<dl class="docutils">
-<dt>Aruduinoなどの開発用ボードに接続可能なセンサーやケーブルが同梱されたキット。本ハンズオンではスターターキットの中のセンサーを選んでIntel Edisonに接続し、センサーデータを取得します。</dt>
-<dd><a class="reference external" href="http://www.seeedstudio.com/document/Grove%20Starter%20Kit.pdf">http://www.seeedstudio.com/document/Grove%20Starter%20Kit.pdf</a> <a class="reference external" href="http://www.seeedstudio.com/wiki/GROVE_System">http://www.seeedstudio.com/wiki/GROVE_System</a></dd>
+<dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE経由で温度/湿度データ取得し、AWS IoTへのデータ送信に利用します。</dt>
+<dd><a class="reference external" href="http://www.ranger-systems.co.jp/iot/">http://www.ranger-systems.co.jp/iot/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>AWSアカウント</strong></p>
 <dl class="docutils">
-<dt>センサーデータの保存先、LEDのリモート制御に使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらのとおりです。</dt>
+<dt>センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらのとおりです。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/register-flow/">https://aws.amazon.com/jp/register-flow/</a></dd>
 </dl>
 <div class="line-block">
@@ -85,55 +77,40 @@
 </div>
 <p><strong>AWS IoT</strong></p>
 <dl class="docutils">
-<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンではデバイスからのデータ受信、デバイスのリモート制御などで利用します。</dt>
-<dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
+<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのデータ受信で利用します。</dt>
+<dd><img alt="images/01/AWS_IoT.pnghttps://aws.amazon.com/jp/iot/" class="first last" src="images/01/AWS_IoT.pnghttps://aws.amazon.com/jp/iot/" />
+</dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Amazon DynamoDB</strong></p>
+<p><strong>Amazon Kinesis Firehose</strong></p>
 <dl class="docutils">
-<dt>マネージド型のNoSQLサービスで、高速で予測可能なパフォーマンスとシームレスな拡張性が特長です。本ハンズオンでは照度センサーで測定したデータを格納する時系列データベースとして利用します。</dt>
-<dd><a class="reference external" href="https://aws.amazon.com/jp/dynamodb/">https://aws.amazon.com/jp/dynamodb/</a></dd>
+<dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工するのに使用します。</dt>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/kinesis/firehose/">https://aws.amazon.com/jp/kinesis/firehose/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>Amazon Elasticsearch Service</strong></p>
 <dl class="docutils">
-<dt>オープンソースのElasticsearchを利用できるマネージド型のサービスです。本ハンズオンではデータのストアとElasticsearchで利用できるKibanaを利用してデータの可視化に利用します。</dt>
+<dt>オープンソースのElasticsearchを利用できるマネージド型のサービスです。本ハンズオンでは、データのストアとElasticsearchで利用できるKibanaを利用してデータの可視化に利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/elasticsearch-service/">https://aws.amazon.com/jp/elasticsearch-service/</a></dd>
-</dl>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p><strong>Amazon SNS (Simple Notification Service)</strong></p>
-<dl class="docutils">
-<dt>メッセージを複数の方式でpub-subが行えるサービスです。本ハンズオンの1では簡易的なメール通知に利用します。</dt>
-<dd><a class="reference external" href="https://aws.amazon.com/jp/sns/">https://aws.amazon.com/jp/sns/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>Amazon S3 (Simple Storage Service)</strong></p>
 <dl class="docutils">
-<dt>スケーラブルなクラウドストレージです。Webのコンテンツを配置してWebサーバとしても利用できます。本ハンズオンでは、HTMLファイル、画像ファイル、JavaScriptが保管された別途用意済みのS3を使用します。</dt>
+<dt>スケーラブルなクラウドストレージです。Webのコンテンツを配置してWebサーバとしても利用できます。本ハンズオンでは、センサーから取得したデータの保存先として使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/sns/">https://aws.amazon.com/jp/sns/</a></dd>
-</dl>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p><strong>Amazon Cognito</strong></p>
-<dl class="docutils">
-<dt>ユーザーアイデンティティおよびデータ同期の機能を提供するサービスです。本ハンズオンでは、Webブラウザからのアクセスに匿名ユーザとしてDynamoDBやLambdaにアクセスできる限定的な権限を付与するのに使用します。</dt>
-<dd><a class="reference external" href="https://aws.amazon.com/jp/cognito/">https://aws.amazon.com/jp/cognito/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>AWS Lambda</strong></p>
 <dl class="docutils">
-<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Webブラウザからのリクエストに応じてAWS IoTの情報を返したり、情報を伝えたりするのに使用します。</dt>
+<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Kinesis Firehose内でデータの加工に使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/lambda/">https://aws.amazon.com/jp/lambda/</a></dd>
 </dl>
 <div class="line-block">
