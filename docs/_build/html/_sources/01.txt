@@ -7,7 +7,7 @@
 
 **シナリオ1: センサーデータの送信**
 
-BLE Gatewayに接続された温度／湿度センサーの情報をAWS IoTに送り、Kibanaでセンサーの情報をグラフ化します。
+BLE Gatewayに接続された温度／湿度センサーの情報をAWS IoTに送り、S3に保存し、Kibanaでセンサーの情報をグラフ化します。
 
 .. image:: images/01/overview.png
 
@@ -34,10 +34,13 @@ BLE Gatewayに接続された温度／湿度センサーの情報をAWS IoTに�
 **AWS IoT**
 
 接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのデータ受信で利用します。
-  .. image:: images/01/AWS_IoT.png
     https://aws.amazon.com/jp/iot/
 
+    .. image:: images/01/AWS_IoT.png
+
 |
+
+
 
 **Amazon Kinesis Firehose**
 

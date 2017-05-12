@@ -7,10 +7,8 @@ BLEゲートウェイの設定
 電源投入
 ======
 
-レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。\
+レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。
 BLEゲートウェイにマイクロUSBケーブルを接続し、電源を投入します。
-
-
 
 WiFi設定
 ========
@@ -41,14 +39,6 @@ WiFiの設定を行います。ログイン後、**configure_edison --wifi** コ
     Attempting to enable network access, please check 'wpa_cli status' after a minute to confirm.
     Done. Please connect your laptop or PC to the same network as this device and go to http://x.x.x.x or http://edison.local in your browser.
     (Doneが出力されたら成功）
-
-|
-
-WiFiのSSIDとPSKが明確な場合、下記のコマンドで一括設定できます。
-
-::
-
-   # wpa_passphrase __SSID__  ____PSK____ >/etc/wpa_supplicant/wpa_supplicant.conf
 
 |
 
