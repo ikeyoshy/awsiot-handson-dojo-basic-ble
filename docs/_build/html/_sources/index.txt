@@ -50,4 +50,4 @@
 参考情報
 =======
 
-* `レンジャーシステムズ株式会社　IoTコネクティングサービス<http://www.ranger-systems.co.jp/iot/>`_
+* `レンジャーシステムズ株式会社　IoTコネクティングサービス <http://www.ranger-systems.co.jp/iot/>`_
