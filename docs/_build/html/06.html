@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. シナリオ1＋: センサーデータの送信 &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>6. シナリオ1＋: センサーデータの送信 &mdash; awsiot-handson-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
     <link rel="next" title="<no title>" href="07.html" />
-    <link rel="prev" title="4. シナリオ1: センサーデータの送信" href="05.html" /> 
+    <link rel="prev" title="5. シナリオ1: センサーデータをS3に保存する" href="05.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
           <a href="07.html" title="<no title>"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
-          <a href="05.html" title="4. シナリオ1: センサーデータの送信"
+          <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
              accesskey="P">前へ</a> |</li>
         <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -47,7 +47,7 @@
           <div class="body">
             
   <div class="section" id="id1">
-<h1>5. シナリオ1＋: センサーデータの送信<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1>6. シナリオ1＋: センサーデータの送信<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>Intel Edisonに接続された照度センサー、温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきElasticSearch ServiceやFirehose経由でS3に保存します。WebブラウザからはElasticSearch Service上のKibanaにアクセスして保管されているデータをグラフ表示できます。</p>
 <img alt="images/scenario1-plus.png" src="images/scenario1-plus.png" />
 <div class="line-block">
@@ -64,7 +64,7 @@
 <div class="line"><br /></div>
 </div>
 <div class="section" id="id2">
-<h2>5.1. プログラムの実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>6.1. プログラムの実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-fundamentalsの配下scenario1-nodejsにシナリオ1用のNode.jsプログラムがあります。プログラムを実行すると、5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。</p>
 <div class="highlight-python"><pre># cd ~/aws-iot-handson-dojo-basic/scenario1/
  # node main.js
@@ -80,7 +80,7 @@
 </div>
 </div>
 <div class="section" id="elasticsearch-serviceaws-iot">
-<h2>5.2. ElasticSearch Serviceへ保存するAWS IoT ルールを作成<a class="headerlink" href="#elasticsearch-serviceaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>6.2. ElasticSearch Serviceへ保存するAWS IoT ルールを作成<a class="headerlink" href="#elasticsearch-serviceaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[AWS IoT]を開き、左側のメニューから[Rules]を選択します。</p>
 <img alt="images/6-create-rule-1.png" src="images/6-create-rule-1.png" />
 <div class="line-block">
@@ -168,7 +168,7 @@
 </div>
 </div>
 <div class="section" id="kibana">
-<h2>5.3. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>6.3. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。「2.2. CloudFormationを使ってElasticsearch Searchを自動作成」の最後で確認したElasticSearchDomainの[Searchable documents]の数字が0より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。</p>
 <img alt="images/6-searchable_documents.png" src="images/6-searchable_documents.png" />
 <div class="line-block">
@@ -290,7 +290,7 @@
 </div>
 </div>
 <div class="section" id="firehose">
-<h2>5.4. Firehoseのストリームを作成<a class="headerlink" href="#firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>6.4. Firehoseのストリームを作成<a class="headerlink" href="#firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[Kinesis]を開きます。[Firehoseに進む]をクリックします。</p>
 <img alt="images/6-kinesis-firehose-1.png" src="images/6-kinesis-firehose-1.png" />
 <div class="line-block">
@@ -307,18 +307,18 @@
         <div class="sphinxsidebarwrapper">
             <h3><a href="index.html">目次</a></h3>
             <ul>
-<li><a class="reference external" href="#">5. シナリオ1＋: センサーデータの送信</a><ul>
-<li><a class="reference external" href="#id2">5.1. プログラムの実行</a></li>
-<li><a class="reference external" href="#elasticsearch-serviceaws-iot">5.2. ElasticSearch Serviceへ保存するAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#kibana">5.3. Kibanaでデータを確認</a></li>
-<li><a class="reference external" href="#firehose">5.4. Firehoseのストリームを作成</a></li>
+<li><a class="reference external" href="#">6. シナリオ1＋: センサーデータの送信</a><ul>
+<li><a class="reference external" href="#id2">6.1. プログラムの実行</a></li>
+<li><a class="reference external" href="#elasticsearch-serviceaws-iot">6.2. ElasticSearch Serviceへ保存するAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#kibana">6.3. Kibanaでデータを確認</a></li>
+<li><a class="reference external" href="#firehose">6.4. Firehoseのストリームを作成</a></li>
 </ul>
 </li>
 </ul>
 
             <h4>前のトピックへ</h4>
             <p class="topless"><a href="05.html"
-                                  title="前の章へ">4. シナリオ1: センサーデータの送信</a></p>
+                                  title="前の章へ">5. シナリオ1: センサーデータをS3に保存する</a></p>
             <h4>次のトピックへ</h4>
             <p class="topless"><a href="07.html"
                                   title="次の章へ">&lt;no title&gt;</a></p>
@@ -354,7 +354,7 @@
           <a href="07.html" title="<no title>"
              >次へ</a> |</li>
         <li class="right" >
-          <a href="05.html" title="4. シナリオ1: センサーデータの送信"
+          <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
              >前へ</a> |</li>
         <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
       </ul>

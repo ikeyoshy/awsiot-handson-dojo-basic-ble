@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
-    <link rel="next" title="<no title>" href="04.html" />
+    <link rel="next" title="4. センサーデータの確認" href="04.html" />
     <link rel="prev" title="2. AWS IoT基本設定" href="02.html" /> 
   </head>
   <body>
@@ -32,7 +32,7 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="04.html" title="<no title>"
+          <a href="04.html" title="4. センサーデータの確認"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="02.html" title="2. AWS IoT基本設定"
@@ -91,33 +91,13 @@
 </div>
 </div>
 <div class="section" id="id3">
-<h2>3.4. WiFi設定<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
-[Wi-Fi]タブをクリックし、Wi-Fi設定画面に移動します。</p>
-<img alt="_images/wifi.png" src="_images/wifi.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&#8220;Wi-Fi Mode&#8221;を&#8221;Station&#8221;に変更し、[Scan]ボタンを押して周囲のアクセスポイントを探索します。探索が終了すると、&#8221;Done.&#8221;と表示されます。&#8221;Site survey&#8221;から、アクセスポイントを選んでください。</p>
-<img alt="_images/site.png" src="_images/site.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&#8220;Security protocol&#8221;は、自動的に設定されます。
-&#8220;Security key&#8221;に　WiFiのパスワードを入力し、[Save]ボタンを押します。
+<h2>3.4. クラウド接続の設定<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>「Applicatoins」タブをクリックし、下記を参考に、設定を行ってください。 最後に、[Save]ボタンを押して設定を保存します。
 Rebootを促すメッセージが出ますが、Rebootしないで下さい。</p>
-<img alt="_images/wifi-save.png" src="_images/wifi-save.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="id4">
-<h2>3.5. クラウド接続の設定<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>「Applicatoins」タブをクリックし、下記を参考に、設定を行ってください。 設定完了後は必ずSaveを実行し、設定を保存してください。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="23%" />
-<col width="77%" />
+<col width="19%" />
+<col width="81%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -135,7 +115,7 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <td>8883</td>
 </tr>
 <tr><td>Publish Topic</td>
-<td>publish_out (AWS IoTのルールエンジンで使用します。)</td>
+<td>publish_out-&lt;参加者番号&gt; (AWS IoTのルールエンジンで使用します。)</td>
 </tr>
 <tr><td>Client ID</td>
 <td>ranger-gw-&lt;参加者番号&gt; ([Create thing]で作ったThing名)</td>
@@ -162,8 +142,8 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h2>3.6. 証明書の登録<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h2>3.5. 証明書の登録<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Advanced」タブクリックし、AWS IoTで作成した証明書をインポートします。</p>
 <p>&#8220;Certificate&#8221;の横の[ファイルを選択]ボタンを押して、保存しておいた証明書を選択し、[Upload Certificate]ボタンを押して、証明書をアップロードします。</p>
 <p>&#8220;Key&#8221;の横の[ファイルを選択]ボタンを押して、保存しておいた認証鍵を選択し、[Upload Key]ボタンを押して、認証鍵をアップロードします。</p>
@@ -197,8 +177,8 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>3.7. BLEフィルター設定<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h2>3.6. BLEフィルター設定<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>レンジャーシステムズのBLEゲートウェイは、周囲の受信可能なBeaconを全て受信する至要なため、フィルター設定を行います。今回のハンズオンでは、温湿度センサー(iBS01T)を使用しますので、その設定を行います。最後に、[Save]ボタンを押して設定を保存します。</p>
 <p>この設定により、周囲のBeaconの中から、温湿度センサー(iBS01T)のBeaconだけを取得できるようになります。上のRSSIは、取得するBeaconの電波強度です。近くのBeaconだけを受信したい場合に使用します。今回は設定しません。</p>
 <p>まだ、Rebootしないで下さい。</p>
@@ -226,8 +206,8 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>3.8. タイムサーバーの設定<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id6">
+<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IOTにデータを送信する際、ゲートウェイは、時刻情報を付加します。
 「System」タブクリックし、タイムサーバーの設定を行います。</p>
 <table border="1" class="docutils">
@@ -259,6 +239,26 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <div class="line"><br /></div>
 </div>
 </div>
+<div class="section" id="id7">
+<h2>3.8. WiFi設定<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
+[Wi-Fi]タブをクリックし、Wi-Fi設定画面に移動します。</p>
+<img alt="_images/wifi.png" src="_images/wifi.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&#8220;Wi-Fi Mode&#8221;を&#8221;Station&#8221;に変更し、[Scan]ボタンを押して周囲のアクセスポイントを探索します。探索が終了すると、&#8221;Done.&#8221;と表示されます。&#8221;Site survey&#8221;から、アクセスポイントを選んでください。</p>
+<img alt="_images/site.png" src="_images/site.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&#8220;Security protocol&#8221;は、自動的に設定されます。
+&#8220;Security key&#8221;にWiFiのパスワードを入力し、[Save]ボタンを押して設定を保存します。</p>
+<img alt="_images/wifi-save.png" src="_images/wifi-save.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
 <div class="section" id="id8">
 <h2>3.9. 最終確認<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイの設定を再度確認して下さい。
@@ -286,11 +286,11 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <li><a class="reference external" href="#id1">3.1. 電源投入</a></li>
 <li><a class="reference external" href="#id2">3.2. 初期化する</a></li>
 <li><a class="reference external" href="#wifi">3.3. WiFi接続</a></li>
-<li><a class="reference external" href="#id3">3.4. WiFi設定</a></li>
-<li><a class="reference external" href="#id4">3.5. クラウド接続の設定</a></li>
-<li><a class="reference external" href="#id5">3.6. 証明書の登録</a></li>
-<li><a class="reference external" href="#id6">3.7. BLEフィルター設定</a></li>
-<li><a class="reference external" href="#id7">3.8. タイムサーバーの設定</a></li>
+<li><a class="reference external" href="#id3">3.4. クラウド接続の設定</a></li>
+<li><a class="reference external" href="#id4">3.5. 証明書の登録</a></li>
+<li><a class="reference external" href="#id5">3.6. BLEフィルター設定</a></li>
+<li><a class="reference external" href="#id6">3.7. タイムサーバーの設定</a></li>
+<li><a class="reference external" href="#id7">3.8. WiFi設定</a></li>
 <li><a class="reference external" href="#id8">3.9. 最終確認</a></li>
 <li><a class="reference external" href="#id9">3.10. 再起動</a></li>
 </ul>
@@ -302,7 +302,7 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
                                   title="前の章へ">2. AWS IoT基本設定</a></p>
             <h4>次のトピックへ</h4>
             <p class="topless"><a href="04.html"
-                                  title="次の章へ">&lt;no title&gt;</a></p>
+                                  title="次の章へ">4. センサーデータの確認</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/03.txt"
@@ -332,7 +332,7 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="04.html" title="<no title>"
+          <a href="04.html" title="4. センサーデータの確認"
              >次へ</a> |</li>
         <li class="right" >
           <a href="02.html" title="2. AWS IoT基本設定"

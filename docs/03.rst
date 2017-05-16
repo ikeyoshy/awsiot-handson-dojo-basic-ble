@@ -50,34 +50,12 @@ WiFi接続
 
 |
 
-WiFi設定
-=======
-
-WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
-[Wi-Fi]タブをクリックし、Wi-Fi設定画面に移動します。
-
-.. image:: images/03/wifi.png
-
-|
-
-"Wi-Fi Mode"を"Station"に変更し、[Scan]ボタンを押して周囲のアクセスポイントを探索します。探索が終了すると、"Done."と表示されます。"Site survey"から、アクセスポイントを選んでください。
-
-.. image:: images/03/site.png
-
-|
-
-"Security protocol"は、自動的に設定されます。
-"Security key"に　WiFiのパスワードを入力し、[Save]ボタンを押します。
-Rebootを促すメッセージが出ますが、Rebootしないで下さい。
-
-.. image:: images/03/wifi-save.png
-
-|
-
 クラウド接続の設定
 ===============
 
-「Applicatoins」タブをクリックし、下記を参考に、設定を行ってください。 設定完了後は必ずSaveを実行し、設定を保存してください。
+「Applicatoins」タブをクリックし、下記を参考に、設定を行ってください。 最後に、[Save]ボタンを押して設定を保存します。
+Rebootを促すメッセージが出ますが、Rebootしないで下さい。
+
 
 ================ ============================
 項目              値
@@ -85,7 +63,7 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。
 Application	      MQTT Client
 Host/IP	          記録しておいたEndpoint情報
 Port        	    8883
-Publish Topic	    publish_out (AWS IoTのルールエンジンで使用します。)
+Publish Topic	    publish_out-<参加者番号> (AWS IoTのルールエンジンで使用します。)
 Client ID         ranger-gw-<参加者番号> ([Create thing]で作ったThing名)
 Username          空欄
 Password          空欄
@@ -164,6 +142,29 @@ Update Period       1 day
 まだ、Rebootしないで下さい。
 
 .. image:: images/03/time-server.png
+
+|
+
+WiFi設定
+=======
+
+WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
+[Wi-Fi]タブをクリックし、Wi-Fi設定画面に移動します。
+
+.. image:: images/03/wifi.png
+
+|
+
+"Wi-Fi Mode"を"Station"に変更し、[Scan]ボタンを押して周囲のアクセスポイントを探索します。探索が終了すると、"Done."と表示されます。"Site survey"から、アクセスポイントを選んでください。
+
+.. image:: images/03/site.png
+
+|
+
+"Security protocol"は、自動的に設定されます。
+"Security key"にWiFiのパスワードを入力し、[Save]ボタンを押して設定を保存します。
+
+.. image:: images/03/wifi-save.png
 
 |
 

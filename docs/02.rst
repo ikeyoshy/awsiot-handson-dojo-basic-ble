@@ -138,24 +138,24 @@ Effect	        Allow
 
 証明書の詳細が表示されます。[Actions] - [Attach policy]を選択します。
 
-.. image:: images/4-create-policy-6@2x.png
+.. image:: images/02/attach-policy.png
 
 |
 
 ”awsiot-handson-policy-<参加者番号>”を選択し、[Attach]をクリックします。
 
-.. image:: images/4-create-policy-7@2x.png
+.. image:: images/02/attach-policy-2.png
 
 |
 
 [Actions] - [Attach thing]を選択します。
 
-.. image:: images/4-create-policy-8@2x.png
+.. image:: images/02/attach-thing.png
 
 |
 
 “edison-<参加者番号>”を入力し、[Attach]をクリックします。
 
-.. image:: images/4-create-policy-9@2x.png
+.. image:: images/02/attach-thing-2.png
 
 |

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>4. シナリオ1: センサーデータの送信 &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>5. シナリオ1: センサーデータをS3に保存する &mdash; awsiot-handson-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -21,8 +21,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
-    <link rel="next" title="5. シナリオ1＋: センサーデータの送信" href="06.html" />
-    <link rel="prev" title="<no title>" href="04.html" /> 
+    <link rel="next" title="6. シナリオ1＋: センサーデータの送信" href="06.html" />
+    <link rel="prev" title="4. センサーデータの確認" href="04.html" /> 
   </head>
   <body>
     <div class="related">
@@ -32,10 +32,10 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="06.html" title="5. シナリオ1＋: センサーデータの送信"
+          <a href="06.html" title="6. シナリオ1＋: センサーデータの送信"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
-          <a href="04.html" title="<no title>"
+          <a href="04.html" title="4. センサーデータの確認"
              accesskey="P">前へ</a> |</li>
         <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -46,8 +46,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="id1">
-<h1>4. シナリオ1: センサーデータの送信<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+  <div class="section" id="s3">
+<h1>5. シナリオ1: センサーデータをS3に保存する<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>Intel Edisonに接続された照度センサーと温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきDynamoDBへ保存します。また、AWS IoTはルールに基づき、しきい値を下回った場合はSNSを使ってE-mailでアラートを送信します。WebサイトはS3で別途用意済みで、Webブラウザで開きDynamoDBに保存されたデータを確認できます。</p>
 <img alt="images/scenario1.png" src="images/scenario1.png" />
 <div class="line-block">
@@ -65,7 +65,7 @@
 </div>
 <p>使用するDynamoDBのテーブルやメール通知の設定は「2. AWS環境の準備」で作成したCloud Formationのスタックに含まれています。</p>
 <div class="section" id="dynamodbaws-iot">
-<h2>4.1. DynamoDB保存のAWS IoT ルールを作成<a class="headerlink" href="#dynamodbaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>5.1. DynamoDB保存のAWS IoT ルールを作成<a class="headerlink" href="#dynamodbaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[AWS IoT]をクリックして開きます。</p>
 <img alt="images/4-servicemenu&#64;2x.png" src="images/4-servicemenu&#64;2x.png" />
 <div class="line-block">
@@ -138,7 +138,7 @@
 </div>
 </div>
 <div class="section" id="aws-iot">
-<h2>4.2. メール通知のAWS IoT ルールを作成<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>5.2. メール通知のAWS IoT ルールを作成<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ルールの一覧が表示された画面で、[Create]をクリックします。</p>
 <img alt="images/5-create-rule-2&#64;2x.png" src="images/5-create-rule-2&#64;2x.png" />
 <div class="line-block">
@@ -160,7 +160,7 @@
 <td>NotifyToAdmin_&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Attribute</td>
-<td><a href="#id2"><span class="problematic" id="id3">*</span></a>, topic(1) AS place, topic(2) AS position</td>
+<td><a href="#id1"><span class="problematic" id="id2">*</span></a>, topic(1) AS place, topic(2) AS position</td>
 </tr>
 <tr><td>Topic Filter</td>
 <td>place-a/position-&lt;参加者番号&gt;</td>
@@ -224,8 +224,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h2>4.3. プログラムの実行<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h2>5.3. プログラムの実行<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-dojo-basicの配下scenario1にシナリオ1用のNode.jsプログラムがあります。プログラムを実行します。5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。</p>
 <div class="highlight-python"><pre># cd ~/aws-iot-handson-dojo-basic/scenario1/
  # node main.js
@@ -238,8 +238,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h2>4.4. データの受信を確認する<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h2>5.4. データの受信を確認する<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTのTestにて、&#8221;Subscription topic&#8221;に &#8220;place-a/position-&lt;任意の番号&gt;&#8221; を入力し、[Subscribe to topic]をクリックすれば、左側の&#8221;Subscribe to a topic&#8221;欄に、&#8221;place-a/position-&lt;任意の番号&gt;&#8221;が、表示されます。
 トピックが受信できていれば、&#8221;place-a/position-&lt;任意の番号&gt;&#8221;の左側に赤字で <em>●</em> が表示されます。</p>
 <img alt="images/5-test-1.png" src="images/5-test-1.png" />
@@ -253,7 +253,7 @@
 </div>
 </div>
 <div class="section" id="dynamodb">
-<h2>4.5. DynamoDBに保存されたデータの確認<a class="headerlink" href="#dynamodb" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>5.5. DynamoDBに保存されたデータの確認<a class="headerlink" href="#dynamodb" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWSマネージメントコンソールのサービス一覧から[DynamoDB]をクリックして開きます。左側のメニューから[テーブル]をクリックし、テーブル一覧から”AWSIoTHandsonStack-&lt;参加者番号&gt;-SensorDataTable-&lt;英数字&gt;”をクリックします。タブの[項目]を選択すると、テーブル内のデータが表示されます。</p>
 <img alt="images/5-dynamodb-1&#64;2x.png" src="images/5-dynamodb-1&#64;2x.png" />
 <div class="line-block">
@@ -268,8 +268,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>4.6. メール通知の確認<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h2>5.6. メール通知の確認<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>照度センサーを手で覆い、30以下の照度になることをLCDで待ちます。その後、通知メールが届いている事を確認します。</p>
 </div>
 </div>
@@ -282,23 +282,23 @@
         <div class="sphinxsidebarwrapper">
             <h3><a href="index.html">目次</a></h3>
             <ul>
-<li><a class="reference external" href="#">4. シナリオ1: センサーデータの送信</a><ul>
-<li><a class="reference external" href="#dynamodbaws-iot">4.1. DynamoDB保存のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#aws-iot">4.2. メール通知のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#id4">4.3. プログラムの実行</a></li>
-<li><a class="reference external" href="#id5">4.4. データの受信を確認する</a></li>
-<li><a class="reference external" href="#dynamodb">4.5. DynamoDBに保存されたデータの確認</a></li>
-<li><a class="reference external" href="#id6">4.6. メール通知の確認</a></li>
+<li><a class="reference external" href="#">5. シナリオ1: センサーデータをS3に保存する</a><ul>
+<li><a class="reference external" href="#dynamodbaws-iot">5.1. DynamoDB保存のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#aws-iot">5.2. メール通知のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#id3">5.3. プログラムの実行</a></li>
+<li><a class="reference external" href="#id4">5.4. データの受信を確認する</a></li>
+<li><a class="reference external" href="#dynamodb">5.5. DynamoDBに保存されたデータの確認</a></li>
+<li><a class="reference external" href="#id5">5.6. メール通知の確認</a></li>
 </ul>
 </li>
 </ul>
 
             <h4>前のトピックへ</h4>
             <p class="topless"><a href="04.html"
-                                  title="前の章へ">&lt;no title&gt;</a></p>
+                                  title="前の章へ">4. センサーデータの確認</a></p>
             <h4>次のトピックへ</h4>
             <p class="topless"><a href="06.html"
-                                  title="次の章へ">5. シナリオ1＋: センサーデータの送信</a></p>
+                                  title="次の章へ">6. シナリオ1＋: センサーデータの送信</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/05.txt"
@@ -328,10 +328,10 @@
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="06.html" title="5. シナリオ1＋: センサーデータの送信"
+          <a href="06.html" title="6. シナリオ1＋: センサーデータの送信"
              >次へ</a> |</li>
         <li class="right" >
-          <a href="04.html" title="<no title>"
+          <a href="04.html" title="4. センサーデータの確認"
              >前へ</a> |</li>
         <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
       </ul>

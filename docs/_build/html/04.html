@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title><no title> &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>4. センサーデータの確認 &mdash; awsiot-handson-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
-    <link rel="next" title="4. シナリオ1: センサーデータの送信" href="05.html" />
+    <link rel="next" title="5. シナリオ1: センサーデータをS3に保存する" href="05.html" />
     <link rel="prev" title="3. BLEゲートウェイの設定" href="03.html" /> 
   </head>
   <body>
@@ -32,7 +32,7 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="05.html" title="4. シナリオ1: センサーデータの送信"
+          <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="03.html" title="3. BLEゲートウェイの設定"
@@ -46,19 +46,143 @@
         <div class="bodywrapper">
           <div class="body">
             
-  
+  <div class="section" id="id1">
+<h1>4. センサーデータの確認<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ゲートウェイは、温湿度センサーが送信するBLE Beaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Fitehoseにデータを送り、Kinesis Firehoseでは、受け取ったデータをLambdaで加工し、S3に保存し、ElasticSearch Serviceに蓄積し、Kibanaで温度、湿度、Beaconの電波強度を可視化します。</p>
+<img alt="_images/overview.png" src="_images/overview.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="aws-iot">
+<h2>4.1. AWS IoTでセンサーデータを確認する<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWSマネージメントコンソールを開き、右上のリージョン一覧から[米国東部（バージニア北部）]を選択します。</p>
+<img alt="_images/regions-us&#64;2x.png" src="_images/regions-us&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
+<img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>テスト画面を表示します。メニューから[Test]をクリックすると下記の画面が表示されます。
+&#8220;Subscription topic&#8221;にpublish_out-&lt;参加者番号&gt;を入力し、[Subscribe to topic]ボタンを押します。</p>
+<img alt="_images/test.png" src="_images/test.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>AWS IoTがゲートウェイからのデータを受信できていれば、publish_out-&lt;参加者番号&gt;の左に、赤●が表示されます。</p>
+<img alt="_images/test-2.png" src="_images/test-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>●publish_out-&lt;参加者番号&gt; をクリックすると、トピック publish_out-&lt;参加者番号&gt; で受信したデータが表示されます。</p>
+<img alt="_images/test-3.png" src="_images/test-3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ゲートウェイが送信するデータは、下記の様なフォーマットになっています。</p>
+<div class="highlight-python"><pre>$GPRP,C02C61CB558F,AC83F3A041D2,-44,02010612FF590080BC440104FFFFFFFFFFFFFFFFFFFF,1493638145</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>$GPRP</td>
+<td>ヘッダー</td>
+</tr>
+<tr><td>C02C61CB558F</td>
+<td>BLEセンサーのBDアドレス (Bluetooth Device Address = MACアドレス)</td>
+</tr>
+<tr><td>AC83F3A041D2</td>
+<td>ゲートウェイのBDアドレス</td>
+</tr>
+<tr><td>-44</td>
+<td>Beaconの電波強度(RSSI, dBm単位)</td>
+</tr>
+<tr><td>02010612FF590080BC440104.....</td>
+<td>BLEセンサーが送るデータ (Payload)</td>
+</tr>
+<tr><td>1493638145</td>
+<td>ゲートウェイが付加したタイムスタンプ</td>
+</tr>
+</tbody>
+</table>
+<p>温湿度センサーが送るデータ</p>
+<div class="highlight-python"><pre>02010612FF590080BC440104FFFFFFFFFFFFFFFFFFFF</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>の内訳は、下記になります。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>02010612FF</td>
+<td>BLE情報</td>
+</tr>
+<tr><td>5900</td>
+<td>企業コード</td>
+</tr>
+<tr><td>80BC</td>
+<td>センサーモデル</td>
+</tr>
+<tr><td>2C01</td>
+<td>電池電圧</td>
+</tr>
+<tr><td>00</td>
+<td>センサーステータス (b0:ボタン)</td>
+</tr>
+<tr><td>D80A</td>
+<td>温度 (0x0AD8 = 27.76℃)</td>
+</tr>
+<tr><td>2D00</td>
+<td>湿度 (0x002D = 45%)</td>
+</tr>
+</tbody>
+</table>
+<p>このままのデータでは、活用しにくいのでLambda関数で、加工する必要があります。</p>
+</div>
+</div>
+
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">目次</a></h3>
+            <ul>
+<li><a class="reference external" href="#">4. センサーデータの確認</a><ul>
+<li><a class="reference external" href="#aws-iot">4.1. AWS IoTでセンサーデータを確認する</a></li>
+</ul>
+</li>
+</ul>
+
             <h4>前のトピックへ</h4>
             <p class="topless"><a href="03.html"
                                   title="前の章へ">3. BLEゲートウェイの設定</a></p>
             <h4>次のトピックへ</h4>
             <p class="topless"><a href="05.html"
-                                  title="次の章へ">4. シナリオ1: センサーデータの送信</a></p>
+                                  title="次の章へ">5. シナリオ1: センサーデータをS3に保存する</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/04.txt"
@@ -88,7 +212,7 @@
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="05.html" title="4. シナリオ1: センサーデータの送信"
+          <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
              >次へ</a> |</li>
         <li class="right" >
           <a href="03.html" title="3. BLEゲートウェイの設定"
