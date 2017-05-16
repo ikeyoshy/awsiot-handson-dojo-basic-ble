@@ -48,11 +48,6 @@
             
   <div class="section" id="id1">
 <h1>4. センサーデータの確認<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>ゲートウェイは、温湿度センサーが送信するBLE Beaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Fitehoseにデータを送り、Kinesis Firehoseでは、受け取ったデータをLambdaで加工し、S3に保存し、ElasticSearch Serviceに蓄積し、Kibanaで温度、湿度、Beaconの電波強度を可視化します。</p>
-<img alt="_images/overview.png" src="_images/overview.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <div class="section" id="aws-iot">
 <h2>4.1. AWS IoTでセンサーデータを確認する<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWSマネージメントコンソールを開き、右上のリージョン一覧から[米国東部（バージニア北部）]を選択します。</p>
@@ -110,7 +105,7 @@
 <tr><td>-44</td>
 <td>Beaconの電波強度(RSSI, dBm単位)</td>
 </tr>
-<tr><td>02010612FF590080BC440104.....</td>
+<tr><td>02010612FF590080BC4D0100D8....</td>
 <td>BLEセンサーが送るデータ (Payload)</td>
 </tr>
 <tr><td>1493638145</td>
@@ -118,13 +113,12 @@
 </tr>
 </tbody>
 </table>
-<p>温湿度センサーが送るデータ</p>
-<div class="highlight-python"><pre>02010612FF590080BC440104FFFFFFFFFFFFFFFFFFFF</pre>
+<p>温湿度センサーが送るデータは、下記になります・</p>
+<div class="highlight-python"><pre>02010612FF590080BC4D0100D80A2D00000000000000</pre>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>の内訳は、下記になります。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -145,8 +139,8 @@
 <tr><td>80BC</td>
 <td>センサーモデル</td>
 </tr>
-<tr><td>2C01</td>
-<td>電池電圧</td>
+<tr><td>4D01</td>
+<td>電池電圧 (0x014D = 3.33V)</td>
 </tr>
 <tr><td>00</td>
 <td>センサーステータス (b0:ボタン)</td>
