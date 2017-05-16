@@ -51,38 +51,31 @@
 <p>レンジャーシステムズ製のBLEゲートウェイの設定を行います。</p>
 <div class="section" id="id1">
 <h2>3.1. 電源投入<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。
-BLEゲートウェイにマイクロUSBケーブルを接続し、電源を投入します。</p>
+<p>レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。</p>
+<p>USBケーブルを本体に接続し、電源供給元(USBコンセント、PCのUSBポート等)に接続してください。</p>
 </div>
 <div class="section" id="wifi">
 <h2>3.2. WiFi設定<a class="headerlink" href="#wifi" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>WiFiの設定を行います。ログイン後、<strong>configure_edison &#8211;wifi</strong> コマンドでSSIDとPSK(パスワード)の設定を実施してください。</p>
-<div class="highlight-python"><pre>configure_edison --wifi
-
- Configre Edison: WiFi Connection
-
- Scanning: 8 seconds left..
- 1. Exit WiFi setup
- 2. Manually input a hidden SSID
- 3. Guest
- 4. xxxxxxxxx
-
- Enter 0 to rescan for networks.
- Enter 1 to exit.
- Enter 2 to input a hidden network SSID.
- Enter a number between 3 to N to choose one of the listed network SSIDs: ←Guestが表示されている番号を入力
-
- Is Guest corrrect? [Y or N]: ←Yを入力
-
- What is the network password?: ←WiFiのパスワードを入力
- Initiating connection to Guest. Please wait...
- Attempting to enable network access, please check 'wpa_cli status' after a minute to confirm.
- Done. Please connect your laptop or PC to the same network as this device and go to http://x.x.x.x or http://edison.local in your browser.
- (Doneが出力されたら成功）</pre>
-</div>
+<p>本ゲートウェイは、初期状態ではWiFiアクセスポイント(親機)モードになっており、PCから直接、WiFiで接続し、設定を行います。</p>
+<p>電源投入後、ゲートウェイの起動が終わると、WiFi接続が可能なPC等のネットワーク画面で「IGS0X_YY_ZZ」というSSIDが表示されます。</p>
+<ul>
+<li><p class="first">ハンズオンで使用するゲートウェイのモデル名は、iGS01です。SSIDは、「IGS01_YY_ZZ」になります。</p>
+</li>
+<li><p class="first">モデルがiGS02の場合、SSIDは、「IGS02_YY_ZZ」になります。</p>
+</li>
+<li><p class="first">YY_ZZ は、ゲートウェイの背面に記録されているMACアドレスの下２桁になります。
+* MACアドレスが、&#8221;AC83F3A041D2&#8221;の場合、SSIDは、&#8221;GS01_**41_D2**&#8221;になります。</p>
+<img alt="_images/MAC.png" src="_images/MAC.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+</li>
+<li><p class="first">ご自身のゲートウェイのSSIDに接続して下さい。</p>
+</li>
+<li><p class="first">WiFiのパスワードは、&#8221;12345678&#8221;です。</p>
+</li>
+</ul>
+<p>WiFiの設定を行います。ログイン後、<strong>configure_edison &#8211;wifi</strong> コマンドでSSIDとPSK(パスワード)の設定を実施してください。</p>
 <p>WiFiの接続が不安定な場合、再接続すれば回復することがあります。
 お使いのWiFiネットワークが5GHz帯をサポートしている場合は、安定して通信できますので、可能であれば2.4GHzではなく5GHzのWiFiを使用して下さい。</p>
 <p>インターネットに接続できるか確認します。IPアドレスが表示されれば成功です。</p>
