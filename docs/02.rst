@@ -1,9 +1,9 @@
-================
- AWS環境の準備
-================
+=================
+AWS IoT基本設定
+=================
 
-AWS IoT用の証明書を作成
-====================
+デバイスの作成
+==============
 
 AWSマネージメントコンソールを開き、右上のリージョン一覧から[米国東部（バージニア北部）]を選択します。
 
@@ -29,6 +29,78 @@ AWS IoTのダッシュボードが表示されます。
 
 |
 
+デバイス(Thing)を作成します。メニューから[Registry]-[Things]をクリックします。以下の様な画面が表示された場合は、[Registry a thing]をクリックします。
+
+.. image:: images/02/create-thing.png
+
+|
+
+あるいは、デバイス(Thing)一覧が表示された場合は、[Create]をクリックします。
+
+.. image:: images/02/create-thing-2.png
+
+|
+
+[Name]に”ranger-gw-<参加者番号>”と入力し、[Create thing]をクリックします。
+
+.. image:: images/02/create-thing-3.png
+
+|
+
+メニューから[Interact]をクリックします。以下の様な画面が表示されます。
+Endpointとして表示されるURLが表示されます。このEndpointは、ゲートウェイがデータを送信する宛先になります。後ほどゲートウェイの設定のところで参照しますので、ノートパッドなどに記録しておいて下さい。
+
+[←]をクリックして下さい。
+
+.. image:: images/02/endpoint.png
+
+|
+
+デバイス(Thing)一覧が表示され、作成したデバイスが表示されている事を確認します。
+
+.. image:: images/02/create-thing-4.png
+
+|
+
+ポリシーの作成
+============
+
+デバイスに対して、AWS IoTの各種操作を許可するためのポリシーを作成します。メニューから[Security]-[Policies]をクリックします。以下の様な画面が表示された場合は、[Create a policy]をクリックします。
+
+.. image:: images/02/create-policy.png
+
+|
+
+あるいは、ポリシー一覧が表示された場合は、[Create]をクリックします。
+
+.. image:: images/02/create-policy-2.png
+
+|
+
+フォームにそれぞれ以下のパラメータを入力し、[Add Statement]をクリックします。
+
+============= ============================
+項目          値
+============= ============================
+Name	          awsiot-handson-policy-<参加者番号>
+Action	        iot:*
+Resource ARN	  * (アスタリスク)
+Effect	        Allow
+============= ============================
+
+.. image:: images/02/create-policy-3.png
+
+|
+
+ポリシー一覧が表示され、作成したポリシーが表示されている事を確認します。
+
+.. image:: images/02/create-policy-4.png
+
+|
+
+証明書の作成
+===========
+
 証明書を作成します。メニューから[Security]-[Cetificate]をクリックします。以下の様な画面が表示された場合は、[Create a ertificate]をクリックします。
 
 .. image:: images/02/crreate-certificate.png
@@ -41,7 +113,9 @@ AWS IoTのダッシュボードが表示されます。
 
 |
 
-下記の様に、"Certificate created!"と表示されたら、証明書(Certificate)とプライベートキー(Private key)をダウンロードします。これらは、後ほど、BLEゲートウェイにアップロードします。最後に[Activate]をクリックして証明書を有効にして下さい。
+下記の様に、"Certificate created!"と表示されたら、証明書(Certificate)とプライベートキー(Private key)をダウンロードします。これらは、後ほど、BLEゲートウェイにアップロードします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。
+
+最後に[Activate]をクリックして証明書を有効にして下さい。
 
 .. image:: images/02/certificate-created.png
 
@@ -53,4 +127,35 @@ AWS IoTのダッシュボードが表示されます。
 
 |
 
-これで、証明書の作成は終了です。
+デバイス、ポリシーを証明書に割当てる
+===============================
+
+作成したデバイス、ポリシーを証明書に割当てます。メニューから[Security]-[Certificates]をクリックします。証明書一覧から「証明書の作成」保存した証明書のIDに一致する証明書をクリックして開きます。
+
+.. image:: images/02/attach-policy-thing.png
+
+|
+
+証明書の詳細が表示されます。[Actions] - [Attach policy]を選択します。
+
+.. image:: images/4-create-policy-6@2x.png
+
+|
+
+”awsiot-handson-policy-<参加者番号>”を選択し、[Attach]をクリックします。
+
+.. image:: images/4-create-policy-7@2x.png
+
+|
+
+[Actions] - [Attach thing]を選択します。
+
+.. image:: images/4-create-policy-8@2x.png
+
+|
+
+“edison-<参加者番号>”を入力し、[Attach]をクリックします。
+
+.. image:: images/4-create-policy-9@2x.png
+
+|

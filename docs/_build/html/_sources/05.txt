@@ -2,7 +2,7 @@
 シナリオ1: センサーデータの送信
 ====================
 
-ntel Edisonに接続された照度センサーと温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきDynamoDBへ保存します。また、AWS IoTはルールに基づき、しきい値を下回った場合はSNSを使ってE-mailでアラートを送信します。WebサイトはS3で別途用意済みで、Webブラウザで開きDynamoDBに保存されたデータを確認できます。
+Intel Edisonに接続された照度センサーと温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきDynamoDBへ保存します。また、AWS IoTはルールに基づき、しきい値を下回った場合はSNSを使ってE-mailでアラートを送信します。WebサイトはS3で別途用意済みで、Webブラウザで開きDynamoDBに保存されたデータを確認できます。
 
 .. image:: images/scenario1.png
 
