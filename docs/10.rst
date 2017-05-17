@@ -5,12 +5,10 @@ Lambda関数解説
 本ハンズオンで利用したLambda関数の解説をします。
 
 .. code-block:: python
-   :linenos
-   :emphasize-lines: 2, 3
 
    my_temphumid_sensor_mac = "FFEAD7E638B8"
-   my_magnet_sensor_mac    = "C02C61CB558F"
-   my_3d_accel_sensor_mac  = "D9890D33C5E1"
+    my_magnet_sensor_mac    = "C02C61CB558F"
+    my_3d_accel_sensor_mac  = "D9890D33C5E1"
 
 
 aaaaaaaaaa
