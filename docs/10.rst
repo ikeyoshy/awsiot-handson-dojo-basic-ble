@@ -10,3 +10,16 @@ Lambda関数解説
   my_temphumid_sensor_mac = "FFEAD7E638B8"
    my_magnet_sensor_mac    = "C02C61CB558F"
    my_3d_accel_sensor_mac  = "D9890D33C5E1"
+
+
+aaaaaaaaaa
+
+
+.. code-block:: python
+   :emphasize-lines: 3,5
+
+   def some_function():
+       interesting = False
+       print 'This line is highlighted.'
+       print 'This one is not...'
+       print '...but this one is.'
