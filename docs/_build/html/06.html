@@ -48,50 +48,194 @@
             
   <div class="section" id="id1">
 <h1>6. シナリオ2: センサーデータを可視化する<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>Intel Edisonに接続された照度センサー、温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきElasticSearch ServiceやFirehose経由でS3に保存します。WebブラウザからはElasticSearch Service上のKibanaにアクセスして保管されているデータをグラフ表示できます。</p>
-<img alt="images/scenario1-plus.png" src="images/scenario1-plus.png" />
+<p>Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaで可視化します。
+データ変換には、シナリオ1で使用したLambda関数を使用します。</p>
+<img alt="_images/overview2.png" src="_images/overview2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>送信するセンサーデータは以下のJSONフォーマットとします。</p>
-<div class="highlight-python"><pre>{
-   "timestamp": "2015-10-24T14:16:37.305Z", ← ISO8601形式
-   "illuminace": "300",                     ← 照度 アナログ値
-   "temperature": "200"                     ← 温度 アナログ値
- }</pre>
-</div>
+<div class="section" id="elasticsearch-service">
+<h2>6.1. ElasticSearch Serviceのドメインを作成する<a class="headerlink" href="#elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>サービス一覧から[ElasticSearch Service] をクリックして開きます。</p>
+<img alt="_images/es.png" src="_images/es.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="section" id="id2">
-<h2>6.1. プログラムの実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-fundamentalsの配下scenario1-nodejsにシナリオ1用のNode.jsプログラムがあります。プログラムを実行すると、5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。</p>
-<div class="highlight-python"><pre># cd ~/aws-iot-handson-dojo-basic/scenario1/
- # node main.js
- Connected to Message Broker
- Publishing: {"timestamp":"2016-03-27T09:29:19.725Z","illuminance":475,"temperature":467}
- Publishing: {"timestamp":"2016-03-27T09:29:24.776Z","illuminance":476,"temperature":464}
- Publishing: {"timestamp":"2016-03-27T09:29:29.837Z","illuminance":474,"temperature":466}
- Publishing: {"timestamp":"2016-03-27T09:29:34.895Z","illuminance":475,"temperature":465}
- Publishing: {"timestamp":"2016-03-27T09:29:39.956Z","illuminance":477,"temperature":463}</pre>
+<p>Elasticsearch Serviceの画面が開きますので、[Get started] をクリックして下さい。</p>
+<img alt="_images/es-get-started.png" src="_images/es-get-started.png" />
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
+<p>Create Elasticsearch domain画面になります。</p>
+<p>Elasticsearch domain nameに、firehose-to-es-domain-&lt;参加者番号&gt; と入力して、[Next]をクリックして下さい。</p>
+<img alt="_images/cretate-es-domain.png" src="_images/cretate-es-domain.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>次の画面では、何も入力せずに、Next]をクリックして下さい。
+Set the domain access policy toで、&#8221;Allow open access to the domain&#8221;を選択して下さい。</p>
+<img alt="_images/domain-access-policy.png" src="_images/domain-access-policy.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>access policyが表示されるので、[Next]をクリックして下さい。</p>
+<img alt="_images/domain-access-policy-2.png" src="_images/domain-access-policy-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が出てきますので、[Confirm and create]をクリックして下さい。
+Elasticsearch ドメインが出来るまで、数分かかります。</p>
+<img alt="_images/confirm-create.png" src="_images/confirm-create.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="elasticsearch-serviceaws-iot">
-<h2>6.2. ElasticSearch Serviceへ保存するAWS IoT ルールを作成<a class="headerlink" href="#elasticsearch-serviceaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[AWS IoT]を開き、左側のメニューから[Rules]を選択します。</p>
-<img alt="images/6-create-rule-1.png" src="images/6-create-rule-1.png" />
+<div class="section" id="kinesis-firehose">
+<h2>6.2. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>サービス一覧から[Kinesis]をクリックして開きます。</p>
+<img alt="_images/kinesis.png" src="_images/kinesis.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>その後、[Create]をクリックします。</p>
-<p>スクリーンショットの赤枠で囲んだ部分について、以下の項目を入力し、[Add action]をクリックします。</p>
+<p>Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。</p>
+<img alt="_images/firehose.png" src="_images/firehose.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Create Delivery Stream] をクリックして下さい。</p>
+<img alt="_images/create-delivery-stream.png" src="_images/create-delivery-stream.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Create Delivery Stream] をクリックして下さい。</p>
+<p>DestinationをElasticsearch Serviceとして、Delivery stream nameを設定し、先ほど設定したElasticsearch ドメインを選んで、[Next] をクリックして下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="30%" />
-<col width="70%" />
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Destination</td>
+<td>Amazon Elasticsearch Service</td>
+</tr>
+<tr><td>Delivery stream name</td>
+<td>sensor-data-to-es-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Elasticsearch domain</td>
+<td>firehose-to-es-domain-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Index</td>
+<td>sensordata</td>
+</tr>
+<tr><td>Type</td>
+<td>scenario2</td>
+</tr>
+<tr><td>S3 bucket</td>
+<td>sensor-data-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/cretae-delivery-stream.png" src="_images/cretae-delivery-stream.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM roleの設定画面が開きます。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Data transformation</td>
+<td>Enable</td>
+</tr>
+<tr><td>Lambda function</td>
+<td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Buffer interval</td>
+<td>60</td>
+</tr>
+<tr><td>Error Logging</td>
+<td>Disable</td>
+</tr>
+<tr><td>IAM role</td>
+<td>Firehose delivery IAM role</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/cretae-delivery-stream-2.png" src="_images/cretae-delivery-stream-2.png" />
+<img alt="_images/cretae-delivery-stream-3.png" src="_images/cretae-delivery-stream-3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&#8220;新しい IAMロールの作成&#8221; を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>IAM ロール</td>
+<td>新しい IAMロールの作成</td>
+</tr>
+<tr><td>ロール名</td>
+<td>firehose_delivery_role_es-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/firehose-iam-role1.png" src="_images/firehose-iam-role1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Fitehoseの設定画面で、[Next] をクリックして下さい。</p>
+<img alt="_images/cretae-delivery-stream-4.png" src="_images/cretae-delivery-stream-4.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>最後に、[Create Delivery Stream] をクリックして下さい。</p>
+<img alt="_images/cretae-delivery-stream-5.png" src="_images/cretae-delivery-stream-5.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Elasticsearch Delivery Streamsができました。</p>
+<img alt="_images/cretae-delivery-stream-6.png" src="_images/cretae-delivery-stream-6.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="kinesis-firehoseaws-iot">
+<h2>6.3. Kinesis Firehose用のAWS IoT ルールを作成<a class="headerlink" href="#kinesis-firehoseaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
+<img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ルールを作成します。メニューから[Rules]をクリックします。ルール(Rule)一覧画面で、[Create]をクリックします。</p>
+<img alt="_images/create-rule-2.png" src="_images/create-rule-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記の項目を入力し、[Add action]をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">設定項目</th>
@@ -100,35 +244,34 @@
 </thead>
 <tbody valign="top">
 <tr><td>Name</td>
-<td>SaveToElasticsearch_&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Using SQL version</td>
-<td>2016-03-23</td>
+<td>iotrule_firehose_es_&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Attribute</td>
-<td><a href="#id3"><span class="problematic" id="id4">*</span></a>, topic(1) AS place, topic(2) AS position</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
 </tr>
-<tr><td>Topic Filter</td>
-<td>place-a/position-&lt;参加者番号&gt;</td>
+<tr><td>Topic filter</td>
+<td>publish_out-&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
-<img alt="images/6-create-rule-2.png" src="images/6-create-rule-2.png" />
-<img alt="images/6-create-rule-3.png" src="images/6-create-rule-3.png" />
+<img alt="_images/create-rule1.png" src="_images/create-rule1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Select an action画面で、[Send messages to the <strong>Amazon Elasticsearch Service</strong>]を選択し、[Configure action]をクリックします。</p>
-<img alt="images/6-create-rule-4.png" src="images/6-create-rule-4.png" />
-<img alt="images/6-create-rule-5.png" src="images/6-create-rule-5.png" />
+<p>&#8220;Send messages to an Amazon Kinesis Firehose stream&#8221; を選択し、[Confgure action]をクリックします。</p>
+<img alt="_images/select-action.png" src="_images/select-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Configure action]画面にて、下記の項目を入力します。</p>
+<p>Stream nameで、sensor-data-to-es-&lt;参加者番号&gt; を選択し、シナリオ1で作成したIAM roleを選択し、[Update role] をクリックします。
+Successfully updated role. と表示されたら、[Add action] をクリックします。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="8%" />
-<col width="92%" />
+<col width="25%" />
+<col width="75%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">設定項目</th>
@@ -136,54 +279,42 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>Domain name</td>
-<td>awsioth-sensor-&lt;英数字&gt; （「2.2. CloudFormationを使ってElasticsearch Searchを自動作成」の最後で確認したElasticSearchDomainを選択）</td>
+<tr><td>Stream name</td>
+<td>sensor-data-to-es-&lt;参加者番号&gt;</td>
 </tr>
-<tr><td>ID</td>
-<td>${timestamp()}</td>
-</tr>
-<tr><td>Index</td>
-<td>sensordata-&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Type</td>
-<td>scenario1</td>
+<tr><td>IAM role name</td>
+<td>IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
-<img alt="images/6-configure-action-1.png" src="images/6-configure-action-1.png" />
+<img alt="_images/add-action1.png" src="_images/add-action1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;<a href="#id5"><span class="problematic" id="id6">*</span></a>IAM role name&#8221;横の[Create a new role]ボタンを押して、Elasticsearch Search用のロールを作成します。</p>
-<p>&#8220;<a href="#id7"><span class="problematic" id="id8">*</span></a>IAM role name&#8221; 欄に、SaveToElasticSearchRole-&lt;参加者番号&gt; を入力し、[Create a new role]ボタンを押します。</p>
-<p>新しいロールが作成されるので、メニューから、SaveToElasticSearchRole-&lt;参加者番号&gt; を選択し、[Update role]ボタンを押し、最後に、[Add action]ボタンを押します。</p>
-<img alt="images/6-configure-action-2.png" src="images/6-configure-action-2.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>最後に、確認画面が出ますので、[Create rule]ボタンを押して、ルールを作成して下さい。</p>
-<img alt="images/6-rules.png" src="images/6-rules.png" />
+<p>Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。</p>
+<img alt="_images/create-rule-31.png" src="_images/create-rule-31.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
 <div class="section" id="kibana">
-<h2>6.3. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。「2.2. CloudFormationを使ってElasticsearch Searchを自動作成」の最後で確認したElasticSearchDomainの[Searchable documents]の数字が0より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。</p>
-<img alt="images/6-searchable_documents.png" src="images/6-searchable_documents.png" />
+<h2>6.4. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。</p>
+<p>ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。</p>
+<img alt="_images/es-dashboard.png" src="_images/es-dashboard.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Domain]のリンクをクリックして開きます。</p>
-<img alt="images/6-kibana-link.png" src="images/6-kibana-link.png" />
+<p>[Domain]のいリンクをクリックして開きます。[Kibana]のリンクをクリックして開きます。</p>
+<img alt="_images/kibana-link.png" src="_images/kibana-link.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="35%" />
-<col width="65%" />
+<col width="45%" />
+<col width="55%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">設定項目</th>
@@ -192,107 +323,95 @@
 </thead>
 <tbody valign="top">
 <tr><td>Index name or pattern</td>
-<td>sensordata-&lt;参加者番号&gt;</td>
+<td>sensordata</td>
 </tr>
 <tr><td>Time-field names</td>
-<td>timestamp (リストから選択)</td>
+<td>&#64;timestamp (リストから選択)</td>
 </tr>
 </tbody>
 </table>
-<img alt="images/6-kibana-configure.png" src="images/6-kibana-configure.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[illuminance], [temperature], [timestamp]のフィールドが表示されている事を確認します。</p>
-<img alt="images/6-kibana-settings.png" src="images/6-kibana-settings.png" />
+<p>tempreature, humidity, rssi, &#64;timestamp のフィールドが表示されている事を確認します。</p>
+<img alt="_images/kibana-indices.png" src="_images/kibana-indices.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>メニューにある[Discover]をクリックし、データが届いている事を確認します。</p>
-<img alt="images/6-kibana-discover.png" src="images/6-kibana-discover.png" />
+<img alt="_images/kibana-discover.png" src="_images/kibana-discover.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>メニューにある[Visualize]をクリックし、グラフの種類として[Area chart]を選択します。</p>
-<img alt="images/6-kibana-visualize.png" src="images/6-kibana-visualize.png" />
+<p>メニューにある[Visualize]をクリックし、グラフの種類として[Line chart]を選択します。</p>
+<img alt="_images/kibana-visualize.png" src="_images/kibana-visualize.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[From a new search]をクリックします。</p>
-<img alt="images/6-kibana-new-search.png" src="images/6-kibana-new-search.png" />
+<p>[From a new search]から、&#8221;sensordata&#8221;を選択します。</p>
+<img alt="_images/kibana-sensordata.png" src="_images/kibana-sensordata.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>データに[sensordata-&lt;参加者番号&gt;]が選択され、Y軸にサンプル数(Count)が設定されている事を確認し、X軸の設定を開始するために[X-Axis]をクリックします。</p>
-<img alt="images/6-kibana-visualize-2.png" src="images/6-kibana-visualize-2.png" />
+<p>データに[sensordata]が選択され、Y軸にサンプル数(Count)が設定されている事を確認し、X軸の設定を開始するために[X-Axis]をクリックします。</p>
+<img alt="_images/kibana-count.png" src="_images/kibana-count.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Aggregation]に[Data Histogram]を選択し[Apply]をクリックすると、右側にグラフが表示されることを確認します。</p>
-<img alt="images/6-kibana-visualize-3.png" src="images/6-kibana-visualize-3.png" />
+<p>[Aggregation]に[Data Histogram]を選択し[▶]をクリックすると、右側にグラフが表示されることを確認します。</p>
+<img alt="_images/kibana-count-graph.png" src="_images/kibana-count-graph.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>保存ボタンをクリックし、[Title]に[Sensor Data - Sampling Count]と入力し、[Save]をクリックします。</p>
-<img alt="images/6-kibana-visualize-4.png" src="images/6-kibana-visualize-4.png" />
+<p>[Save] ボタンをクリックし、[Title]に[Sensor Data - Sampling Count]と入力し、[Save]をクリックします。</p>
+<img alt="_images/kibana-save-count.png" src="_images/kibana-save-count.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>保存されたら、Y軸の設定を表示し、[Aggregation]を[Average]に変更し、[Field]に[illuminance]を指定します。[Apply]をクリックしてグラフに適切なデータが表示されることを確認します。</p>
-<img alt="images/6-kibana-visualize-5.png" src="images/6-kibana-visualize-5.png" />
+<p>保存されたら、Y軸の設定を表示し、[Aggregation]を[Average]に変更し、[Field]に[tempreature](温度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。</p>
+<img alt="_images/kibana-temp.png" src="_images/kibana-temp.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>保存ボタンをクリックし、[Title]を[Sensor Data - Illuminance]に変更し、[Save]をクリックします。</p>
-<img alt="images/6-kibana-visualize-6.png" src="images/6-kibana-visualize-6.png" />
+<p>[Add metrics]をクリックし、湿度データを追加します。[Y-Axis]をクリックし、[Aggregation]を[Average]に変更し、[Field]に[humidity](湿度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。</p>
+<img alt="_images/kibana-humid.png" src="_images/kibana-humid.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>保存されたら、Y軸の設定を表示し、[Field]を[temperature]を変更します。[Apply]をクリックしてグラフに適切なデータが表示されることを確認します。</p>
-<img alt="images/6-kibana-visualize-7.png" src="images/6-kibana-visualize-7.png" />
+<p>Beaconの電波強度(rssi)も同様に追加します。</p>
+<img alt="_images/kibana-rssi.png" src="_images/kibana-rssi.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>保存ボタンをクリックし、[Title]を[Sensor Data - Temperature]に変更し、[Save]をクリックします。</p>
-<img alt="images/6-kibana-visualize-8.png" src="images/6-kibana-visualize-8.png" />
+<p>[Save] ボタンをクリックし、[Title]に[Sensor Data - temp - humid - rssi]と入力し、[Save]をクリックします。</p>
+<img alt="_images/kibana-save-temphumidrssi.png" src="_images/kibana-save-temphumidrssi.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>メニューにある[Dashboard]をクリックし、追加ボタンをクリックします。</p>
-<img alt="images/6-kibana-dashboard-1.png" src="images/6-kibana-dashboard-1.png" />
+<p>メニューにある[Dashboard]をクリックし、[Add]ボタンをクリックします。</p>
+<img alt="_images/kibana-dashboard.png" src="_images/kibana-dashboard.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[ Sensor Data - temp - humid - rssi]をクリックし、下側にグラフが追加されたのを確認します。</p>
+<img alt="_images/kibana-dashboard-add-temphumidrssi.png" src="_images/kibana-dashboard-add-temphumidrssi.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>[Sensor Data - Sampling Count]をクリックし、下側にグラフが追加されたのを確認します。</p>
-<img alt="images/6-kibana-dashboard-2.png" src="images/6-kibana-dashboard-2.png" />
+<img alt="_images/kibana-dashboard-add-count.png" src="_images/kibana-dashboard-add-count.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>同様に、[Sensor Data - Illuminance]、[Sensor Data - Temperature]をクリックし、下側にグラフが追加されたのを確認します。確認したら、[＜]ボタンを押して閉じます。</p>
-<img alt="images/6-kibana-dashboard-3.png" src="images/6-kibana-dashboard-3.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>保存ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。</p>
-<img alt="images/6-kibana-dashboard-4.png" src="images/6-kibana-dashboard-4.png" />
+<p>[Save]ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。</p>
+<img alt="_images/kibana-dashboard-save.png" src="_images/kibana-dashboard-save.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>右上の[Last 15 minutes]をクリックすると、表示する期間や表示を自動更新する頻度を変更できます。</p>
-<img alt="images/6-kibana-dashboard-5.png" src="images/6-kibana-dashboard-5.png" />
+<img alt="_images/kibana-update.png" src="_images/kibana-update.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>グラフをマウスで操作して、位置やサイズを変更することもできます。</p>
-<img alt="images/6-kibana-dashboard-6.png" src="images/6-kibana-dashboard-6.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="firehose">
-<h2>6.4. Firehoseのストリームを作成<a class="headerlink" href="#firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[Kinesis]を開きます。[Firehoseに進む]をクリックします。</p>
-<img alt="images/6-kinesis-firehose-1.png" src="images/6-kinesis-firehose-1.png" />
+<img alt="_images/kibana-size-pos.png" src="_images/kibana-size-pos.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -308,10 +427,10 @@
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">6. シナリオ2: センサーデータを可視化する</a><ul>
-<li><a class="reference external" href="#id2">6.1. プログラムの実行</a></li>
-<li><a class="reference external" href="#elasticsearch-serviceaws-iot">6.2. ElasticSearch Serviceへ保存するAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#kibana">6.3. Kibanaでデータを確認</a></li>
-<li><a class="reference external" href="#firehose">6.4. Firehoseのストリームを作成</a></li>
+<li><a class="reference external" href="#elasticsearch-service">6.1. ElasticSearch Serviceのドメインを作成する</a></li>
+<li><a class="reference external" href="#kinesis-firehose">6.2. Kinesis Firehoseの設定</a></li>
+<li><a class="reference external" href="#kinesis-firehoseaws-iot">6.3. Kinesis Firehose用のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#kibana">6.4. Kibanaでデータを確認</a></li>
 </ul>
 </li>
 </ul>

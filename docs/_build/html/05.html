@@ -55,7 +55,7 @@
 </div>
 <p>S3に保存されるデータは、下記の形式になります。</p>
 <div class="highlight-python"><pre>{
-  "model": "590080BC",       ← センサーモデル
+  "model": "590080BC",       ← センサーのモデル番号
   "src_mac": "FFEAD7E638B8", ← センサーのMACアドレス
   "dst_mac": "AC83F3A041D2", ← ゲートウェイのMACアドレス
   "rssi": -47,               ← Beaconの電波強度
@@ -71,31 +71,248 @@
 <div class="section" id="id1">
 <h2>5.1. S3バケットを作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>データを保存するS3バケットを作成します。</p>
+<p>サービス一覧から[S3]をクリックして開きます。</p>
+<img alt="_images/s3.png" src="_images/s3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>S3の設定画面が表示されれます。[バケットを作成する]ボタンを押します。</p>
+<img alt="_images/s3-create-bucket.png" src="_images/s3-create-bucket.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>バケット名に、sensor-data-&lt;参加者番号&gt;、リージョンは、[米国東部（バージニア北部）]を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。</p>
+<img alt="_images/s3-create-bucket-2.png" src="_images/s3-create-bucket-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記の画面が出るまで、[次へ]をクリックして下さい。最後に、[バケットを作成]をクリックすると、S3バケットが作成されます。</p>
+<img alt="_images/s3-create-bucket-3.png" src="_images/s3-create-bucket-3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>sensor-data-&lt;参加者番号&gt;のバケットがリージョン：[米国東部（バージニア北部）]に作成されているか確認して下さい。</p>
+<img alt="_images/s3-create-bucket-4.png" src="_images/s3-create-bucket-4.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </div>
 <div class="section" id="lambda">
 <h2>5.2. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
-</div>
-<div class="section" id="kinesis-firehosedelivery-stream">
-<h2>5.3. Kinesis FirehoseのDelivery streamを作成する<a class="headerlink" href="#kinesis-firehosedelivery-stream" title="このヘッドラインへのパーマリンク">¶</a></h2>
-</div>
-<div class="section" id="dynamodbaws-iot">
-<h2>5.4. DynamoDB保存のAWS IoT ルールを作成<a class="headerlink" href="#dynamodbaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[AWS IoT]をクリックして開きます。</p>
-<img alt="images/4-servicemenu&#64;2x.png" src="images/4-servicemenu&#64;2x.png" />
+<p>はじめに、Lambda関数を下記のリンクからダウンロードして下さい。</p>
+<p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip</a></p>
+<p>サービス一覧から[Lambda]をクリックして開きます。</p>
+<img alt="_images/lambda.png" src="_images/lambda.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>DynamoDBに保存するルールを作成します。メニューから[Rules]を選択します。以下の様な画面が表示された場合は、[Create a rule]をクリックします。</p>
-<img alt="images/5-create-rule-1&#64;2x.png" src="images/5-create-rule-1&#64;2x.png" />
+<p>下記のような画面が表示されるので、[今すぐ始める]をクリックします。</p>
+<img alt="_images/lambda-2.png" src="_images/lambda-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>あるいは、ルールの一覧が表示された場合は[Create]をクリックします。</p>
-<img alt="images/5-create-rule-2&#64;2x.png" src="images/5-create-rule-2&#64;2x.png" />
+<p>Lambda関数の作成画面が表示されるので、サーチボックスに&#8221;Fitrehose&#8221;と入力し、&#8221;kinesis-firehose-syslog-to-json-python&#8221;をクリックします。</p>
+<img alt="_images/lambda-3.png" src="_images/lambda-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>以下の項目について値を入力します。[Add action]をクリックします。</p>
+<p>トリガーの設定画面が表示されるので、[次へ]をクリックします。</p>
+<img alt="_images/lambda-4.png" src="_images/lambda-4.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記のような画面が表示されるので、必要事項を入力して下さい。
+&#8220;関数パッケージ&#8221; の横の[アップロード]ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
+ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。</p>
+<img alt="_images/lambda-5.png" src="_images/lambda-5.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>IAM ロール</td>
+<td>新しいIAMロールの作成</td>
+</tr>
+<tr><td>ロール名</td>
+<td>lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/lambda-role.png" src="_images/lambda-role.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
+<img alt="_images/lambda-role-2.png" src="_images/lambda-role-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;firehose:*&quot;</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ロールが[既存のロール] に変更され、ロール名として、&#8221;lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;&#8221; が表示されていることを確認し、[次へ] をクリックして下さい。</p>
+<img alt="_images/lambda-6.png" src="_images/lambda-6.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されますので、下までスクロースし、[関数の作成] をクリックして下さい。</p>
+<img alt="_images/lambda-create.png" src="_images/lambda-create.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Lambda関数の作成に成功すると、下記の様な画面が表示されます。</p>
+<img alt="_images/edit-lambda-func.png" src="_images/edit-lambda-func.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>目的のセンサーからのデータだけを取り込むために、Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; を修正します。
+ご自身の温度センサーのラベルに記載されているセンサーのMACアドレスを、書き込み、[保存] ボタンを押して下さい。</p>
+<img alt="_images/edit-lambda-func-2.png" src="_images/edit-lambda-func-2.png" />
+<img alt="_images/src_mac.png" src="_images/src_mac.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="kinesis-firehose">
+<h2>5.3. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>サービス一覧から[Kinesis]をクリックして開きます。</p>
+<img alt="_images/kinesis.png" src="_images/kinesis.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。</p>
+<img alt="_images/firehose.png" src="_images/firehose.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Create Delivery Stream] をクリックして下さい。</p>
+<img alt="_images/create-delivery-stream.png" src="_images/create-delivery-stream.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>[Create Delivery Stream] をクリックして下さい。</p>
+<p>DestinationをS3として、Delivery stream nameを設定し、先ほど設定したS3 bucketを選んで、[Next] をクリックして下さい。</p>
+<img alt="_images/create-delivery-stream-2.png" src="_images/create-delivery-stream-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM roleの設定画面が開きます。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Data transformation</td>
+<td>Enable</td>
+</tr>
+<tr><td>Lambda function</td>
+<td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Buffer interval</td>
+<td>60</td>
+</tr>
+<tr><td>Error Logging</td>
+<td>Disable</td>
+</tr>
+<tr><td>IAM role</td>
+<td>Firehose delivery IAM role</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/create-delivery-stream-3.png" src="_images/create-delivery-stream-3.png" />
+<img alt="_images/create-delivery-stream-4.png" src="_images/create-delivery-stream-4.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&#8220;新しい IAMロールの作成&#8221; を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>IAM ロール</td>
+<td>新しい IAMロールの作成</td>
+</tr>
+<tr><td>ロール名</td>
+<td>firehose_delivery_role-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/firehose-iam-role.png" src="_images/firehose-iam-role.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Fitehoseの設定画面で、[Next] をクリックして下さい。</p>
+<img alt="_images/create-delivery-stream-5.png" src="_images/create-delivery-stream-5.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>最後に、[Create Delivery Stream] をクリックして下さい。</p>
+<img alt="_images/create-delivery-stream-6.png" src="_images/create-delivery-stream-6.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>S3 Delivery Streamsができました。</p>
+<img alt="_images/create-delivery-stream-7.png" src="_images/create-delivery-stream-7.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="kinesis-firehoseaws-iot">
+<h2>5.4. Kinesis Firehose用のAWS IoT ルールを作成<a class="headerlink" href="#kinesis-firehoseaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
+<img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ルールを作成します。メニューから[Rules]をクリックします。以下の様な画面が表示された場合は、[Create rule]をクリックします。</p>
+<img alt="_images/create-rule.png" src="_images/create-rule.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>あるいは、ルール(Rule)一覧が表示された場合は、[Create]をクリックします。</p>
+<img alt="_images/create-rule-2.png" src="_images/create-rule-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記の項目を入力し、[Add action]をクリックします。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="27%" />
@@ -108,7 +325,7 @@
 </thead>
 <tbody valign="top">
 <tr><td>Name</td>
-<td>SaveToDynamoDB_&lt;参加者番号&gt;</td>
+<td>iotrule_firehose_s3_&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Attribute</td>
 <td><ul class="first last simple">
@@ -116,175 +333,71 @@
 </ul>
 </td>
 </tr>
-<tr><td>Topic Filter</td>
-<td>place-a/position-&lt;参加者番号&gt;</td>
+<tr><td>Topic filter</td>
+<td>publish_out-&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
-<img alt="images/5-create-rule-3&#64;2x.png" src="images/5-create-rule-3&#64;2x.png" />
+<img alt="_images/create-rule-3.png" src="_images/create-rule-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Insert a message into a DynamoDB table]を選択し、[Configure action]をクリックします。</p>
-<img alt="images/5-create-rule-4&#64;2x.png" src="images/5-create-rule-4&#64;2x.png" />
+<p>&#8220;Send messages to an Amazon Kinesis Firehose stream&#8221; を選択し、[Confgure action]をクリックします。</p>
+<img alt="_images/select-action.png" src="_images/select-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>以下の項目について値を入力します。[Role name]はリストから選択します。入力後[Add action]をクリックします。</p>
-<img alt="images/5-create-rule-5&#64;2x.png" src="images/5-create-rule-5&#64;2x.png" />
+<p>Stream nameで、sensor-data-to-s3-&lt;参加者番号&gt; を選択し、[Create a new role]をクリックします。</p>
+<img alt="_images/configure-action.png" src="_images/configure-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Insert a message into a DynamoDB table]が追加されたことを確認し、[Create rule]をクリックします。</p>
-<img alt="images/5-create-rule-6&#64;2x.png" src="images/5-create-rule-6&#64;2x.png" />
+<p>IAM role nameに、IOT_to_Kinesis_Firehose-&lt;参加者番号&gt; と入力し、[Create a new role] をクリックします。</p>
+<img alt="_images/create-role.png" src="_images/create-role.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>作成されたルールの情報が表示されます。[←]をクリックします。</p>
-<img alt="images/5-create-rule-7&#64;2x.png" src="images/5-create-rule-7&#64;2x.png" />
+<p>IAM role nameで、IOT_to_Kinesis_Firehose-&lt;参加者番号&gt; を選択し、[Update role] をクリックします。
+Successfully updated role. と表示されたら、[Add action] をクリックします。</p>
+<img alt="_images/add-action.png" src="_images/add-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>ルール一覧が表示され、作成したルールが表示されている事を確認します。</p>
-<img alt="images/5-create-rule-8&#64;2x.png" src="images/5-create-rule-8&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="aws-iot">
-<h2>5.5. メール通知のAWS IoT ルールを作成<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>ルールの一覧が表示された画面で、[Create]をクリックします。</p>
-<img alt="images/5-create-rule-2&#64;2x.png" src="images/5-create-rule-2&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>以下の項目について値を入力します。[Add action]をクリックします。</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="23%" />
-<col width="77%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">項目</th>
-<th class="head">値</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Name</td>
-<td>NotifyToAdmin_&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Attribute</td>
-<td><a href="#id2"><span class="problematic" id="id3">*</span></a>, topic(1) AS place, topic(2) AS position</td>
-</tr>
-<tr><td>Topic Filter</td>
-<td>place-a/position-&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Condition</td>
-<td>illuminance &lt; 30</td>
-</tr>
-</tbody>
-</table>
-<img alt="images/5-create-rule-9&#64;2x.png" src="images/5-create-rule-9&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Send a message as an SNS push notification]を選択し、[Configure action]をクリックします。</p>
-<img alt="images/5-create-rule-10&#64;2x.png" src="images/5-create-rule-10&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>以下の項目について値を入力します。[Role name]はリストから選択します。入力後[Add action]をクリックします。</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="14%" />
-<col width="86%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">項目</th>
-<th class="head">値</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>SNS target</td>
-<td>AWSIoTHandsonStack-&lt;参加者番号&gt;-NotifyToAdminTopic-&lt;英数字&gt; (リストから選択)</td>
-</tr>
-<tr><td>IAM Role name</td>
-<td>AWSIoTHandsonStack-&lt;参加者番号&gt;-NotifyToSNSRole-&lt;英数字&gt; (リストから選択)</td>
-</tr>
-</tbody>
-</table>
-<img alt="images/5-create-rule-11&#64;2x.png" src="images/5-create-rule-11&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[SNS Action]が追加されたことを確認し、[Create rule]をクリックします。</p>
-<img alt="images/5-create-rule-12&#64;2x.png" src="images/5-create-rule-12&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>作成されたルールの情報が表示されます。[←]をクリックします。</p>
-<img alt="images/5-create-rule-13&#64;2x.png" src="images/5-create-rule-13&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>ルール一覧が表示され、作成したルールが表示されている事を確認します。</p>
-<img alt="images/5-create-rule-14&#64;2x.png" src="images/5-create-rule-14&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>CloudFormationでStack作成時にメール通知の宛先確認メールが届いているため、メール内の確認リンク[Confirm subscription]をクリックします。</p>
-<img alt="images/5-email&#64;2x.png" src="images/5-email&#64;2x.png" />
+<p>Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。</p>
+<img alt="_images/create-rule-4.png" src="_images/create-rule-4.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h2>5.6. プログラムの実行<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-dojo-basicの配下scenario1にシナリオ1用のNode.jsプログラムがあります。プログラムを実行します。5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。</p>
-<div class="highlight-python"><pre># cd ~/aws-iot-handson-dojo-basic/scenario1/
- # node main.js
- Connected to Message Broker
- Publishing: {"timestamp":"2016-04-06T07:05:08.973Z","illuminance":343,"temperature":510}
- Publishing: {"timestamp":"2016-04-06T07:05:14.035Z","illuminance":343,"temperature":512}
- Publishing: {"timestamp":"2016-04-06T07:05:19.084Z","illuminance":343,"temperature":512}</pre>
+<div class="section" id="id2">
+<h2>5.5. S3に保存されたデータを確認する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>サービス一覧から[S3]をクリックして開きます。</p>
+<img alt="_images/s3.png" src="_images/s3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>sensor-data-&lt;参加者番号&gt;のバケットをクリックします。</p>
+<img alt="_images/s3-check.png" src="_images/s3-check.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>データが保存されたフォルダまで辿って下さい。</p>
+<img alt="_images/s3-check-2.png" src="_images/s3-check-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ファイルをクリックすると、ファイルの概要が表示されます。[ダウンロード]をクリックしてダウンロードして内容を確認して下さい。</p>
+<img alt="_images/s3-check-3.png" src="_images/s3-check-3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>下記の形式で、センサーデータが確認できます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;dst_mac&quot;</span><span class="p">:</span> <span class="s2">&quot;F0B3865C39C3&quot;</span><span class="p">,</span> <span class="s2">&quot;@timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-05-17T01:13:28&quot;</span><span class="p">,</span> <span class="s2">&quot;humidity&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span> <span class="s2">&quot;vbat&quot;</span><span class="p">:</span> <span class="mf">3.31</span><span class="p">,</span> <span class="s2">&quot;tempreature&quot;</span><span class="p">:</span> <span class="mf">25.25</span><span class="p">,</span> <span class="s2">&quot;rssi&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">44</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;590080BC&quot;</span><span class="p">,</span> <span class="s2">&quot;src_mac&quot;</span><span class="p">:</span> <span class="s2">&quot;E9070D5A15FB&quot;</span><span class="p">}</span>
+</pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-</div>
-<div class="section" id="id5">
-<h2>5.7. データの受信を確認する<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTのTestにて、&#8221;Subscription topic&#8221;に &#8220;place-a/position-&lt;任意の番号&gt;&#8221; を入力し、[Subscribe to topic]をクリックすれば、左側の&#8221;Subscribe to a topic&#8221;欄に、&#8221;place-a/position-&lt;任意の番号&gt;&#8221;が、表示されます。
-トピックが受信できていれば、&#8221;place-a/position-&lt;任意の番号&gt;&#8221;の左側に赤字で <em>●</em> が表示されます。</p>
-<img alt="images/5-test-1.png" src="images/5-test-1.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&#8220;place-a/position-&lt;任意の番号&gt;&#8221;をクリックすると、デバイスから送信されているセンサーデータがリアルタイムで表示されます。</p>
-<img alt="images/5-test-2.png" src="images/5-test-2.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="dynamodb">
-<h2>5.8. DynamoDBに保存されたデータの確認<a class="headerlink" href="#dynamodb" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWSマネージメントコンソールのサービス一覧から[DynamoDB]をクリックして開きます。左側のメニューから[テーブル]をクリックし、テーブル一覧から”AWSIoTHandsonStack-&lt;参加者番号&gt;-SensorDataTable-&lt;英数字&gt;”をクリックします。タブの[項目]を選択すると、テーブル内のデータが表示されます。</p>
-<img alt="images/5-dynamodb-1&#64;2x.png" src="images/5-dynamodb-1&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>DynamoDBに保存されたデータをS3に保存されているWebサイトでも確認する事ができます。Webブラウザに読み込まれたJavaScriptはWebブラウザ上で動作して、CognitoでAWSにアクセスするための一時クレデンシャルを取得し、DynamoDBに直接アクセスしてデータを取得しグラフ表示します。</p>
-<p>以下のURLをブラウザで開きます。</p>
-<p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/scenario1/IoT+HandsOn+Dojo+Basic+-+Scenario+1_+Sensor+Graph.html">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/scenario1/IoT+HandsOn+Dojo+Basic+-+Scenario+1_+Sensor+Graph.html</a></p>
-<p>[Cognito Identity Pool ID]に「2.2. Cognito Identityを手動作成」で作成したCognito Identityの[Identity Pool ID]を入力し、[Cognito Unauth Login]をクリックします。JavaScriptがバックグラウンドで定期的にDynamoDBにアクセスして新しいセンサー情報が得られればグラフは自動更新されます。</p>
-<img alt="images/5-webapp-1&#64;2x.png" src="images/5-webapp-1&#64;2x.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="id6">
-<h2>5.9. メール通知の確認<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>照度センサーを手で覆い、30以下の照度になることをLCDで待ちます。その後、通知メールが届いている事を確認します。</p>
 </div>
 </div>
 
@@ -299,13 +412,9 @@
 <li><a class="reference external" href="#">5. シナリオ1: センサーデータをS3に保存する</a><ul>
 <li><a class="reference external" href="#id1">5.1. S3バケットを作成</a></li>
 <li><a class="reference external" href="#lambda">5.2. データ変換用のLambda関数を準備する</a></li>
-<li><a class="reference external" href="#kinesis-firehosedelivery-stream">5.3. Kinesis FirehoseのDelivery streamを作成する</a></li>
-<li><a class="reference external" href="#dynamodbaws-iot">5.4. DynamoDB保存のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#aws-iot">5.5. メール通知のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#id4">5.6. プログラムの実行</a></li>
-<li><a class="reference external" href="#id5">5.7. データの受信を確認する</a></li>
-<li><a class="reference external" href="#dynamodb">5.8. DynamoDBに保存されたデータの確認</a></li>
-<li><a class="reference external" href="#id6">5.9. メール通知の確認</a></li>
+<li><a class="reference external" href="#kinesis-firehose">5.3. Kinesis Firehoseの設定</a></li>
+<li><a class="reference external" href="#kinesis-firehoseaws-iot">5.4. Kinesis Firehose用のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#id2">5.5. S3に保存されたデータを確認する</a></li>
 </ul>
 </li>
 </ul>

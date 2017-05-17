@@ -13,7 +13,7 @@ S3に保存されるデータは、下記の形式になります。
 ::
 
   {
-    "model": "590080BC",       ← センサーモデル
+    "model": "590080BC",       ← センサーのモデル番号
     "src_mac": "FFEAD7E638B8", ← センサーのMACアドレス
     "dst_mac": "AC83F3A041D2", ← ゲートウェイのMACアドレス
     "rssi": -47,               ← Beaconの電波強度
@@ -26,215 +26,339 @@ S3に保存されるデータは、下記の形式になります。
 |
 
 S3バケットを作成
-=============
+==============
 
 データを保存するS3バケットを作成します。
+
+サービス一覧から[S3]をクリックして開きます。
+
+.. image:: images/05/s3.png
+
+|
+
+S3の設定画面が表示されれます。[バケットを作成する]ボタンを押します。
+
+.. image:: images/05/s3-create-bucket.png
+
+|
+
+バケット名に、sensor-data-<参加者番号>、リージョンは、[米国東部（バージニア北部）]を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。
+
+.. image:: images/05/s3-create-bucket-2.png
+
+|
+
+下記の画面が出るまで、[次へ]をクリックして下さい。最後に、[バケットを作成]をクリックすると、S3バケットが作成されます。
+
+.. image:: images/05/s3-create-bucket-3.png
+
+|
+
+sensor-data-<参加者番号>のバケットがリージョン：[米国東部（バージニア北部）]に作成されているか確認して下さい。
+
+.. image:: images/05/s3-create-bucket-4.png
+
+|
+
 
 データ変換用のLambda関数を準備する
 =============================
 
-Kinesis FirehoseのDelivery streamを作成する
-=========================================
+はじめに、Lambda関数を下記のリンクからダウンロードして下さい。
 
+https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip
 
+サービス一覧から[Lambda]をクリックして開きます。
 
-DynamoDB保存のAWS IoT ルールを作成
-===============================
-
-マネージメントコンソールのサービス一覧から[AWS IoT]をクリックして開きます。
-
-.. image:: images/4-servicemenu@2x.png
+.. image:: images/05/lambda.png
 
 |
 
-DynamoDBに保存するルールを作成します。メニューから[Rules]を選択します。以下の様な画面が表示された場合は、[Create a rule]をクリックします。
+下記のような画面が表示されるので、[今すぐ始める]をクリックします。
 
-.. image:: images/5-create-rule-1@2x.png
-
-|
-
-あるいは、ルールの一覧が表示された場合は[Create]をクリックします。
-
-.. image:: images/5-create-rule-2@2x.png
+.. image:: images/05/lambda-2.png
 
 |
 
-以下の項目について値を入力します。[Add action]をクリックします。
+Lambda関数の作成画面が表示されるので、サーチボックスに"Fitrehose"と入力し、"kinesis-firehose-syslog-to-json-python"をクリックします。
 
-============= ============================
-設定項目          値
-============= ============================
-Name    	      SaveToDynamoDB_<参加者番号>
-Attribute  	    *
-Topic Filter	  place-a/position-<参加者番号>
-============= ============================
-
-.. image:: images/5-create-rule-3@2x.png
+.. image:: images/05/lambda-3.png
 
 |
 
-[Insert a message into a DynamoDB table]を選択し、[Configure action]をクリックします。
+トリガーの設定画面が表示されるので、[次へ]をクリックします。
 
-.. image:: images/5-create-rule-4@2x.png
-
-|
-
-以下の項目について値を入力します。[Role name]はリストから選択します。入力後[Add action]をクリックします。
-
-================= ============================
-設定項目              値
-================= ============================
-Table name    	   AWSIoTHandsonStack-<参加者番号>-SensorDataTable-<英数字>
-Hash key value     ${topic()}
-Range key value    ${timestamp()}
-Write message data to this column     value
-IAM Role name      AWSIoTHandsonStack-<参加者番号>-SaveToDynamodbRole-<英数字> (リストから選択)
-================= ============================
-
-.. image:: images/5-create-rule-5@2x.png
+.. image:: images/05/lambda-4.png
 
 |
 
-[Insert a message into a DynamoDB table]が追加されたことを確認し、[Create rule]をクリックします。
+下記のような画面が表示されるので、必要事項を入力して下さい。
+"関数パッケージ" の横の[アップロード]ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
+ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。
 
-.. image:: images/5-create-rule-6@2x.png
+=================== =======================================
+項目                  設定
+=================== =======================================
+名前                  ranger-raw-data-to-json-<参加者番号>
+説明                  An Amazon Kinesis Firehose stream processor that converts input records from BLE GW format to JSON.
+コード エントリ タイプ   .ZIPファイルをアップロード
+関数パッケージ          ranger-raw-data-to-json.zip
+ロール                 カスタムロールの作成
+=================== =======================================
 
-|
-
-作成されたルールの情報が表示されます。[←]をクリックします。
-
-.. image:: images/5-create-rule-7@2x.png
-
-|
-
-ルール一覧が表示され、作成したルールが表示されている事を確認します。
-
-.. image:: images/5-create-rule-8@2x.png
-
-|
-
-メール通知のAWS IoT ルールを作成
-============================
-
-ルールの一覧が表示された画面で、[Create]をクリックします。
-
-.. image:: images/5-create-rule-2@2x.png
+.. image:: images/05/lambda-5.png
 
 |
 
-以下の項目について値を入力します。[Add action]をクリックします。
+IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。
 
-============= ============================
-項目            値
-============= ============================
-Name	         NotifyToAdmin_<参加者番号>
-Attribute      *, topic(1) AS place, topic(2) AS position
-Topic Filter   place-a/position-<参加者番号>
-Condition      illuminance < 30
-============= ============================
+=================== =======================================
+項目                    設定
+=================== =======================================
+IAM ロール              新しいIAMロールの作成
+ロール名                lambda_KinesisFirehoseAccess-<参加者番号>
+=================== =======================================
 
-.. image:: images/5-create-rule-9@2x.png
+.. image:: images/05/lambda-role.png
 
 |
 
-[Send a message as an SNS push notification]を選択し、[Configure action]をクリックします。
+[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。
 
-.. image:: images/5-create-rule-10@2x.png
-
-|
-
-以下の項目について値を入力します。[Role name]はリストから選択します。入力後[Add action]をクリックします。
-
-============= ============================
-項目            値
-============= ============================
-SNS target     AWSIoTHandsonStack-<参加者番号>-NotifyToAdminTopic-<英数字> (リストから選択)
-IAM Role name   AWSIoTHandsonStack-<参加者番号>-NotifyToSNSRole-<英数字> (リストから選択)
-============= ============================
-
-.. image:: images/5-create-rule-11@2x.png
+.. image:: images/05/lambda-role-2.png
 
 |
-
-[SNS Action]が追加されたことを確認し、[Create rule]をクリックします。
-
-.. image:: images/5-create-rule-12@2x.png
-
-|
-
-作成されたルールの情報が表示されます。[←]をクリックします。
-
-.. image:: images/5-create-rule-13@2x.png
-
-|
-
-ルール一覧が表示され、作成したルールが表示されている事を確認します。
-
-.. image:: images/5-create-rule-14@2x.png
-
-|
-
-CloudFormationでStack作成時にメール通知の宛先確認メールが届いているため、メール内の確認リンク[Confirm subscription]をクリックします。
-
-.. image:: images/5-email@2x.png
-
-|
-
-プログラムの実行
-================
-
-本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-dojo-basicの配下scenario1にシナリオ1用のNode.jsプログラムがあります。プログラムを実行します。5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。
 
 ::
 
-  # cd ~/aws-iot-handson-dojo-basic/scenario1/
-   # node main.js
-   Connected to Message Broker
-   Publishing: {"timestamp":"2016-04-06T07:05:08.973Z","illuminance":343,"temperature":510}
-   Publishing: {"timestamp":"2016-04-06T07:05:14.035Z","illuminance":343,"temperature":512}
-   Publishing: {"timestamp":"2016-04-06T07:05:19.084Z","illuminance":343,"temperature":512}
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Action": [
+                  "firehose:*"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+          }
+      ]
+  }
 
 |
 
-データの受信を確認する
-==================
+ロールが[既存のロール] に変更され、ロール名として、"lambda_KinesisFirehoseAccess-<参加者番号>" が表示されていることを確認し、[次へ] をクリックして下さい。
 
-AWS IoTのTestにて、"Subscription topic"に "place-a/position-<任意の番号>" を入力し、[Subscribe to topic]をクリックすれば、左側の"Subscribe to a topic"欄に、"place-a/position-<任意の番号>"が、表示されます。
-トピックが受信できていれば、"place-a/position-<任意の番号>"の左側に赤字で *●* が表示されます。
-
-.. image:: images/5-test-1.png
+.. image:: images/05/lambda-6.png
 
 |
 
-"place-a/position-<任意の番号>"をクリックすると、デバイスから送信されているセンサーデータがリアルタイムで表示されます。
+確認画面が表示されますので、下までスクロースし、[関数の作成] をクリックして下さい。
 
-.. image:: images/5-test-2.png
-
-|
-
-DynamoDBに保存されたデータの確認
-============================
-
-AWSマネージメントコンソールのサービス一覧から[DynamoDB]をクリックして開きます。左側のメニューから[テーブル]をクリックし、テーブル一覧から”AWSIoTHandsonStack-<参加者番号>-SensorDataTable-<英数字>”をクリックします。タブの[項目]を選択すると、テーブル内のデータが表示されます。
-
-.. image:: images/5-dynamodb-1@2x.png
+.. image:: images/05/lambda-create.png
 
 |
 
-DynamoDBに保存されたデータをS3に保存されているWebサイトでも確認する事ができます。Webブラウザに読み込まれたJavaScriptはWebブラウザ上で動作して、CognitoでAWSにアクセスするための一時クレデンシャルを取得し、DynamoDBに直接アクセスしてデータを取得しグラフ表示します。
+Lambda関数の作成に成功すると、下記の様な画面が表示されます。
 
-以下のURLをブラウザで開きます。
+.. image:: images/05/edit-lambda-func.png
 
-https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/scenario1/IoT+HandsOn+Dojo+Basic+-+Scenario+1_+Sensor+Graph.html
+|
 
-[Cognito Identity Pool ID]に「2.2. Cognito Identityを手動作成」で作成したCognito Identityの[Identity Pool ID]を入力し、[Cognito Unauth Login]をクリックします。JavaScriptがバックグラウンドで定期的にDynamoDBにアクセスして新しいセンサー情報が得られればグラフは自動更新されます。
+目的のセンサーからのデータだけを取り込むために、Lambda関数内の"my_temphumid_sensor_mac" を修正します。
+ご自身の温度センサーのラベルに記載されているセンサーのMACアドレスを、書き込み、[保存] ボタンを押して下さい。
 
-.. image:: images/5-webapp-1@2x.png
+.. image:: images/05/edit-lambda-func-2.png
+
+.. image:: images/05/src_mac.png
+
+|
+
+Kinesis Firehoseの設定
+=====================
+
+サービス一覧から[Kinesis]をクリックして開きます。
+
+.. image:: images/05/kinesis.png
+
+|
+
+Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。
+
+.. image:: images/05/firehose.png
+
+|
+
+[Create Delivery Stream] をクリックして下さい。
+
+.. image:: images/05/create-delivery-stream.png
 
 |
 
 
-メール通知の確認
-==============
+[Create Delivery Stream] をクリックして下さい。
 
-照度センサーを手で覆い、30以下の照度になることをLCDで待ちます。その後、通知メールが届いている事を確認します。
+DestinationをS3として、Delivery stream nameを設定し、先ほど設定したS3 bucketを選んで、[Next] をクリックして下さい。
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+Destination            Amazon S3
+Delivery stream name   sensor-data-to-s3-<参加者番号>
+S3 bucket              sensor-data-<参加者番号>
+=================== =======================================
+
+.. image:: images/05/create-delivery-stream-2.png
+
+|
+
+Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+Data transformation    Enable
+Lambda function        ranger-raw-data-to-json-<参加者番号>
+Buffer interval        60
+Error Logging          Disable
+IAM role               Firehose delivery IAM role
+=================== =======================================
+
+.. image:: images/05/create-delivery-stream-3.png
+
+.. image:: images/05/create-delivery-stream-4.png
+
+
+|
+
+"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+IAM ロール              新しい IAMロールの作成
+ロール名                firehose_delivery_role-<参加者番号>
+=================== =======================================
+
+.. image:: images/05/firehose-iam-role.png
+
+|
+
+Fitehoseの設定画面で、[Next] をクリックして下さい。
+
+.. image:: images/05/create-delivery-stream-5.png
+
+|
+
+最後に、[Create Delivery Stream] をクリックして下さい。
+
+.. image:: images/05/create-delivery-stream-6.png
+
+|
+
+S3 Delivery Streamsができました。
+
+.. image:: images/05/create-delivery-stream-7.png
+
+|
+
+Kinesis Firehose用のAWS IoT ルールを作成
+=====================================
+
+サービス一覧から[AWS IoT]をクリックして開きます。
+
+.. image:: images/02/iot-servicemenu@2x.png
+
+|
+
+ルールを作成します。メニューから[Rules]をクリックします。以下の様な画面が表示された場合は、[Create rule]をクリックします。
+
+.. image:: images/05/create-rule.png
+
+|
+
+あるいは、ルール(Rule)一覧が表示された場合は、[Create]をクリックします。
+
+.. image:: images/05/create-rule-2.png
+
+|
+
+下記の項目を入力し、[Add action]をクリックします。
+
+============= ====================================
+設定項目         値
+============= ====================================
+Name	         iotrule_firehose_s3_<参加者番号>
+Attribute	     *
+Topic filter   publish_out-<参加者番号>
+============= ====================================
+
+.. image:: images/05/create-rule-3.png
+
+|
+
+"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action]をクリックします。
+
+.. image:: images/05/select-action.png
+
+|
+
+Stream nameで、sensor-data-to-s3-<参加者番号> を選択し、[Create a new role]をクリックします。
+
+.. image:: images/05/configure-action.png
+
+|
+
+IAM role nameに、IOT_to_Kinesis_Firehose-<参加者番号> と入力し、[Create a new role] をクリックします。
+
+.. image:: images/05/create-role.png
+
+|
+
+IAM role nameで、IOT_to_Kinesis_Firehose-<参加者番号> を選択し、[Update role] をクリックします。
+Successfully updated role. と表示されたら、[Add action] をクリックします。
+
+.. image:: images/05/add-action.png
+
+|
+
+Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。
+
+.. image:: images/05/create-rule-4.png
+
+|
+
+S3に保存されたデータを確認する
+=========================
+
+サービス一覧から[S3]をクリックして開きます。
+
+.. image:: images/05/s3.png
+
+|
+
+sensor-data-<参加者番号>のバケットをクリックします。
+
+.. image:: images/05/s3-check.png
+
+|
+
+データが保存されたフォルダまで辿って下さい。
+
+.. image:: images/05/s3-check-2.png
+
+|
+
+ファイルをクリックすると、ファイルの概要が表示されます。[ダウンロード]をクリックしてダウンロードして内容を確認して下さい。
+
+.. image:: images/05/s3-check-3.png
+
+|
+
+下記の形式で、センサーデータが確認できます。
+
+::
+
+{"dst_mac": "F0B3865C39C3", "@timestamp": "2017-05-17T01:13:28", "humidity": 44, "vbat": 3.31, "tempreature": 25.25, "rssi": -44, "model": "590080BC", "src_mac": "E9070D5A15FB"}
+
+|

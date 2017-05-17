@@ -2,244 +2,325 @@
 シナリオ2: センサーデータを可視化する
 ===============================
 
-Intel Edisonに接続された照度センサー、温度センサーのデータをEdison上のプログラムで定期的にAWS IoTに送信します。AWS IoTではルールに基づきElasticSearch ServiceやFirehose経由でS3に保存します。WebブラウザからはElasticSearch Service上のKibanaにアクセスして保管されているデータをグラフ表示できます。
+Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaで可視化します。
+データ変換には、シナリオ1で使用したLambda関数を使用します。
 
-.. image:: images/scenario1-plus.png
-
-|
-
-送信するセンサーデータは以下のJSONフォーマットとします。
-
-::
-
-  {
-     "timestamp": "2015-10-24T14:16:37.305Z", ← ISO8601形式
-     "illuminace": "300",                     ← 照度 アナログ値
-     "temperature": "200"                     ← 温度 アナログ値
-   }
+.. image:: images/06/overview.png
 
 |
 
-プログラムの実行
-=============
+ElasticSearch Serviceのドメインを作成する
+=====================================
 
-本ハンズオン用に用意されているzipファイルを解凍したaws-iot-handson-fundamentalsの配下scenario1-nodejsにシナリオ1用のNode.jsプログラムがあります。プログラムを実行すると、5秒ごとにメッセージが送られ続けます。このシナリオ終了時までそのまま動かし続けます。ハンズオン終了時にプログラムを終了させる場合はCtrl+Cを押します。
+サービス一覧から[ElasticSearch Service] をクリックして開きます。
 
-::
-
-  # cd ~/aws-iot-handson-dojo-basic/scenario1/
-   # node main.js
-   Connected to Message Broker
-   Publishing: {"timestamp":"2016-03-27T09:29:19.725Z","illuminance":475,"temperature":467}
-   Publishing: {"timestamp":"2016-03-27T09:29:24.776Z","illuminance":476,"temperature":464}
-   Publishing: {"timestamp":"2016-03-27T09:29:29.837Z","illuminance":474,"temperature":466}
-   Publishing: {"timestamp":"2016-03-27T09:29:34.895Z","illuminance":475,"temperature":465}
-   Publishing: {"timestamp":"2016-03-27T09:29:39.956Z","illuminance":477,"temperature":463}
+.. image:: images/06/es.png
 
 |
 
-ElasticSearch Serviceへ保存するAWS IoT ルールを作成
-===============================================
+Elasticsearch Serviceの画面が開きますので、[Get started] をクリックして下さい。
 
-マネージメントコンソールのサービス一覧から[AWS IoT]を開き、左側のメニューから[Rules]を選択します。
-
-.. image:: images/6-create-rule-1.png
+.. image:: images/06/es-get-started.png
 
 |
 
-その後、[Create]をクリックします。
+Create Elasticsearch domain画面になります。
 
-スクリーンショットの赤枠で囲んだ部分について、以下の項目を入力し、[Add action]をクリックします。
+Elasticsearch domain nameに、firehose-to-es-domain-<参加者番号> と入力して、[Next]をクリックして下さい。
 
-=================== ===============================
-設定項目                値
-=================== ===============================
-Name                  SaveToElasticsearch\_<参加者番号>
-Using SQL version     2016-03-23
-Attribute             *, topic(1) AS place, topic(2) AS position
-Topic Filter          place-a/position-<参加者番号>
-=================== ===============================
-
-.. image:: images/6-create-rule-2.png
-
-.. image:: images/6-create-rule-3.png
+.. image:: images/06/cretate-es-domain.png
 
 |
 
-Select an action画面で、[Send messages to the **Amazon Elasticsearch Service**]を選択し、[Configure action]をクリックします。
+次の画面では、何も入力せずに、Next]をクリックして下さい。
+Set the domain access policy toで、"Allow open access to the domain"を選択して下さい。
 
-.. image:: images/6-create-rule-4.png
-
-.. image:: images/6-create-rule-5.png
-
-|
-
-[Configure action]画面にて、下記の項目を入力します。
-
-===========  ==============================================
-設定項目          値
-===========  ==============================================
-Domain name    awsioth-sensor-<英数字> （「2.2. CloudFormationを使ってElasticsearch Searchを自動作成」の最後で確認したElasticSearchDomainを選択）
-ID             ${timestamp()}
-Index          sensordata-<参加者番号>
-Type           scenario1
-===========  ==============================================
-
-.. image:: images/6-configure-action-1.png
+.. image:: images/06/domain-access-policy.png
 
 |
 
-"*IAM role name"横の[Create a new role]ボタンを押して、Elasticsearch Search用のロールを作成します。
+access policyが表示されるので、[Next]をクリックして下さい。
 
-"*IAM role name" 欄に、SaveToElasticSearchRole-<参加者番号> を入力し、[Create a new role]ボタンを押します。
-
-新しいロールが作成されるので、メニューから、SaveToElasticSearchRole-<参加者番号> を選択し、[Update role]ボタンを押し、最後に、[Add action]ボタンを押します。
-
-.. image:: images/6-configure-action-2.png
+.. image:: images/06/domain-access-policy-2.png
 
 |
 
-最後に、確認画面が出ますので、[Create rule]ボタンを押して、ルールを作成して下さい。
+確認画面が出てきますので、[Confirm and create]をクリックして下さい。
+Elasticsearch ドメインが出来るまで、数分かかります。
 
-.. image:: images/6-rules.png
+.. image:: images/06/confirm-create.png
+
+|
+
+Kinesis Firehoseの設定
+=====================
+
+サービス一覧から[Kinesis]をクリックして開きます。
+
+.. image:: images/05/kinesis.png
+
+|
+
+Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。
+
+.. image:: images/05/firehose.png
+
+|
+
+[Create Delivery Stream] をクリックして下さい。
+
+.. image:: images/05/create-delivery-stream.png
+
+|
+
+[Create Delivery Stream] をクリックして下さい。
+
+DestinationをElasticsearch Serviceとして、Delivery stream nameを設定し、先ほど設定したElasticsearch ドメインを選んで、[Next] をクリックして下さい。
+
+======================= =======================================
+項目                      設定
+======================= =======================================
+Destination              Amazon Elasticsearch Service
+Delivery stream name     sensor-data-to-es-<参加者番号>
+Elasticsearch domain     firehose-to-es-domain-<参加者番号>
+Index                    sensordata
+Type                     scenario2
+S3 bucket                sensor-data-<参加者番号>
+======================= =======================================
+
+.. image:: images/06/cretae-delivery-stream.png
+
+|
+
+Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+Data transformation    Enable
+Lambda function        ranger-raw-data-to-json-<参加者番号>
+Buffer interval        60
+Error Logging          Disable
+IAM role               Firehose delivery IAM role
+=================== =======================================
+
+.. image:: images/06/cretae-delivery-stream-2.png
+
+.. image:: images/06/cretae-delivery-stream-3.png
+
+|
+
+"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+IAM ロール              新しい IAMロールの作成
+ロール名                firehose_delivery_role_es-<参加者番号>
+=================== =======================================
+
+.. image:: images/06/firehose-iam-role.png
+
+|
+
+Fitehoseの設定画面で、[Next] をクリックして下さい。
+
+.. image:: images/06/cretae-delivery-stream-4.png
+
+|
+
+最後に、[Create Delivery Stream] をクリックして下さい。
+
+.. image:: images/06/cretae-delivery-stream-5.png
+
+|
+
+Elasticsearch Delivery Streamsができました。
+
+.. image:: images/06/cretae-delivery-stream-6.png
+
+|
+
+Kinesis Firehose用のAWS IoT ルールを作成
+=====================================
+
+サービス一覧から[AWS IoT]をクリックして開きます。
+
+.. image:: images/02/iot-servicemenu@2x.png
+
+|
+
+ルールを作成します。メニューから[Rules]をクリックします。ルール(Rule)一覧画面で、[Create]をクリックします。
+
+.. image:: images/05/create-rule-2.png
+
+|
+
+下記の項目を入力し、[Add action]をクリックします。
+
+============= ====================================
+設定項目         値
+============= ====================================
+Name	         iotrule_firehose_es_<参加者番号>
+Attribute	     *
+Topic filter   publish_out-<参加者番号>
+============= ====================================
+
+.. image:: images/06/create-rule.png
+
+|
+
+"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action]をクリックします。
+
+.. image:: images/05/select-action.png
+
+|
+
+Stream nameで、sensor-data-to-es-<参加者番号> を選択し、シナリオ1で作成したIAM roleを選択し、[Update role] をクリックします。
+Successfully updated role. と表示されたら、[Add action] をクリックします。
+
+============= ====================================
+設定項目         値
+============= ====================================
+Stream name     sensor-data-to-es-<参加者番号>
+IAM role name   IOT_to_Kinesis_Firehose-<参加者番号>
+============= ====================================
+
+.. image:: images/06/add-action.png
+
+|
+
+Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。
+
+.. image:: images/06/create-rule-3.png
 
 |
 
 Kibanaでデータを確認
 ==================
 
-マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。「2.2. CloudFormationを使ってElasticsearch Searchを自動作成」の最後で確認したElasticSearchDomainの[Searchable documents]の数字が0より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。
+マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。
 
-.. image:: images/6-searchable_documents.png
+ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。
+
+.. image:: images/06/es-dashboard.png
 
 |
 
-[Domain]のリンクをクリックして開きます。
+[Domain]のいリンクをクリックして開きます。[Kibana]のリンクをクリックして開きます。
 
-.. image:: images/6-kibana-link.png
+.. image:: images/06/kibana-link.png
 
 |
 
 Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。
 
-=========================  ==============================================
-設定項目                        値
-=========================  ==============================================
-  Index name or pattern        sensordata-<参加者番号>
-Time-field names               timestamp (リストから選択)
-=========================  ==============================================
+======================  =========================
+設定項目                  値
+======================  =========================
+Index name or pattern   sensordata
+Time-field names        @timestamp (リストから選択)
+======================  =========================
 
-.. image:: images/6-kibana-configure.png
+tempreature, humidity, rssi, @timestamp のフィールドが表示されている事を確認します。
 
-|
-
-[illuminance], [temperature], [timestamp]のフィールドが表示されている事を確認します。
-
-.. image:: images/6-kibana-settings.png
+.. image:: images/06/kibana-indices.png
 
 |
 
 メニューにある[Discover]をクリックし、データが届いている事を確認します。
 
-.. image:: images/6-kibana-discover.png
+.. image:: images/06/kibana-discover.png
 
 |
 
-メニューにある[Visualize]をクリックし、グラフの種類として[Area chart]を選択します。
+メニューにある[Visualize]をクリックし、グラフの種類として[Line chart]を選択します。
 
-.. image:: images/6-kibana-visualize.png
-
-|
-
-[From a new search]をクリックします。
-
-.. image:: images/6-kibana-new-search.png
+.. image:: images/06/kibana-visualize.png
 
 |
 
-データに[sensordata-<参加者番号>]が選択され、Y軸にサンプル数(Count)が設定されている事を確認し、X軸の設定を開始するために[X-Axis]をクリックします。
+[From a new search]から、"sensordata"を選択します。
 
-.. image:: images/6-kibana-visualize-2.png
-
-|
-
-[Aggregation]に[Data Histogram]を選択し[Apply]をクリックすると、右側にグラフが表示されることを確認します。
-
-.. image:: images/6-kibana-visualize-3.png
+.. image:: images/06/kibana-sensordata.png
 
 |
 
-保存ボタンをクリックし、[Title]に[Sensor Data - Sampling Count]と入力し、[Save]をクリックします。
+データに[sensordata]が選択され、Y軸にサンプル数(Count)が設定されている事を確認し、X軸の設定を開始するために[X-Axis]をクリックします。
 
-.. image:: images/6-kibana-visualize-4.png
-
-|
-
-保存されたら、Y軸の設定を表示し、[Aggregation]を[Average]に変更し、[Field]に[illuminance]を指定します。[Apply]をクリックしてグラフに適切なデータが表示されることを確認します。
-
-.. image:: images/6-kibana-visualize-5.png
+.. image:: images/06/kibana-count.png
 
 |
 
-保存ボタンをクリックし、[Title]を[Sensor Data - Illuminance]に変更し、[Save]をクリックします。
+[Aggregation]に[Data Histogram]を選択し[▶]をクリックすると、右側にグラフが表示されることを確認します。
 
-.. image:: images/6-kibana-visualize-6.png
-
-|
-
-保存されたら、Y軸の設定を表示し、[Field]を[temperature]を変更します。[Apply]をクリックしてグラフに適切なデータが表示されることを確認します。
-
-.. image:: images/6-kibana-visualize-7.png
+.. image:: images/06/kibana-count-graph.png
 
 |
 
-保存ボタンをクリックし、[Title]を[Sensor Data - Temperature]に変更し、[Save]をクリックします。
+[Save] ボタンをクリックし、[Title]に[Sensor Data - Sampling Count]と入力し、[Save]をクリックします。
 
-.. image:: images/6-kibana-visualize-8.png
+.. image:: images/06/kibana-save-count.png
 
 |
 
-メニューにある[Dashboard]をクリックし、追加ボタンをクリックします。
+保存されたら、Y軸の設定を表示し、[Aggregation]を[Average]に変更し、[Field]に[tempreature](温度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。
 
-.. image:: images/6-kibana-dashboard-1.png
+.. image:: images/06/kibana-temp.png
+
+|
+
+[Add metrics]をクリックし、湿度データを追加します。[Y-Axis]をクリックし、[Aggregation]を[Average]に変更し、[Field]に[humidity](湿度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。
+
+.. image:: images/06/kibana-humid.png
+
+|
+
+Beaconの電波強度(rssi)も同様に追加します。
+
+.. image:: images/06/kibana-rssi.png
+
+|
+
+[Save] ボタンをクリックし、[Title]に[Sensor Data - temp - humid - rssi]と入力し、[Save]をクリックします。
+
+.. image:: images/06/kibana-save-temphumidrssi.png
+
+|
+
+メニューにある[Dashboard]をクリックし、[Add]ボタンをクリックします。
+
+.. image:: images/06/kibana-dashboard.png
+
+|
+
+[ Sensor Data - temp - humid - rssi]をクリックし、下側にグラフが追加されたのを確認します。
+
+.. image:: images/06/kibana-dashboard-add-temphumidrssi.png
 
 |
 
 [Sensor Data - Sampling Count]をクリックし、下側にグラフが追加されたのを確認します。
 
-.. image:: images/6-kibana-dashboard-2.png
+.. image:: images/06/kibana-dashboard-add-count.png
 
 |
 
-同様に、[Sensor Data - Illuminance]、[Sensor Data - Temperature]をクリックし、下側にグラフが追加されたのを確認します。確認したら、[＜]ボタンを押して閉じます。
+[Save]ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。
 
-.. image:: images/6-kibana-dashboard-3.png
-
-|
-
-保存ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。
-
-.. image:: images/6-kibana-dashboard-4.png
+.. image:: images/06/kibana-dashboard-save.png
 
 |
 
 右上の[Last 15 minutes]をクリックすると、表示する期間や表示を自動更新する頻度を変更できます。
 
-.. image:: images/6-kibana-dashboard-5.png
+.. image:: images/06/kibana-update.png
 
 |
 
 グラフをマウスで操作して、位置やサイズを変更することもできます。
 
-.. image:: images/6-kibana-dashboard-6.png
-
-|
-
-Firehoseのストリームを作成
-=======================
-
-マネージメントコンソールのサービス一覧から[Kinesis]を開きます。[Firehoseに進む]をクリックします。
-
-.. image:: images/6-kinesis-firehose-1.png
+.. image:: images/06/kibana-size-pos.png
 
 |

@@ -21,13 +21,3 @@ AWS IoTの証明書、ポリシー、デバイスを削除するためには、�
 - 削除したいリソースを選択し、"Actions"のメニューから"Delete”を選択します。
 
 |
-
-
-CloudFormationスタックの削除
-============================
-
-- マネージメントコンソールのサービス一覧から[CloudFormation]をクリックします。
-- リストから"AWSIoTHandsonStack"のスタックを選択し、"Actions"から[Delete Stack]をクリックします。
-
-.. image:: images/8-delete-cf-stack-1.png
-
