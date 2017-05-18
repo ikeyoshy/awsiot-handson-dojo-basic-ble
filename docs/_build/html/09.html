@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>8. ハンズオン終了後 &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>8. ハンズオン終了後 &mdash; awsiot-handson-dojo-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
+    <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
     <link rel="next" title="9. Lambda関数解説" href="10.html" />
     <link rel="prev" title="7. その他の設定（オプション）" href="08.html" /> 
   </head>
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="08.html" title="7. その他の設定（オプション）"
              accesskey="P">前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -50,7 +50,7 @@
 <h1>8. ハンズオン終了後<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>ハンズオン終了後には以下の設定を削除してください。</p>
 <div class="section" id="aws-iot">
-<h2>8.1. AWS IoTのリソース削除<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>8.1. AWS IoTのリソースを削除<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTの証明書、ポリシー、デバイスを削除するためには、削除前にアタッチされているリソースをデタッチする必要があります。（ルールは他のリソースとの関連性はありません）</p>
 <ul class="simple">
 <li>マネージメントコンソールのサービスから[AWS IoT]を選択します。</li>
@@ -58,16 +58,95 @@
 <li>関連付けられているデバイスを選択し、[Detach]をクリックします。</li>
 <li>同様にポリシーもデタッチします。</li>
 </ul>
-<img alt="images/8-detach-1.png" src="images/8-detach-1.png" />
+<img alt="_images/detach.png" src="_images/detach.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <ul class="simple">
-<li>削除したいリソースを選択し、&#8221;Actions&#8221;のメニューから&#8221;Delete”を選択します。</li>
+<li>削除したいリソース(Certificate, Thing, Policy)を選択し、&#8221;Actions&#8221;のメニューから&#8221;Delete”を選択します。</li>
 </ul>
+<img alt="_images/delete.png" src="_images/delete.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>Ruleも同様に削除します。</p>
+<img alt="_images/rule-delete.png" src="_images/rule-delete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ワーニングが出ますが、[Yes, continue with delete]をクリックして削除して下さい。</p>
+<img alt="_images/detelte-rule-warning.png" src="_images/detelte-rule-warning.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>AWS IoTのCloudWatchログを有効にしている場合、無効にします。
+Settingsをクリックし、CloudWatch Logsの[Disable]をクリックして無効にして下さい。</p>
+<img alt="_images/IOT-CloudWatch_logs_Disable.png" src="_images/IOT-CloudWatch_logs_Disable.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="s3">
+<h2>8.2. S3バケットを削除<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[S3]をクリックして開きます。
+リストからバケット”sensor-data-&lt;参加者番号&gt;”のアイコンをクリックして選択します。[バケットを削除する]をクリックして下さい。</p>
+<img alt="_images/s3-delete.png" src="_images/s3-delete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されますので、&#8221;バケットの名前を入力する&#8221;にバケット名を入力して、[確認]をクリックして下さい。</p>
+<img alt="_images/s3-delete-confirm.png" src="_images/s3-delete-confirm.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="elsticsearch-service">
+<h2>8.3. ElsticSearch Serviceの設定を削除<a class="headerlink" href="#elsticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[ElsticSearch Service]をクリックして開きます。
+Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックします。</p>
+<img alt="_images/elasticsearch-delete.png" src="_images/elasticsearch-delete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>画面の下までスクロールし、&#8221;Delete Elasticsearch domain&#8221;をクリックすると、[Delete domain]ボタンが表示されるので、クリックします。</p>
+<img alt="_images/elasticsearch-delete-2.png" src="_images/elasticsearch-delete-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されますので、&#8221;Delete the domain ....&#8221;のチェックを入れ、[Delete]ボタンをクリックします。</p>
+<img alt="_images/elasticsearch-delete-fonfirm.png" src="_images/elasticsearch-delete-fonfirm.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="lambda">
+<h2>8.4. Lambda関数を削除<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[Lambda]をクリックして開きます。Lammbda関数 ranger-raw-data-to-json-&lt;参加者番号&gt;をチェックし、[アクション]から、&#8221;関数の削除&#8221;を選びます。確認画面が表示されるので[削除]をクリックします。</p>
+<img alt="_images/lambda-delete.png" src="_images/lambda-delete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="kinesis-firehose">
+<h2>8.5. Kinesis Firehoseの設定を削除<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[Kinesis]をクリックして開きます。[Firehose コンソールに移動]をクリックし、Kinesis irehoseの設定画面に移動します。</p>
+<p>S3 Delivery Streamsから、sensor-data-to-s3-&lt;参加者番号&gt;をチェックし、[アクション]から、&#8221;Delete&#8221;を選びます。確認画面が表示されるので[削除]をクリックします。</p>
+<img alt="_images/firehose-delete.png" src="_images/firehose-delete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されるので、delivery stream 名を入力し、[Delete]をクリックします。ElasticSearch Delivery Streamsも同様の方法で削除します。</p>
+<img alt="_images/firehose-delete-confirm.png" src="_images/firehose-delete-confirm.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="iam">
+<h2>8.6. IAMロールを削除<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>firehose_delivery_role_es-&lt;参加者番号&gt;
+IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;
+firehose_delivery_role-&lt;参加者番号&gt;
+lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;</p>
 </div>
 </div>
 
@@ -80,7 +159,12 @@
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">8. ハンズオン終了後</a><ul>
-<li><a class="reference external" href="#aws-iot">8.1. AWS IoTのリソース削除</a></li>
+<li><a class="reference external" href="#aws-iot">8.1. AWS IoTのリソースを削除</a></li>
+<li><a class="reference external" href="#s3">8.2. S3バケットを削除</a></li>
+<li><a class="reference external" href="#elsticsearch-service">8.3. ElsticSearch Serviceの設定を削除</a></li>
+<li><a class="reference external" href="#lambda">8.4. Lambda関数を削除</a></li>
+<li><a class="reference external" href="#kinesis-firehose">8.5. Kinesis Firehoseの設定を削除</a></li>
+<li><a class="reference external" href="#iam">8.6. IAMロールを削除</a></li>
 </ul>
 </li>
 </ul>
@@ -125,7 +209,7 @@
         <li class="right" >
           <a href="08.html" title="7. その他の設定（オプション）"
              >前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

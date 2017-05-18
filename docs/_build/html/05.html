@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. シナリオ1: センサーデータをS3に保存する &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>5. シナリオ1: センサーデータをS3に保存する &mdash; awsiot-handson-dojo-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
+    <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
     <link rel="next" title="6. シナリオ2: センサーデータを可視化する" href="06.html" />
     <link rel="prev" title="4. センサーデータの確認" href="04.html" /> 
   </head>
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="04.html" title="4. センサーデータの確認"
              accesskey="P">前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -124,6 +124,34 @@
 <p>下記のような画面が表示されるので、必要事項を入力して下さい。
 &#8220;関数パッケージ&#8221; の横の[アップロード]ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>名前</td>
+<td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>説明</td>
+<td>An Amazon Kinesis Firehose stream processor that converts input records from BLE GW format to JSON.</td>
+</tr>
+<tr><td>コード エントリ タイプ</td>
+<td>ZIPファイルをアップロード</td>
+</tr>
+<tr><td>関数パッケージ</td>
+<td>ranger-raw-data-to-json.zip</td>
+</tr>
+<tr><td>ロール</td>
+<td>カスタムロールの作成</td>
+</tr>
+</tbody>
+</table>
 <img alt="_images/lambda-5.png" src="_images/lambda-5.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -216,6 +244,28 @@
 </div>
 <p>[Create Delivery Stream] をクリックして下さい。</p>
 <p>DestinationをS3として、Delivery stream nameを設定し、先ほど設定したS3 bucketを選んで、[Next] をクリックして下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Destination</td>
+<td>Amazon S3</td>
+</tr>
+<tr><td>Delivery stream name</td>
+<td>sensor-data-to-s3-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>S3 bucket</td>
+<td>sensor-data-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
 <img alt="_images/create-delivery-stream-2.png" src="_images/create-delivery-stream-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -224,8 +274,8 @@
 IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM roleの設定画面が開きます。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="33%" />
-<col width="67%" />
+<col width="37%" />
+<col width="63%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -459,7 +509,7 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
         <li class="right" >
           <a href="04.html" title="4. センサーデータの確認"
              >前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

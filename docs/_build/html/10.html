@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>9. Lambda関数解説 &mdash; awsiot-handson-basic v0.0 documentation</title>
+    <title>9. Lambda関数解説 &mdash; awsiot-handson-dojo-basic v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="top" title="awsiot-handson-basic v0.0 documentation" href="index.html" />
+    <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
     <link rel="prev" title="8. ハンズオン終了後" href="09.html" /> 
   </head>
   <body>
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="09.html" title="8. ハンズオン終了後"
              accesskey="P">前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -45,7 +45,113 @@
   <div class="section" id="lambda">
 <h1>9. Lambda関数解説<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>本ハンズオンで利用したLambda関数の解説をします。</p>
-<p>aaaaaaaaaa</p>
+<div class="section" id="id1">
+<h2>9.1. Lambdaハンドラー、イベントデータ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Kinesis FirehoseでLambda関数を呼び出しますが、そのときに実行されるのがハンドラーです。</p>
+<p>event – Lambda はこのパラメーターを使用してイベントデータをハンドラーに渡します。Kinesis Firehoseから受け取ったデータは、event[&#8216;records&#8217;]に格納されています。</p>
+<p>context – AWS Lambda はこのパラメーターを使用してランタイム情報をハンドラーに提供します。</p>
+<div class="highlight-python"><pre>def lambda_handler(event, context):</pre>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>9.2. 目的のセンサーからのデータだけを処理する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ゲートウェイは、受信したBeaconをAWS IoTにパブリッシュします。Lambda関数では、登録したセンサーのMACアドレスののみを処理するようにしています。
+下記のmy_temphumid_sensor_macで、今回使用する温湿度センサーのMACアドレスを登録し、配列 acceptable_sensorsに含まれているMACアドレスだけを処理します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">my_temphumid_sensor_mac</span> <span class="o">=</span> <span class="s2">&quot;FFEAD7E638B8&quot;</span>
+<span class="n">my_magnet_sensor_mac</span>    <span class="o">=</span> <span class="s2">&quot;C02C61CB558F&quot;</span>
+<span class="n">my_3d_accel_sensor_mac</span>  <span class="o">=</span> <span class="s2">&quot;D9890D33C5E1&quot;</span>
+
+<span class="n">acceptable_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">my_temphumid_sensor_mac</span> <span class="p">,</span> <span class="n">my_magnet_sensor_mac</span><span class="p">,</span> <span class="n">my_3d_accel_sensor_mac</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>下記の処理で、受信したセンサーデータのMACアドレス(src_mac)が配列 acceptable_sensorsに含まれているが確認しています。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span> <span class="n">src_mac</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">acceptable_sensors</span> <span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s2">&quot;skip this sensor data; src_mac[&quot;</span> <span class="o">+</span> <span class="n">src_mac</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span> <span class="p">)</span>
+    <span class="k">continue</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="csv">
+<h2>9.3. CSVデータの取得<a class="headerlink" href="#csv" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Kinesis Firehoseから渡される加工前のデータは、下記のCSV形式のデータです。</p>
+<div class="highlight-python"><pre>$GPRP,C02C61CB558F,AC83F3A041D2,-44,02010612FF590080BC440104FFFFFFFFFFFFFFFFFFFF,1493638145</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Kinesis は、データをBase64にエンコードして保持するので、デコードして変数 playload に格納します。</p>
+<p>&#8220;,&#8221; 区切りなので、&#8221;,&#8221;をでリミッターとして分割し、配列 listに格納します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">payload</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+
+<span class="nb">list</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>9.4. 必要な要素の抜き出し<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>list[]に格納された各要素を取り出します。特に <strong>ble_payload</strong> は、Beaconの生データで、更に加工が必要です。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">src_mac</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">dst_mac</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">rssi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">ble_payload</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">unixtime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>9.5. タイムスタンプ<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ゲートウェイは、AWS IoTにセンサーデータを送る際、Unix time(基準時刻 (1970/01/01(木) 00:00:00 UTC) からの経過秒数)を付加します。Pyhonのモジュールで&#8221;2017-05-11T08:34:43&#8221;のフォーマットに変換しています。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">unixtime</span><span class="p">)</span>
+<span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ble-payload">
+<h2>9.6. ble_payloadから温度、湿度を抜き出す<a class="headerlink" href="#ble-payload" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>温度はble_payloadの24〜27バイト目、湿度はble_payloadの28〜31バイト目に存在します。この部分を抜き出し、エンディアン変換しています。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span> <span class="n">src_mac</span> <span class="o">==</span> <span class="n">my_temphumid_sensor_mac</span> <span class="p">):</span>
+    <span class="n">tempreature</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ble_payload</span><span class="p">[</span><span class="mi">24</span><span class="p">:</span><span class="mi">28</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">tempreature</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;H&quot;</span><span class="p">,</span><span class="n">tempreature</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mf">100.00</span>
+    <span class="n">humidity</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ble_payload</span><span class="p">[</span><span class="mi">28</span><span class="p">:</span><span class="mi">32</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">humidity</span>    <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;H&quot;</span><span class="p">,</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;H&quot;</span><span class="p">,</span><span class="n">humidity</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python">
+<h2>9.7. Python辞書型のオブジェクトに変換<a class="headerlink" href="#python" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>加工したデータを一度、Python辞書型のオブジェクトに変換します。後ほどJSON形式に変換します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">sensor_data_field</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s1">&#39;@timestamp&#39;</span><span class="p">:</span>  <span class="n">timestamp</span><span class="p">,</span>
+   <span class="s1">&#39;unixtime&#39;</span><span class="p">:</span>   <span class="n">unixtime</span><span class="p">,</span>
+    <span class="s1">&#39;src_mac&#39;</span><span class="p">:</span>    <span class="n">src_mac</span><span class="p">,</span>
+    <span class="s1">&#39;dst_mac&#39;</span><span class="p">:</span>    <span class="n">dst_mac</span><span class="p">,</span>
+    <span class="s1">&#39;rssi&#39;</span><span class="p">:</span>       <span class="n">rssi</span><span class="p">,</span>
+    <span class="s1">&#39;ble_payload&#39;</span><span class="p">:</span><span class="n">ble_payload</span><span class="p">,</span>
+    <span class="s1">&#39;vbat&#39;</span><span class="p">:</span>       <span class="n">vbat</span><span class="p">,</span>
+    <span class="s1">&#39;model&#39;</span><span class="p">:</span>      <span class="n">ble_payload</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">18</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="kinesis-firehose">
+<h2>9.8. Kinesis Firehoseへ戻すデータの作成<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Kinesis Firehoseにデータを戻す場合、recordIdとresult付加する必要があります。sensor_data_fieldは、Base64で再度エンコードしています。最後にreturn { }で加工したデータをKinesis Firehoseに返しています。</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">output_record</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;recordId&#39;</span><span class="p">:</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;recordId&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="s1">&#39;Ok&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">sensor_data_field</span><span class="p">))</span>
+<span class="p">}</span>
+<span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_record</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">{</span><span class="s1">&#39;records&#39;</span><span class="p">:</span> <span class="n">output</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>9.9. その他<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>このlambda関数は、レンジャーシステムズの他のセンサー(３軸加速度、マグネットセンサー)にも対応しています。my_magnet_sensor_mac、my_3d_accel_sensor_mac に対象のセンサーを登録すればフォーマット変換します。</p>
+</div>
 </div>
 
 
@@ -54,6 +160,22 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">目次</a></h3>
+            <ul>
+<li><a class="reference external" href="#">9. Lambda関数解説</a><ul>
+<li><a class="reference external" href="#id1">9.1. Lambdaハンドラー、イベントデータ</a></li>
+<li><a class="reference external" href="#id2">9.2. 目的のセンサーからのデータだけを処理する</a></li>
+<li><a class="reference external" href="#csv">9.3. CSVデータの取得</a></li>
+<li><a class="reference external" href="#id3">9.4. 必要な要素の抜き出し</a></li>
+<li><a class="reference external" href="#id4">9.5. タイムスタンプ</a></li>
+<li><a class="reference external" href="#ble-payload">9.6. ble_payloadから温度、湿度を抜き出す</a></li>
+<li><a class="reference external" href="#python">9.7. Python辞書型のオブジェクトに変換</a></li>
+<li><a class="reference external" href="#kinesis-firehose">9.8. Kinesis Firehoseへ戻すデータの作成</a></li>
+<li><a class="reference external" href="#id5">9.9. その他</a></li>
+</ul>
+</li>
+</ul>
+
             <h4>前のトピックへ</h4>
             <p class="topless"><a href="09.html"
                                   title="前の章へ">8. ハンズオン終了後</a></p>
@@ -88,7 +210,7 @@
         <li class="right" >
           <a href="09.html" title="8. ハンズオン終了後"
              >前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
