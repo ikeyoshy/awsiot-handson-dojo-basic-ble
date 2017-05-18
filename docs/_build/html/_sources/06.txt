@@ -2,8 +2,7 @@
 シナリオ2: センサーデータを可視化する
 =====================================
 
-Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaで可視化します。
-データ変換には、シナリオ1で使用したLambda関数を使用します。
+Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaでグラフ表示します。データ変換には、シナリオ1で使用したLambda関数を使用します。
 
 .. image:: images/06/overview.png
 
@@ -26,16 +25,22 @@ Elasticsearch Serviceの画面が開きますので、[Get started] をクリッ
 
 Create Elasticsearch domain画面になります。
 
-Elasticsearch domain nameに、firehose-to-es-domain-<参加者番号> と入力して、[Next]をクリックして下さい。
+Elasticsearch domain nameに、"firehose-to-es-domain-<参加者番号>" と入力して、[Next]をクリックして下さい。
 
 .. image:: images/06/cretate-es-domain.png
 
 |
 
-次の画面では、何も入力せずに、Next]をクリックして下さい。
+次の画面では、何も入力せずに、[Next]をクリックして下さい。
 Set the domain access policy toで、"Allow open access to the domain"を選択して下さい。
 
 .. image:: images/06/domain-access-policy.png
+
+|
+
+確認画面が表示されるので、I accept the risk をチェックし、[OK] を押して下さい。
+
+.. image:: images/06/domain-access-policy-risk-confirm.png
 
 |
 
@@ -57,15 +62,7 @@ Kinesis Firehoseの設定
 
 サービス一覧から[Kinesis]をクリックして開きます。
 
-.. image:: images/05/kinesis.png
-
-|
-
 Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。
-
-.. image:: images/05/firehose.png
-
-|
 
 [Create Delivery Stream] をクリックして下さい。
 
@@ -99,7 +96,7 @@ Lambdaでデータ変換を行いますので、Data transformation を有効に
 =================== =======================================
 Data transformation    Enable
 Lambda function        ranger-raw-data-to-json-<参加者番号>
-Buffer interval        60
+Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
 Error Logging          Disable
 IAM role               Firehose delivery IAM role
 =================== =======================================
@@ -137,7 +134,7 @@ Firehoseの設定画面で、[Next] をクリックして下さい。
 
 |
 
-Elasticsearch Delivery Streamsができました。
+Elasticsearch Delivery Streamsの作成が開始されました。
 
 .. image:: images/06/cretae-delivery-stream-6.png
 
@@ -152,7 +149,7 @@ Kinesis Firehose用のAWS IoT ルールを作成
 
 |
 
-ルールを作成します。メニューから[Rules]をクリックします。ルール(Rule)一覧画面で、[Create]をクリックします。
+ルールを作成します。メニューから[Rules]をクリックします。ルール一覧画面で、[Create]をクリックします。
 
 .. image:: images/05/create-rule-2.png
 
@@ -164,7 +161,7 @@ Kinesis Firehose用のAWS IoT ルールを作成
 設定項目         値
 ============= ====================================
 Name	         iotrule_firehose_es_<参加者番号>
-Attribute	     *
+Attribute	     * (＊ アスタリスク)
 Topic filter   publish_out-<参加者番号>
 ============= ====================================
 
@@ -216,6 +213,7 @@ ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっ�
 |
 
 Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。
+60秒周期でElasticSearch Serviceにデータが追加される設定になっているため、@timestamp 現れるまで数分かかることがあります。
 
 ======================  =========================
 設定項目                  値
@@ -223,6 +221,10 @@ Kibanaで表示させるindexを指定します。以下の値を入力して、
 Index name or pattern   sensordata
 Time-field names        @timestamp (リストから選択)
 ======================  =========================
+
+.. image:: images/06/kibana-index-create.png
+
+|
 
 tempreature, humidity, rssi, @timestamp のフィールドが表示されている事を確認します。
 

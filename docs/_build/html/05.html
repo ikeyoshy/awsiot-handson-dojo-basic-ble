@@ -145,7 +145,7 @@
 <td>ZIPファイルをアップロード</td>
 </tr>
 <tr><td>関数パッケージ</td>
-<td>ranger-raw-data-to-json.zip</td>
+<td>ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)</td>
 </tr>
 <tr><td>ロール</td>
 <td>カスタムロールの作成</td>
@@ -273,8 +273,8 @@
 IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM roleの設定画面が開きます。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="37%" />
-<col width="63%" />
+<col width="35%" />
+<col width="65%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -289,7 +289,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Buffer interval</td>
-<td>60</td>
+<td>60 (S3へ60秒周期でファイルが保存されます)</td>
 </tr>
 <tr><td>Error Logging</td>
 <td>Disable</td>
@@ -338,7 +338,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>S3 Delivery Streamsができました。</p>
+<p>S3 Delivery Streamsの作成が開始されました。</p>
 <img alt="_images/create-delivery-stream-7.png" src="_images/create-delivery-stream-7.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -378,7 +378,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 </tr>
 <tr><td>Attribute</td>
 <td><ul class="first last simple">
-<li></li>
+<li>(＊ アスタリスク)</li>
 </ul>
 </td>
 </tr>
@@ -431,6 +431,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line"><br /></div>
 </div>
 <p>データが保存されたフォルダまで辿って下さい。</p>
+<p>60秒周期でファイルが保存される設定になっているため、ファイルが現れるまで数分かかることがあります。画面を更新しながら、待って下さい。</p>
 <img alt="_images/s3-check-2.png" src="_images/s3-check-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>

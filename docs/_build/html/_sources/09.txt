@@ -33,9 +33,10 @@ AWS IoTのリソースを削除
 AWS IoTの証明書、ポリシー、デバイスを削除するためには、削除前にアタッチされているリソースをデタッチする必要があります。（ルールは他のリソースとの関連性はありません）
 
 - マネージメントコンソールのサービスから[AWS IoT]を選択します。
+- メニューから、[Security]-[Certificate]をクリックします。
 - 削除したい証明書を選択します。
-- 関連付けられているデバイスを選択し、[Detach]をクリックします。
-- 同様にポリシーもデタッチします。
+- メニューから、[Things]を選び、[Detach] して下さい。
+- Policyも同様に[Detach] して下さい。
 
 .. image:: images/09/detach.png
 
@@ -118,7 +119,7 @@ Kinesis Firehoseの設定を削除
 
 マネージメントコンソールのサービス一覧から[Kinesis]をクリックして開きます。[Firehose コンソールに移動]をクリックし、Kinesis Firehoseの設定画面に移動します。
 
-S3 Delivery Streamsから、sensor-data-to-s3-<参加者番号>をチェックし、[アクション]から、"Delete"を選びます。確認画面が表示されるので[削除]をクリックします。
+S3 Delivery Streamsから、"sensor-data-to-s3-<参加者番号>" をチェックし、[アクション]から、"Delete"を選びます。確認画面が表示されるので[削除]をクリックします。
 
 .. image:: images/09/firehose-delete.png
 

@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
-    <link rel="next" title="<no title>" href="07.html" />
+    <link rel="next" title="7. その他の設定（オプション）" href="08.html" />
     <link rel="prev" title="5. シナリオ1: センサーデータをS3に保存する" href="05.html" /> 
   </head>
   <body>
@@ -32,7 +32,7 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="07.html" title="<no title>"
+          <a href="08.html" title="7. その他の設定（オプション）"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
@@ -48,8 +48,7 @@
             
   <div class="section" id="id1">
 <h1>6. シナリオ2: センサーデータを可視化する<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaで可視化します。
-データ変換には、シナリオ1で使用したLambda関数を使用します。</p>
+<p>Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaでグラフ表示します。データ変換には、シナリオ1で使用したLambda関数を使用します。</p>
 <img alt="_images/overview2.png" src="_images/overview2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -67,14 +66,19 @@
 <div class="line"><br /></div>
 </div>
 <p>Create Elasticsearch domain画面になります。</p>
-<p>Elasticsearch domain nameに、firehose-to-es-domain-&lt;参加者番号&gt; と入力して、[Next]をクリックして下さい。</p>
+<p>Elasticsearch domain nameに、&#8221;firehose-to-es-domain-&lt;参加者番号&gt;&#8221; と入力して、[Next]をクリックして下さい。</p>
 <img alt="_images/cretate-es-domain.png" src="_images/cretate-es-domain.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>次の画面では、何も入力せずに、Next]をクリックして下さい。
+<p>次の画面では、何も入力せずに、[Next]をクリックして下さい。
 Set the domain access policy toで、&#8221;Allow open access to the domain&#8221;を選択して下さい。</p>
 <img alt="_images/domain-access-policy.png" src="_images/domain-access-policy.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されるので、I accept the risk をチェックし、[OK] を押して下さい。</p>
+<img alt="_images/domain-access-policy-risk-confirm.png" src="_images/domain-access-policy-risk-confirm.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -93,15 +97,7 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <div class="section" id="kinesis-firehose">
 <h2>6.2. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>サービス一覧から[Kinesis]をクリックして開きます。</p>
-<img alt="_images/kinesis.png" src="_images/kinesis.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <p>Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。</p>
-<img alt="_images/firehose.png" src="_images/firehose.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <p>[Create Delivery Stream] をクリックして下さい。</p>
 <img alt="_images/create-delivery-stream.png" src="_images/create-delivery-stream.png" />
 <div class="line-block">
@@ -147,8 +143,8 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <p>Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="33%" />
-<col width="67%" />
+<col width="24%" />
+<col width="76%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -163,7 +159,7 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Buffer interval</td>
-<td>60</td>
+<td>60 (Elasticsearch Serviceに60秒周期でデータが追加されます)</td>
 </tr>
 <tr><td>Error Logging</td>
 <td>Disable</td>
@@ -213,7 +209,7 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Elasticsearch Delivery Streamsができました。</p>
+<p>Elasticsearch Delivery Streamsの作成が開始されました。</p>
 <img alt="_images/cretae-delivery-stream-6.png" src="_images/cretae-delivery-stream-6.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -226,7 +222,7 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>ルールを作成します。メニューから[Rules]をクリックします。ルール(Rule)一覧画面で、[Create]をクリックします。</p>
+<p>ルールを作成します。メニューから[Rules]をクリックします。ルール一覧画面で、[Create]をクリックします。</p>
 <img alt="_images/create-rule-2.png" src="_images/create-rule-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -248,7 +244,7 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </tr>
 <tr><td>Attribute</td>
 <td><ul class="first last simple">
-<li></li>
+<li>(＊ アスタリスク)</li>
 </ul>
 </td>
 </tr>
@@ -310,7 +306,8 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。</p>
+<p>Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。
+60秒周期でElasticSearch Serviceにデータが追加される設定になっているため、&#64;timestamp 現れるまで数分かかることがあります。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="45%" />
@@ -330,6 +327,10 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 </tr>
 </tbody>
 </table>
+<img alt="_images/kibana-index-create.png" src="_images/kibana-index-create.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <p>tempreature, humidity, rssi, &#64;timestamp のフィールドが表示されている事を確認します。</p>
 <img alt="_images/kibana-indices.png" src="_images/kibana-indices.png" />
 <div class="line-block">
@@ -439,8 +440,8 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
             <p class="topless"><a href="05.html"
                                   title="前の章へ">5. シナリオ1: センサーデータをS3に保存する</a></p>
             <h4>次のトピックへ</h4>
-            <p class="topless"><a href="07.html"
-                                  title="次の章へ">&lt;no title&gt;</a></p>
+            <p class="topless"><a href="08.html"
+                                  title="次の章へ">7. その他の設定（オプション）</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/06.txt"
@@ -470,7 +471,7 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="07.html" title="<no title>"
+          <a href="08.html" title="7. その他の設定（オプション）"
              >次へ</a> |</li>
         <li class="right" >
           <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
