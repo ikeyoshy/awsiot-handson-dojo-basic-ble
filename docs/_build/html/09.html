@@ -48,9 +48,29 @@
             
   <div class="section" id="id1">
 <h1>8. ハンズオン終了後<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>8.1. ゲートウェイを初期化する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ゲートウェイの電源が入った状態で、本体裏面にあるリセット用ボタンを5秒以上長押しして、初期状態に戻して下さい。</p>
+<img alt="_images/reset.png" src="_images/reset.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>8.2. ゲートウェイの電源を切る<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ゲートウェイからUSBケーブルを抜いて電源を切って下さい。</p>
+</div>
+<div class="section" id="id4">
+<h2>8.3. センサーの電源を切る<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>センサーのスライドスイッチをスライドさせ電源を切って下さい。</p>
+<img alt="_images/sensor-power-on-off.png" src="_images/sensor-power-on-off.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <p>ハンズオン終了後には以下の設定を削除してください。</p>
+</div>
 <div class="section" id="aws-iot">
-<h2>8.1. AWS IoTのリソースを削除<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>8.4. AWS IoTのリソースを削除<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTの証明書、ポリシー、デバイスを削除するためには、削除前にアタッチされているリソースをデタッチする必要があります。（ルールは他のリソースとの関連性はありません）</p>
 <ul class="simple">
 <li>マネージメントコンソールのサービスから[AWS IoT]を選択します。</li>
@@ -87,7 +107,7 @@ Settingsをクリックし、CloudWatch Logsの[Disable]をクリックして無
 </div>
 </div>
 <div class="section" id="s3">
-<h2>8.2. S3バケットを削除<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>8.5. S3バケットを削除<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[S3]をクリックして開きます。
 リストからバケット”sensor-data-&lt;参加者番号&gt;”のアイコンをクリックして選択します。[バケットを削除する]をクリックして下さい。</p>
 <img alt="_images/s3-delete.png" src="_images/s3-delete.png" />
@@ -101,7 +121,7 @@ Settingsをクリックし、CloudWatch Logsの[Disable]をクリックして無
 </div>
 </div>
 <div class="section" id="elsticsearch-service">
-<h2>8.3. ElsticSearch Serviceの設定を削除<a class="headerlink" href="#elsticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>8.6. ElsticSearch Serviceの設定を削除<a class="headerlink" href="#elsticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[ElsticSearch Service]をクリックして開きます。
 Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックします。</p>
 <img alt="_images/elasticsearch-delete.png" src="_images/elasticsearch-delete.png" />
@@ -120,7 +140,7 @@ Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックしま�
 </div>
 </div>
 <div class="section" id="lambda">
-<h2>8.4. Lambda関数を削除<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>8.7. Lambda関数を削除<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[Lambda]をクリックして開きます。Lammbda関数 ranger-raw-data-to-json-&lt;参加者番号&gt;をチェックし、[アクション]から、&#8221;関数の削除&#8221;を選びます。確認画面が表示されるので[削除]をクリックします。</p>
 <img alt="_images/lambda-delete.png" src="_images/lambda-delete.png" />
 <div class="line-block">
@@ -128,8 +148,8 @@ Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックしま�
 </div>
 </div>
 <div class="section" id="kinesis-firehose">
-<h2>8.5. Kinesis Firehoseの設定を削除<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[Kinesis]をクリックして開きます。[Firehose コンソールに移動]をクリックし、Kinesis irehoseの設定画面に移動します。</p>
+<h2>8.8. Kinesis Firehoseの設定を削除<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[Kinesis]をクリックして開きます。[Firehose コンソールに移動]をクリックし、Kinesis Firehoseの設定画面に移動します。</p>
 <p>S3 Delivery Streamsから、sensor-data-to-s3-&lt;参加者番号&gt;をチェックし、[アクション]から、&#8221;Delete&#8221;を選びます。確認画面が表示されるので[削除]をクリックします。</p>
 <img alt="_images/firehose-delete.png" src="_images/firehose-delete.png" />
 <div class="line-block">
@@ -142,11 +162,30 @@ Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックしま�
 </div>
 </div>
 <div class="section" id="iam">
-<h2>8.6. IAMロールを削除<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>firehose_delivery_role_es-&lt;参加者番号&gt;
-IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;
-firehose_delivery_role-&lt;参加者番号&gt;
-lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;</p>
+<h2>8.9. IAMロールを削除<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から[IAM]をクリックして開きます。
+メニューから[ロール]をクリックして下さい。右上の設定アイコンを押して、作成時刻を表示して下さい。
+作成事項でソートすると、本ハンズオンで作成したロールが見えます。</p>
+<img alt="_images/IAM-roles.png" src="_images/IAM-roles.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>本ハンズオンで作成した下記のロールのみにチェックを入れ、[ロールの削除]をクリックして下さい。</p>
+<ul class="simple">
+<li>firehose_delivery_role_es-&lt;参加者番号&gt;</li>
+<li>IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;</li>
+<li>firehose_delivery_role-&lt;参加者番号&gt;</li>
+<li>lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;</li>
+</ul>
+<img alt="_images/IAM-role-delete.png" src="_images/IAM-role-delete.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されますので、[はい、削除する]をクリックして下さい。</p>
+<img alt="_images/IAM-role-delete-confirm.png" src="_images/IAM-role-delete-confirm.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </div>
 </div>
 
@@ -159,12 +198,15 @@ lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;</p>
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">8. ハンズオン終了後</a><ul>
-<li><a class="reference external" href="#aws-iot">8.1. AWS IoTのリソースを削除</a></li>
-<li><a class="reference external" href="#s3">8.2. S3バケットを削除</a></li>
-<li><a class="reference external" href="#elsticsearch-service">8.3. ElsticSearch Serviceの設定を削除</a></li>
-<li><a class="reference external" href="#lambda">8.4. Lambda関数を削除</a></li>
-<li><a class="reference external" href="#kinesis-firehose">8.5. Kinesis Firehoseの設定を削除</a></li>
-<li><a class="reference external" href="#iam">8.6. IAMロールを削除</a></li>
+<li><a class="reference external" href="#id2">8.1. ゲートウェイを初期化する</a></li>
+<li><a class="reference external" href="#id3">8.2. ゲートウェイの電源を切る</a></li>
+<li><a class="reference external" href="#id4">8.3. センサーの電源を切る</a></li>
+<li><a class="reference external" href="#aws-iot">8.4. AWS IoTのリソースを削除</a></li>
+<li><a class="reference external" href="#s3">8.5. S3バケットを削除</a></li>
+<li><a class="reference external" href="#elsticsearch-service">8.6. ElsticSearch Serviceの設定を削除</a></li>
+<li><a class="reference external" href="#lambda">8.7. Lambda関数を削除</a></li>
+<li><a class="reference external" href="#kinesis-firehose">8.8. Kinesis Firehoseの設定を削除</a></li>
+<li><a class="reference external" href="#iam">8.9. IAMロールを削除</a></li>
 </ul>
 </li>
 </ul>

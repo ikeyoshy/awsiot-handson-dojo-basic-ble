@@ -2,6 +2,29 @@
  ハンズオン終了後
 ==================
 
+ゲートウェイを初期化する
+============================
+
+ゲートウェイの電源が入った状態で、本体裏面にあるリセット用ボタンを5秒以上長押しして、初期状態に戻して下さい。
+
+.. image:: images/03/reset.png
+
+|
+
+ゲートウェイの電源を切る
+==========================
+
+ゲートウェイからUSBケーブルを抜いて電源を切って下さい。
+
+センサーの電源を切る
+=========================
+
+センサーのスライドスイッチをスライドさせ電源を切って下さい。
+
+.. image:: images/03/sensor-power-on-off.png
+
+|
+
 ハンズオン終了後には以下の設定を削除してください。
 
 AWS IoTのリソースを削除
@@ -93,7 +116,7 @@ Lambda関数を削除
 Kinesis Firehoseの設定を削除
 ===================================
 
-マネージメントコンソールのサービス一覧から[Kinesis]をクリックして開きます。[Firehose コンソールに移動]をクリックし、Kinesis irehoseの設定画面に移動します。
+マネージメントコンソールのサービス一覧から[Kinesis]をクリックして開きます。[Firehose コンソールに移動]をクリックし、Kinesis Firehoseの設定画面に移動します。
 
 S3 Delivery Streamsから、sensor-data-to-s3-<参加者番号>をチェックし、[アクション]から、"Delete"を選びます。確認画面が表示されるので[削除]をクリックします。
 
@@ -108,9 +131,29 @@ S3 Delivery Streamsから、sensor-data-to-s3-<参加者番号>をチェック�
 |
 
 IAMロールを削除
-===============
+====================
 
-firehose_delivery_role_es-<参加者番号>
-IOT_to_Kinesis_Firehose-<参加者番号>
-firehose_delivery_role-<参加者番号>
-lambda_KinesisFirehoseAccess-<参加者番号>
+マネージメントコンソールのサービス一覧から[IAM]をクリックして開きます。
+メニューから[ロール]をクリックして下さい。右上の設定アイコンを押して、作成時刻を表示して下さい。
+作成事項でソートすると、本ハンズオンで作成したロールが見えます。
+
+.. image:: images/09/IAM-roles.png
+
+|
+
+本ハンズオンで作成した下記のロールのみにチェックを入れ、[ロールの削除]をクリックして下さい。
+
+* firehose_delivery_role_es-<参加者番号>
+* IOT_to_Kinesis_Firehose-<参加者番号>
+* firehose_delivery_role-<参加者番号>
+* lambda_KinesisFirehoseAccess-<参加者番号>
+
+.. image:: images/09/IAM-role-delete.png
+
+|
+
+確認画面が表示されますので、[はい、削除する]をクリックして下さい。
+
+.. image:: images/09/IAM-role-delete-confirm.png
+
+|
