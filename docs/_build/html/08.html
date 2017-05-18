@@ -83,6 +83,118 @@
 <div class="line"><br /></div>
 </div>
 </div>
+<div class="section" id="id2">
+<h2>7.2. ３軸加速度センサーのデータを収集する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>レンジャーシステムズの他のセンサーは、下記のBLEフィルター設定を行うことで、センサーデータの収集が出来ます。</p>
+<div class="section" id="ibs01h">
+<h3>7.2.1. マグネットセンサー(iBS01H)<a class="headerlink" href="#ibs01h" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-python"><pre>Payload Pattern:02010612FF590080BC2C0104FFFFFFFFFFFFFFFFFFFF
+ Payload Mask   :FFFFFFFFFFFFFFFFFF00000000000000000000000000</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">データ</th>
+<th class="head">内容</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>5900</td>
+<td>企業コード</td>
+</tr>
+<tr><td>80BC</td>
+<td>Beacon種別</td>
+</tr>
+<tr><td>2C01</td>
+<td>電池電圧</td>
+</tr>
+<tr><td>04</td>
+<td>センサーステータス (b0:ボタン,b1:moving, b2:hall sensor, b3:落下)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ibs02ir-pir">
+<h3>7.2.2. 赤外線センサー (iBS02IR/PIR)<a class="headerlink" href="#ibs02ir-pir" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-python"><pre>Payload Pattern:02010612FF0D0082BC370104FFFFFFFF000001000000
+ Payload Mask   :FFFFFFFFFFFFFFFFFF00000000000000000000000000</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">データ</th>
+<th class="head">内容</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>0D00</td>
+<td>企業コード</td>
+</tr>
+<tr><td>82BC</td>
+<td>Beacon種別</td>
+</tr>
+<tr><td>3701</td>
+<td>電池電圧</td>
+</tr>
+<tr><td>04</td>
+<td>センサーステータス (00:非検出、04:検出)</td>
+</tr>
+<tr><td>01</td>
+<td>(01:PIR, 02:IR)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ibs01rg">
+<h3>7.2.3. 加速度センサー(iBS01RG)<a class="headerlink" href="#ibs01rg" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-python"><pre>Payload Pattern:02010619FF590081BC4E01D4FF24000001D0FF24000001D0FF24000801
+ Payload Mask   :FFFFFFFFFFFFFFFFFF0000000000000000000000000000000000000000</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">データ</th>
+<th class="head">内容</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>5900</td>
+<td>企業コード</td>
+</tr>
+<tr><td>81BC</td>
+<td>Beacon種別</td>
+</tr>
+<tr><td>4E01</td>
+<td>電池電圧 (0x014E = 3.31V)</td>
+</tr>
+<tr><td>D4FF24000001</td>
+<td>加速度
+X軸=&gt;D4FF-&gt;FFD4-&gt;-44
+Y軸-&gt;2400-&gt;0024-&gt;+36
+Z軸-&gt;0001-&gt;0100-&gt;+256</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 
 
@@ -95,6 +207,12 @@
             <ul>
 <li><a class="reference external" href="#">7. その他の設定（オプション）</a><ul>
 <li><a class="reference external" href="#cloudwatch-logs">7.1. CloudWatch Logsの設定</a></li>
+<li><a class="reference external" href="#id2">7.2. ３軸加速度センサーのデータを収集する</a><ul>
+<li><a class="reference external" href="#ibs01h">7.2.1. マグネットセンサー(iBS01H)</a></li>
+<li><a class="reference external" href="#ibs02ir-pir">7.2.2. 赤外線センサー (iBS02IR/PIR)</a></li>
+<li><a class="reference external" href="#ibs01rg">7.2.3. 加速度センサー(iBS01RG)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
