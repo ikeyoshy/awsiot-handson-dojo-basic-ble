@@ -50,7 +50,7 @@
 <h1>4. センサーデータの確認<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="aws-iot">
 <h2>4.1. AWS IoTでセンサーデータを確認する<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWSマネージメントコンソールを開き、右上のリージョン一覧から[米国東部（バージニア北部）]を選択します。</p>
+<p>AWSマネージメントコンソールを開き、右上のリージョンが、[米国東部(バージニア北部)] になってるか確認して下さい。</p>
 <img alt="_images/regions-us&#64;2x.png" src="_images/regions-us&#64;2x.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -61,17 +61,17 @@
 <div class="line"><br /></div>
 </div>
 <p>テスト画面を表示します。メニューから[Test]をクリックすると下記の画面が表示されます。
-&#8220;Subscription topic&#8221;にpublish_out-&lt;参加者番号&gt;を入力し、[Subscribe to topic]ボタンを押します。</p>
+&#8220;Subscription topic&#8221; に &#8220;publish_out-&lt;参加者番号&gt;&#8221; を入力し、[Subscribe to topic] ボタンを押します。</p>
 <img alt="_images/test.png" src="_images/test.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>AWS IoTがゲートウェイからのデータを受信できていれば、publish_out-&lt;参加者番号&gt;の左に、赤●が表示されます。</p>
+<p>AWS IoTがゲートウェイからのデータを受信できていれば、&#8221;publish_out-&lt;参加者番号&gt;&#8221; の左に、赤色の ● が表示されます。</p>
 <img alt="_images/test-2.png" src="_images/test-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>●publish_out-&lt;参加者番号&gt; をクリックすると、トピック publish_out-&lt;参加者番号&gt; で受信したデータが表示されます。</p>
+<p>&#8220;● publish_out-&lt;参加者番号&gt;&#8221; をクリックすると、トピック &#8220;publish_out-&lt;参加者番号&gt;&#8221; で受信したデータが表示されます。</p>
 <img alt="_images/test-3.png" src="_images/test-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -106,14 +106,14 @@
 <td>Beaconの電波強度(RSSI, dBm単位)</td>
 </tr>
 <tr><td>02010612FF590080BC4D0100D8...</td>
-<td>BLEセンサーが送るデータ (Payload)</td>
+<td>Beaconのデータ (Payload)</td>
 </tr>
 <tr><td>1493638145</td>
 <td>ゲートウェイが付加したタイムスタンプ</td>
 </tr>
 </tbody>
 </table>
-<p>温湿度センサーが送るデータは、下記になります。</p>
+<p>温湿度センサーが送信するBeaconデータは、下記になります。</p>
 <div class="highlight-python"><pre>02010612FF590080BC4D0100D80A2D00000000000000</pre>
 </div>
 <div class="line-block">
@@ -153,7 +153,7 @@
 </tr>
 </tbody>
 </table>
-<p>本ハンズオンでは、Lambda関数を使用して、データが活用が容易なJSON形式のデータに加工します。</p>
+<p>本ハンズオンでは、Lambda関数を使用して、Beaconデータをデータ活用が容易な JSON形式 のデータに加工します。</p>
 </div>
 </div>
 

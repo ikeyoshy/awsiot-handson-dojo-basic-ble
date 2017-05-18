@@ -93,7 +93,6 @@ S3 bucket                sensor-data-<参加者番号>
 |
 
 Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
-IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
 
 =================== =======================================
 項目                    設定
@@ -111,7 +110,9 @@ IAM role               Firehose delivery IAM role
 
 |
 
-"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。
+IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
+
+"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。
 
 =================== =======================================
 項目                    設定
@@ -124,7 +125,7 @@ IAM ロール              新しい IAMロールの作成
 
 |
 
-Fitehoseの設定画面で、[Next] をクリックして下さい。
+Firehoseの設定画面で、[Next] をクリックして下さい。
 
 .. image:: images/06/cretae-delivery-stream-4.png
 
@@ -171,7 +172,7 @@ Topic filter   publish_out-<参加者番号>
 
 |
 
-"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action]をクリックします。
+"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action] をクリックします。
 
 .. image:: images/05/select-action.png
 
@@ -289,7 +290,7 @@ Beaconの電波強度(rssi)も同様に追加します。
 
 |
 
-メニューにある[Dashboard]をクリックし、[Add]ボタンをクリックします。
+メニューにある[Dashboard]をクリックし、[Add] ボタンをクリックします。
 
 .. image:: images/06/kibana-dashboard.png
 
@@ -307,7 +308,7 @@ Beaconの電波強度(rssi)も同様に追加します。
 
 |
 
-[Save]ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。
+[Save] ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。
 
 .. image:: images/06/kibana-dashboard-save.png
 

@@ -19,7 +19,7 @@
 センサーの電源を切る
 =========================
 
-センサーのスライドスイッチをスライドさせ電源を切って下さい。
+センサーのスライドスイッチをスライドさせて電源を切って下さい。
 
 .. image:: images/03/sensor-power-on-off.png
 
@@ -92,13 +92,13 @@ Domain”firehose-to-es-domain-<参加者番号>”をクリックします。
 
 |
 
-画面の下までスクロールし、"Delete Elasticsearch domain"をクリックすると、[Delete domain]ボタンが表示されるので、クリックします。
+画面の下までスクロールし、"Delete Elasticsearch domain"をクリックすると、[Delete domain] ボタンが表示されるので、クリックします。
 
 .. image:: images/09/elasticsearch-delete-2.png
 
 |
 
-確認画面が表示されますので、"Delete the domain ...."のチェックを入れ、[Delete]ボタンをクリックします。
+確認画面が表示されますので、"Delete the domain ...."のチェックを入れ、[Delete] ボタンをクリックします。
 
 .. image:: images/09/elasticsearch-delete-fonfirm.png
 

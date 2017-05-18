@@ -2,7 +2,7 @@
 シナリオ1: センサーデータをS3に保存する
 =======================================
 
-ゲートウェイは、温湿度センサーが送信するBLE Beaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Fitehoseにデータを送り、Kinesis Firehoseでは、受け取ったデータをLambdaで加工し、S3に保存します。
+ゲートウェイは、温湿度センサーが送信するBeaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Firehoseにデータを送り、Kinesis Firehoseは、受け取ったデータをLambda関数で加工し、S3に保存します。
 
 .. image:: images/05/overview.png
 
@@ -36,25 +36,25 @@ S3バケットを作成
 
 |
 
-S3の設定画面が表示されれます。[バケットを作成する]ボタンを押します。
+S3の設定画面が表示されれます。[バケットを作成する] ボタンを押します。
 
 .. image:: images/05/s3-create-bucket.png
 
 |
 
-バケット名に、sensor-data-<参加者番号>、リージョンは、[米国東部（バージニア北部）]を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。
+バケット名に、"sensor-data-<参加者番号>"、リージョンは、[米国東部(バージニア北部)] を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。
 
 .. image:: images/05/s3-create-bucket-2.png
 
 |
 
-下記の画面が出るまで、[次へ]をクリックして下さい。最後に、[バケットを作成]をクリックすると、S3バケットが作成されます。
+下記の画面が出るまで、[次へ]をクリックして下さい。最後に、[バケットを作成] をクリックすると、S3バケットが作成されます。
 
 .. image:: images/05/s3-create-bucket-3.png
 
 |
 
-sensor-data-<参加者番号>のバケットがリージョン：[米国東部（バージニア北部）]に作成されているか確認して下さい。
+"sensor-data-<参加者番号>" のバケットがリージョン：[米国東部(バージニア北部)] に作成されているか確認して下さい。
 
 .. image:: images/05/s3-create-bucket-4.png
 
@@ -68,19 +68,19 @@ sensor-data-<参加者番号>のバケットがリージョン：[米国東部�
 
 https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip
 
-サービス一覧から[Lambda]をクリックして開きます。
+サービス一覧から[Lambda] をクリックして開きます。
 
 .. image:: images/05/lambda.png
 
 |
 
-下記のような画面が表示されるので、[今すぐ始める]をクリックします。
+下記のような画面が表示されるので、[今すぐ始める] をクリックします。
 
 .. image:: images/05/lambda-2.png
 
 |
 
-Lambda関数の作成画面が表示されるので、サーチボックスに"Fitrehose"と入力し、"kinesis-firehose-syslog-to-json-python"をクリックします。
+Lambda関数の作成画面が表示されるので、サーチボックスに"Firehose"と入力し、"kinesis-firehose-syslog-to-json-python"をクリックします。
 
 .. image:: images/05/lambda-3.png
 
@@ -93,7 +93,7 @@ Lambda関数の作成画面が表示されるので、サーチボックスに"F
 |
 
 下記のような画面が表示されるので、必要事項を入力して下さい。
-"関数パッケージ" の横の[アップロード]ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
+"関数パッケージ" の横の[アップロード] ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。
 
 ======================== =======================================
@@ -165,7 +165,7 @@ Lambda関数の作成に成功すると、下記の様な画面が表示され�
 |
 
 目的のセンサーからのデータだけを取り込むために、Lambda関数内の"my_temphumid_sensor_mac" を修正します。
-ご自身の温度センサーのラベルに記載されているセンサーのMACアドレスを、書き込み、[保存] ボタンを押して下さい。
+ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。
 
 .. image:: images/05/edit-lambda-func-2.png
 
@@ -194,10 +194,7 @@ Kinesisの画面が開きますので、[Firehose コンソールに移動] を�
 
 |
 
-
-[Create Delivery Stream] をクリックして下さい。
-
-DestinationをS3として、Delivery stream nameを設定し、先ほど設定したS3 bucketを選んで、[Next] をクリックして下さい。
+DestinationをS3として、Delivery stream nameを設定し、先ほど作成したS3バケットを選んで、[Next] をクリックして下さい。
 
 ========================= =======================================
 項目                         設定
@@ -211,7 +208,7 @@ S3 bucket                   sensor-data-<参加者番号>
 
 |
 
-Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+Lambda関数でデータ変換を行いますので、"Data transformation" を有効にして、先ほど作成したLambda関数を選んで下さい。
 IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
 
 ======================= =======================================
@@ -231,7 +228,7 @@ IAM role                 Firehose delivery IAM role
 
 |
 
-"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。
+"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。
 
 =================== =======================================
 項目                    設定
@@ -244,7 +241,7 @@ IAM ロール              新しい IAMロールの作成
 
 |
 
-Fitehoseの設定画面で、[Next] をクリックして下さい。
+Firehoseの設定画面で、[Next] をクリックして下さい。
 
 .. image:: images/05/create-delivery-stream-5.png
 
@@ -297,32 +294,32 @@ Topic filter   publish_out-<参加者番号>
 
 |
 
-"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action]をクリックします。
+"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action] をクリックします。
 
 .. image:: images/05/select-action.png
 
 |
 
-Stream nameで、sensor-data-to-s3-<参加者番号> を選択し、[Create a new role]をクリックします。
+Stream nameで、"sensor-data-to-s3-<参加者番号>" を選択し、[Create a new role] をクリックします。
 
 .. image:: images/05/configure-action.png
 
 |
 
-IAM role nameに、IOT_to_Kinesis_Firehose-<参加者番号> と入力し、[Create a new role] をクリックします。
+IAM role nameに、"IOT_to_Kinesis_Firehose-<参加者番号>" と入力し、[Create a new role] をクリックします。
 
 .. image:: images/05/create-role.png
 
 |
 
-IAM role nameで、IOT_to_Kinesis_Firehose-<参加者番号> を選択し、[Update role] をクリックします。
-Successfully updated role. と表示されたら、[Add action] をクリックします。
+IAM role nameで、"IOT_to_Kinesis_Firehose-<参加者番号>" を選択し、[Update role] をクリックします。
+"Successfully updated role." と表示されたら、[Add action] をクリックします。
 
 .. image:: images/05/add-action.png
 
 |
 
-Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。
+Create a rule 画面に戻ります。[Create rule]  をクリックして、ルールを作成します。
 
 .. image:: images/05/create-rule-4.png
 
@@ -337,7 +334,7 @@ S3に保存されたデータを確認する
 
 |
 
-sensor-data-<参加者番号>のバケットをクリックします。
+"sensor-data-<参加者番号>" のバケットをクリックします。
 
 .. image:: images/05/s3-check.png
 
@@ -349,13 +346,13 @@ sensor-data-<参加者番号>のバケットをクリックします。
 
 |
 
-ファイルをクリックすると、ファイルの概要が表示されます。[ダウンロード]をクリックしてダウンロードして内容を確認して下さい。
+ファイルをクリックすると、ファイルの概要が表示されます。[ダウンロード] をクリックしてダウンロードして内容を確認して下さい。
 
 .. image:: images/05/s3-check-3.png
 
 |
 
-下記の形式で、センサーデータが確認できます。
+下記の形式のセンサーデータが確認できます。
 
 ::
 

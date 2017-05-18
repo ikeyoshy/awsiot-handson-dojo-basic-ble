@@ -48,7 +48,7 @@
             
   <div class="section" id="s3">
 <h1>5. シナリオ1: センサーデータをS3に保存する<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>ゲートウェイは、温湿度センサーが送信するBLE Beaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Fitehoseにデータを送り、Kinesis Firehoseでは、受け取ったデータをLambdaで加工し、S3に保存します。</p>
+<p>ゲートウェイは、温湿度センサーが送信するBeaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Firehoseにデータを送り、Kinesis Firehoseは、受け取ったデータをLambda関数で加工し、S3に保存します。</p>
 <img alt="_images/overview1.png" src="_images/overview1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -76,22 +76,22 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>S3の設定画面が表示されれます。[バケットを作成する]ボタンを押します。</p>
+<p>S3の設定画面が表示されれます。[バケットを作成する] ボタンを押します。</p>
 <img alt="_images/s3-create-bucket.png" src="_images/s3-create-bucket.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>バケット名に、sensor-data-&lt;参加者番号&gt;、リージョンは、[米国東部（バージニア北部）]を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。</p>
+<p>バケット名に、&#8221;sensor-data-&lt;参加者番号&gt;&#8221;、リージョンは、[米国東部(バージニア北部)] を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。</p>
 <img alt="_images/s3-create-bucket-2.png" src="_images/s3-create-bucket-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>下記の画面が出るまで、[次へ]をクリックして下さい。最後に、[バケットを作成]をクリックすると、S3バケットが作成されます。</p>
+<p>下記の画面が出るまで、[次へ]をクリックして下さい。最後に、[バケットを作成] をクリックすると、S3バケットが作成されます。</p>
 <img alt="_images/s3-create-bucket-3.png" src="_images/s3-create-bucket-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>sensor-data-&lt;参加者番号&gt;のバケットがリージョン：[米国東部（バージニア北部）]に作成されているか確認して下さい。</p>
+<p>&#8220;sensor-data-&lt;参加者番号&gt;&#8221; のバケットがリージョン：[米国東部(バージニア北部)] に作成されているか確認して下さい。</p>
 <img alt="_images/s3-create-bucket-4.png" src="_images/s3-create-bucket-4.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -101,17 +101,17 @@
 <h2>5.2. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>はじめに、Lambda関数を下記のリンクからダウンロードして下さい。</p>
 <p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip</a></p>
-<p>サービス一覧から[Lambda]をクリックして開きます。</p>
+<p>サービス一覧から[Lambda] をクリックして開きます。</p>
 <img alt="_images/lambda.png" src="_images/lambda.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>下記のような画面が表示されるので、[今すぐ始める]をクリックします。</p>
+<p>下記のような画面が表示されるので、[今すぐ始める] をクリックします。</p>
 <img alt="_images/lambda-2.png" src="_images/lambda-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Lambda関数の作成画面が表示されるので、サーチボックスに&#8221;Fitrehose&#8221;と入力し、&#8221;kinesis-firehose-syslog-to-json-python&#8221;をクリックします。</p>
+<p>Lambda関数の作成画面が表示されるので、サーチボックスに&#8221;Firehose&#8221;と入力し、&#8221;kinesis-firehose-syslog-to-json-python&#8221;をクリックします。</p>
 <img alt="_images/lambda-3.png" src="_images/lambda-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -122,7 +122,7 @@
 <div class="line"><br /></div>
 </div>
 <p>下記のような画面が表示されるので、必要事項を入力して下さい。
-&#8220;関数パッケージ&#8221; の横の[アップロード]ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
+&#8220;関数パッケージ&#8221; の横の[アップロード] ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -218,7 +218,7 @@
 <div class="line"><br /></div>
 </div>
 <p>目的のセンサーからのデータだけを取り込むために、Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; を修正します。
-ご自身の温度センサーのラベルに記載されているセンサーのMACアドレスを、書き込み、[保存] ボタンを押して下さい。</p>
+ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。</p>
 <img alt="_images/edit-lambda-func-2.png" src="_images/edit-lambda-func-2.png" />
 <img alt="_images/src_mac.png" src="_images/src_mac.png" />
 <div class="line-block">
@@ -242,8 +242,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Create Delivery Stream] をクリックして下さい。</p>
-<p>DestinationをS3として、Delivery stream nameを設定し、先ほど設定したS3 bucketを選んで、[Next] をクリックして下さい。</p>
+<p>DestinationをS3として、Delivery stream nameを設定し、先ほど作成したS3バケットを選んで、[Next] をクリックして下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="39%" />
@@ -270,7 +269,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+<p>Lambda関数でデータ変換を行いますので、&#8221;Data transformation&#8221; を有効にして、先ほど作成したLambda関数を選んで下さい。
 IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM roleの設定画面が開きます。</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -305,7 +304,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;新しい IAMロールの作成&#8221; を選択し、ロール名を入力して、[許可] をクリックすると、Fitehoseの設定画面に戻ります。</p>
+<p>&#8220;新しい IAMロールの作成&#8221; を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -329,7 +328,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Fitehoseの設定画面で、[Next] をクリックして下さい。</p>
+<p>Firehoseの設定画面で、[Next] をクリックして下さい。</p>
 <img alt="_images/create-delivery-stream-5.png" src="_images/create-delivery-stream-5.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -392,28 +391,28 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;Send messages to an Amazon Kinesis Firehose stream&#8221; を選択し、[Confgure action]をクリックします。</p>
+<p>&#8220;Send messages to an Amazon Kinesis Firehose stream&#8221; を選択し、[Confgure action] をクリックします。</p>
 <img alt="_images/select-action.png" src="_images/select-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Stream nameで、sensor-data-to-s3-&lt;参加者番号&gt; を選択し、[Create a new role]をクリックします。</p>
+<p>Stream nameで、&#8221;sensor-data-to-s3-&lt;参加者番号&gt;&#8221; を選択し、[Create a new role] をクリックします。</p>
 <img alt="_images/configure-action.png" src="_images/configure-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>IAM role nameに、IOT_to_Kinesis_Firehose-&lt;参加者番号&gt; と入力し、[Create a new role] をクリックします。</p>
+<p>IAM role nameに、&#8221;IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;&#8221; と入力し、[Create a new role] をクリックします。</p>
 <img alt="_images/create-role.png" src="_images/create-role.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>IAM role nameで、IOT_to_Kinesis_Firehose-&lt;参加者番号&gt; を選択し、[Update role] をクリックします。
-Successfully updated role. と表示されたら、[Add action] をクリックします。</p>
+<p>IAM role nameで、&#8221;IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;&#8221; を選択し、[Update role] をクリックします。
+&#8220;Successfully updated role.&#8221; と表示されたら、[Add action] をクリックします。</p>
 <img alt="_images/add-action.png" src="_images/add-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。</p>
+<p>Create a rule 画面に戻ります。[Create rule]  をクリックして、ルールを作成します。</p>
 <img alt="_images/create-rule-4.png" src="_images/create-rule-4.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -426,7 +425,7 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>sensor-data-&lt;参加者番号&gt;のバケットをクリックします。</p>
+<p>&#8220;sensor-data-&lt;参加者番号&gt;&#8221; のバケットをクリックします。</p>
 <img alt="_images/s3-check.png" src="_images/s3-check.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -436,12 +435,12 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>ファイルをクリックすると、ファイルの概要が表示されます。[ダウンロード]をクリックしてダウンロードして内容を確認して下さい。</p>
+<p>ファイルをクリックすると、ファイルの概要が表示されます。[ダウンロード] をクリックしてダウンロードして内容を確認して下さい。</p>
 <img alt="_images/s3-check-3.png" src="_images/s3-check-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>下記の形式で、センサーデータが確認できます。</p>
+<p>下記の形式のセンサーデータが確認できます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;dst_mac&quot;</span><span class="p">:</span> <span class="s2">&quot;F0B3865C39C3&quot;</span><span class="p">,</span> <span class="s2">&quot;@timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-05-17T01:13:28&quot;</span><span class="p">,</span> <span class="s2">&quot;humidity&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span> <span class="s2">&quot;vbat&quot;</span><span class="p">:</span> <span class="mf">3.31</span><span class="p">,</span> <span class="s2">&quot;tempreature&quot;</span><span class="p">:</span> <span class="mf">25.25</span><span class="p">,</span> <span class="s2">&quot;rssi&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">44</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;590080BC&quot;</span><span class="p">,</span> <span class="s2">&quot;src_mac&quot;</span><span class="p">:</span> <span class="s2">&quot;E9070D5A15FB&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
