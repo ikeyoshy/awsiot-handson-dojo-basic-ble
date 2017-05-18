@@ -58,7 +58,7 @@
 </div>
 <div class="section" id="id3">
 <h2>1.2. 利用するデバイス、アプリケーション、サービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><strong>レンジャーシステムズ BLE Gateway (iBS01W,02W)</strong></p>
+<p><strong>レンジャーシステムズ BLE Gateway (iBS01W)</strong></p>
 <dl class="docutils">
 <dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE経由で温度/湿度データ取得し、AWS IoTへのデータ送信に利用します。</dt>
 <dd><a class="reference external" href="http://www.ranger-systems.co.jp/iot/">http://www.ranger-systems.co.jp/iot/</a></dd>
@@ -67,26 +67,25 @@
 <div class="line"><br /></div>
 </div>
 <p><strong>AWSアカウント</strong></p>
-<dl class="docutils">
-<dt>センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらのとおりです。</dt>
-<dd><a class="reference external" href="https://aws.amazon.com/jp/register-flow/">https://aws.amazon.com/jp/register-flow/</a></dd>
-</dl>
+<p>センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。
+アカウント作成の手順はこちらの通りです。</p>
+<blockquote>
+<a class="reference external" href="https://aws.amazon.com/jp/register-flow/">https://aws.amazon.com/jp/register-flow/</a></blockquote>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>AWS IoT</strong></p>
 <dl class="docutils">
 <dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのデータ受信で利用します。</dt>
-<dd><p class="first"><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></p>
-<img alt="_images/AWS_IoT.png" class="last" src="_images/AWS_IoT.png" />
-</dd>
+<dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
 </dl>
+<img alt="_images/AWS_IoT.png" src="_images/AWS_IoT.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>Amazon Kinesis Firehose</strong></p>
 <dl class="docutils">
-<dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工するのに使用します。</dt>
+<dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工すし、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/kinesis/firehose/">https://aws.amazon.com/jp/kinesis/firehose/</a></dd>
 </dl>
 <div class="line-block">
@@ -110,7 +109,7 @@
 </div>
 <p><strong>AWS Lambda</strong></p>
 <dl class="docutils">
-<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Kinesis Firehose内でデータの加工に使用します。</dt>
+<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Kinesis Firehose内でセンサーデータの加工に使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/lambda/">https://aws.amazon.com/jp/lambda/</a></dd>
 </dl>
 <div class="line-block">

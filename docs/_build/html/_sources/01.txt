@@ -13,9 +13,9 @@ BLEゲートウェイに接続された温度／湿度センサーの情報をAW
 
 
 利用するデバイス、アプリケーション、サービス
-===========================================================
+==========================================
 
-**レンジャーシステムズ BLE Gateway (iBS01W,02W)**
+**レンジャーシステムズ BLE Gateway (iBS01W)**
 
 レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE経由で温度/湿度データ取得し、AWS IoTへのデータ送信に利用します。
     http://www.ranger-systems.co.jp/iot/
@@ -24,7 +24,8 @@ BLEゲートウェイに接続された温度／湿度センサーの情報をAW
 
 **AWSアカウント**
 
-センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらのとおりです。
+センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。
+アカウント作成の手順はこちらの通りです。
     https://aws.amazon.com/jp/register-flow/
 
 |
@@ -34,13 +35,14 @@ BLEゲートウェイに接続された温度／湿度センサーの情報をAW
 接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのデータ受信で利用します。
     https://aws.amazon.com/jp/iot/
 
-    .. image:: images/01/AWS_IoT.png
+.. image:: images/01/AWS_IoT.png
 
 |
 
+
 **Amazon Kinesis Firehose**
 
-Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工するのに使用します。
+Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工すし、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。
     https://aws.amazon.com/jp/kinesis/firehose/
 
 |
@@ -61,7 +63,7 @@ Amazon Kinesis Firehose は、ストリーミングデータを AWS にロード
 
 **AWS Lambda**
 
-お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Kinesis Firehose内でデータの加工に使用します。
+お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Kinesis Firehose内でセンサーデータの加工に使用します。
     https://aws.amazon.com/jp/lambda/
 
 |

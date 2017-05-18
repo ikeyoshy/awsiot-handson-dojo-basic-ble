@@ -182,25 +182,12 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。</
 <p>レンジャーシステムズのBLEゲートウェイは、周囲の受信可能なBeaconを全て受信する至要なため、フィルター設定を行います。今回のハンズオンでは、温湿度センサー(iBS01T)を使用しますので、その設定を行います。最後に、[Save]ボタンを押して設定を保存します。</p>
 <p>この設定により、周囲のBeaconの中から、温湿度センサー(iBS01T)のBeaconだけを取得できるようになります。上のRSSIは、取得するBeaconの電波強度です。近くのBeaconだけを受信したい場合に使用します。今回は設定しません。</p>
 <p>まだ、Rebootしないで下さい。</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="29%" />
-<col width="71%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">項目</th>
-<th class="head">値</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Payload Pattern</td>
-<td>02010612FF590080BC4D0100D80A2D00000000000000</td>
-</tr>
-<tr><td>Payload Mask</td>
-<td>FFFFFFFFFFFFFFFFFF00000000000000000000000000</td>
-</tr>
-</tbody>
-</table>
+<p>================== ==========================================i===
+項目                 値
+================== =============================================
+Payload Pattern     02010612FF590080BC4D0100D80A2D00000000000000
+Payload Mask        FFFFFFFFFFFFFFFFFF00000000000000000000000000
+================== =============================================</p>
 <img alt="_images/payload-pattern-mask.png" src="_images/payload-pattern-mask.png" />
 <div class="line-block">
 <div class="line"><br /></div>
