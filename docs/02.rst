@@ -67,7 +67,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 ポリシーの作成
 ===========================
 
-デバイスに対して、AWS IoTの各種操作を許可するためのポリシーを作成します。メニューから[Security]-[Policies]をクリックします。以下の様な画面が表示された場合は、[Create a policy]をクリックします。
+デバイスに対して、AWS IoTの各種操作を許可するためのポリシーを作成します。メニューから[Security]-[Policies]をクリックします。以下の様な画面が表示された場合は、[Create a policy] をクリックします。
 
 .. image:: images/02/create-policy.png
 
@@ -79,7 +79,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 
 |
 
-フォームにそれぞれ以下のパラメータを入力し、[Add Statement]をクリックします。
+フォームにそれぞれ以下のパラメータを入力し、[Create] をクリックします。
 
 ============= ============================
 項目            値
@@ -93,6 +93,8 @@ Effect	        Allow
 .. image:: images/02/create-policy-3.png
 
 |
+
+[←]をクリックして下さい。
 
 ポリシーの一覧が表示され、作成したポリシーが表示されている事を確認します。
 
@@ -117,7 +119,7 @@ Effect	        Allow
 
 下記の様に、"Certificate created!"と表示されたら、証明書(Certificate)とプライベートキー(Private key)をダウンロードします。これらは、後ほど、BLEゲートウェイにアップロードします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。
 
-最後に[Activate]をクリックして証明書を有効にして下さい。
+最後に[Activate] をクリックして証明書を有効にして下さい。
 
 .. image:: images/02/certificate-created.png
 
@@ -144,7 +146,7 @@ Effect	        Allow
 
 |
 
-”awsiot-handson-policy-<参加者番号>”を選択し、[Attach]をクリックします。
+”awsiot-handson-policy-<参加者番号>”を選択し、[Attach] をクリックします。
 
 .. image:: images/02/attach-policy-2.png
 
@@ -156,8 +158,10 @@ Effect	        Allow
 
 |
 
-“ranger-gw-<参加者番号>”を入力し、[Attach]をクリックします。
+“ranger-gw-<参加者番号>”を入力し、[Attach] をクリックします。
 
 .. image:: images/02/attach-thing-2.png
 
 |
+
+これで、AWS IoT基本設定は、終わりです。
