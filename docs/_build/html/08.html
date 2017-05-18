@@ -85,9 +85,13 @@
 </div>
 <div class="section" id="id2">
 <h2>7.2. ３軸加速度センサーのデータを収集する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズの他のセンサーは、下記のBLEフィルター設定を行うことで、センサーデータの収集が出来ます。</p>
+<p>レンジャーシステムズの他のセンサーは、下記のBLEフィルター設定を行うことで、センサーデータの収集が可能です。</p>
 <div class="section" id="ibs01h">
 <h3>7.2.1. マグネットセンサー(iBS01H)<a class="headerlink" href="#ibs01h" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<img alt="_images/img_iot10.png" src="_images/img_iot10.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="highlight-python"><pre>Payload Pattern:02010612FF590080BC2C0104FFFFFFFFFFFFFFFFFFFF
  Payload Mask   :FFFFFFFFFFFFFFFFFF00000000000000000000000000</pre>
 </div>
@@ -122,6 +126,10 @@
 </div>
 <div class="section" id="ibs02ir-pir">
 <h3>7.2.2. 赤外線センサー (iBS02IR/PIR)<a class="headerlink" href="#ibs02ir-pir" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<img alt="_images/img_iot15.png" src="_images/img_iot15.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="highlight-python"><pre>Payload Pattern:02010612FF0D0082BC370104FFFFFFFF000001000000
  Payload Mask   :FFFFFFFFFFFFFFFFFF00000000000000000000000000</pre>
 </div>
@@ -130,8 +138,8 @@
 </div>
 <table border="1" class="docutils">
 <colgroup>
-<col width="15%" />
-<col width="85%" />
+<col width="20%" />
+<col width="80%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">データ</th>
@@ -159,6 +167,10 @@
 </div>
 <div class="section" id="ibs01rg">
 <h3>7.2.3. 加速度センサー(iBS01RG)<a class="headerlink" href="#ibs01rg" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<img alt="_images/img_iot12.png" src="_images/img_iot12.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="highlight-python"><pre>Payload Pattern:02010619FF590081BC4E01D4FF24000001D0FF24000001D0FF24000801
  Payload Mask   :FFFFFFFFFFFFFFFFFF0000000000000000000000000000000000000000</pre>
 </div>
@@ -187,9 +199,9 @@
 </tr>
 <tr><td>D4FF24000001</td>
 <td>加速度
-X軸=&gt;D4FF-&gt;FFD4-&gt;-44
-Y軸-&gt;2400-&gt;0024-&gt;+36
-Z軸-&gt;0001-&gt;0100-&gt;+256</td>
+X軸 -&gt;D4FF -&gt;FFD4 -&gt; -44
+Y軸 -&gt;2400 -&gt;0024 -&gt; +36
+Z軸 -&gt;0001 -&gt;0100 -&gt; +256</td>
 </tr>
 </tbody>
 </table>
