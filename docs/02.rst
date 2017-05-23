@@ -120,7 +120,7 @@ Effect	        Allow
 下記の様に、"Certificate created!"と表示されたら、証明書(Certificate)とプライベートキー(Private key)をPCにダウンロードして下さい。各ファイルのサイズは、証明書が1,224 バイト、プライベートキーが1,675 バイトになります。
 
 これらは、後ほど、BLEゲートウェイにアップロードします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。
-証明書の番号とは、ファイル名の "xxxxxxxxxx-certificate.pem.crt" の場合、冒頭の "xxxxxxxxxx" になります。
+証明書の番号とは、ファイル名が "xxxxxxxxxx-certificate.pem.crt" の場合、冒頭の "xxxxxxxxxx" になります。
 
 証明書とプライベートキーのダウンロードが終わったら、[Activate] をクリックして証明書を有効にして下さい。
 
