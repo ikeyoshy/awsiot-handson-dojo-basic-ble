@@ -162,7 +162,7 @@ Kinesis Firehose用のAWS IoT ルールを作成
 ============= ====================================
 Name	         iotrule_firehose_es_<参加者番号>
 Attribute	     * (＊ アスタリスク)
-Topic filter   publish_out-<参加者番号>
+Topic filter   sensor/<参加者番号>
 ============= ====================================
 
 .. image:: images/06/create-rule.png

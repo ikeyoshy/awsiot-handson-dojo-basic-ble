@@ -29,6 +29,8 @@
 * AWSアカウント
 	* 基本的に参加者お一人様につき、個別のAWSアカウント持って頂くことが前提です。
 	* 一つのアカウントでの実施も可能です。その場合。事前にIAMユーザーを作って頂くことになります。
+    * AWS アカウント内での IAM ユーザーの作成方法
+      http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html
 * PC、もしくは Mac
 	* Windows PCもしくは、Macを使用します。参加者お一人に1台のマシンをご用意して頂きます。
 * ACコンセント
