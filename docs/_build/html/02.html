@@ -48,8 +48,39 @@
             
   <div class="section" id="aws-iot">
 <h1>2. AWS IoT基本設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="aws">
+<h2>2.1. AWS マネジメントコンソールにログイン<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>まずは、下記のURLにアクセスして、アカウントID、ユーザー名、パスワードを入力しAWSマネージメントコンソールにサインインして下さい。</p>
+<p><a class="reference external" href="https://console.aws.amazon.com/">https://console.aws.amazon.com/</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>アカウント</td>
+<td>AWSのアカウントID (12桁の数字)</td>
+</tr>
+<tr><td>ユーザー名</td>
+<td>IAMユーザー名</td>
+</tr>
+<tr><td>パスワード</td>
+<td>IAMユーザー パスワード</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/aws-login.png" src="_images/aws-login.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
 <div class="section" id="id1">
-<h2>2.1. デバイスの作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>2.2. デバイスの作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWSマネージメントコンソールを開き、右上のリージョン一覧から
 [米国東部(バージニア北部)]を選択します。</p>
 <img alt="_images/regions-us&#64;2x.png" src="_images/regions-us&#64;2x.png" />
@@ -82,6 +113,22 @@
 <div class="line"><br /></div>
 </div>
 <p>[Name]に”ranger-gw-&lt;参加者番号&gt;”と入力し、[Create thing]をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>ranger-gw-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
 <img alt="_images/create-thing-3.png" src="_images/create-thing-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -100,7 +147,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 </div>
 </div>
 <div class="section" id="id2">
-<h2>2.2. ポリシーの作成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>2.3. ポリシーの作成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>デバイスに対して、AWS IoTの各種操作を許可するためのポリシーを作成します。メニューから[Security]-[Policies]をクリックします。以下の様な画面が表示された場合は、[Create a policy] をクリックします。</p>
 <img alt="_images/create-policy.png" src="_images/create-policy.png" />
 <div class="line-block">
@@ -131,15 +178,16 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 </tr>
 <tr><td>Resource ARN</td>
 <td><ul class="first last simple">
-<li>(アスタリスク)</li>
+<li></li>
 </ul>
 </td>
 </tr>
 <tr><td>Effect</td>
-<td>Allow</td>
+<td>Allow (チェックを入れて下さい)</td>
 </tr>
 </tbody>
 </table>
+<p>&#8220;*&#8221;は、半角の＊(アスタリスク)です。</p>
 <img alt="_images/create-policy-3.png" src="_images/create-policy-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -152,7 +200,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 </div>
 </div>
 <div class="section" id="id3">
-<h2>2.3. 証明書の作成<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>2.4. 証明書の作成<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>証明書を作成します。メニューから[Security]-[Cetificate]をクリックします。以下の様な画面が表示された場合は、[Create a crtificate]をクリックします。</p>
 <img alt="_images/crreate-certificate.png" src="_images/crreate-certificate.png" />
 <div class="line-block">
@@ -163,8 +211,10 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>下記の様に、&#8221;Certificate created!&#8221;と表示されたら、証明書(Certificate)とプライベートキー(Private key)をダウンロードします。これらは、後ほど、BLEゲートウェイにアップロードします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。</p>
-<p>最後に[Activate] をクリックして証明書を有効にして下さい。</p>
+<p>下記の様に、&#8221;Certificate created!&#8221;と表示されたら、証明書(Certificate)とプライベートキー(Private key)をPCにダウンロードして下さい。各ファイルのサイズは、証明書が1,220バイト程度、プライベートキーが1,670バイト程度になります。</p>
+<p>これらは、後ほど、BLEゲートウェイにアップロードします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。
+証明書の番号とは、ファイル名が &#8220;xxxxxxxxxx-certificate.pem.crt&#8221; の場合、冒頭の &#8220;xxxxxxxxxx&#8221; になります。</p>
+<p>証明書とプライベートキーのダウンロードが終わったら、[Activate] をクリックして証明書を有効にして下さい。</p>
 <img alt="_images/certificate-created.png" src="_images/certificate-created.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -176,7 +226,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 </div>
 </div>
 <div class="section" id="id4">
-<h2>2.4. デバイス、ポリシーを証明書に割当てる<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>2.5. デバイス、ポリシーを証明書に割当てる<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>作成したデバイス、ポリシーを証明書に割当てます。メニューから[Security]-[Certificates]をクリックします。証明書一覧から「証明書の作成」のセクションで保存した証明書のIDに一致する証明書をクリックして開きます。</p>
 <img alt="_images/attach-policy-thing.png" src="_images/attach-policy-thing.png" />
 <div class="line-block">
@@ -202,7 +252,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>これで、AWS IoT基本設定は、終わりです。</p>
+<p>これで、AWS IoTの基本設定は、終わりです。</p>
 </div>
 </div>
 
@@ -215,10 +265,11 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">2. AWS IoT基本設定</a><ul>
-<li><a class="reference external" href="#id1">2.1. デバイスの作成</a></li>
-<li><a class="reference external" href="#id2">2.2. ポリシーの作成</a></li>
-<li><a class="reference external" href="#id3">2.3. 証明書の作成</a></li>
-<li><a class="reference external" href="#id4">2.4. デバイス、ポリシーを証明書に割当てる</a></li>
+<li><a class="reference external" href="#aws">2.1. AWS マネジメントコンソールにログイン</a></li>
+<li><a class="reference external" href="#id1">2.2. デバイスの作成</a></li>
+<li><a class="reference external" href="#id2">2.3. ポリシーの作成</a></li>
+<li><a class="reference external" href="#id3">2.4. 証明書の作成</a></li>
+<li><a class="reference external" href="#id4">2.5. デバイス、ポリシーを証明書に割当てる</a></li>
 </ul>
 </li>
 </ul>

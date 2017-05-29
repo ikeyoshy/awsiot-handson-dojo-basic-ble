@@ -60,12 +60,14 @@
 <h2>1.2. 利用するデバイス、アプリケーション、サービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><strong>レンジャーシステムズ BLE Gateway (iBS01W)</strong></p>
 <dl class="docutils">
-<dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE経由で温度/湿度データ取得し、AWS IoTへのデータ送信に利用します。</dt>
+<dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE経由で温度/湿度データ取得し、AWS IoTへのデータ送信に利用します。レンジャーシステムズ社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が非常に高い製品です。他にLTE版のゲートウエイもあります。</dt>
 <dd><a class="reference external" href="http://www.ranger-systems.co.jp/iot/">http://www.ranger-systems.co.jp/iot/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p><strong>レンジャーシステムズ 温湿度センサー (iBS01T)</strong></p>
+<p>レンジャーシステムズ社が提供するBLE Beacon温湿度センサーです。ボタン電池で動作し、電池寿命は1.4年で、長時間使用できます。</p>
 <p><strong>AWSアカウント</strong></p>
 <dl class="docutils">
 <dt>センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらの通りです。</dt>
@@ -76,7 +78,7 @@
 </div>
 <p><strong>AWS IoT</strong></p>
 <dl class="docutils">
-<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのデータ受信で利用します。</dt>
+<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのセンサーデータの受信で利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
 </dl>
 <img alt="_images/AWS_IoT.png" src="_images/AWS_IoT.png" />

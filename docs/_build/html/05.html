@@ -82,6 +82,22 @@
 <div class="line"><br /></div>
 </div>
 <p>バケット名に、&#8221;sensor-data-&lt;参加者番号&gt;&#8221;、リージョンは、[米国東部(バージニア北部)] を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>バケット名</td>
+<td>sensor-data-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
 <img alt="_images/s3-create-bucket-2.png" src="_images/s3-create-bucket-2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -99,7 +115,7 @@
 </div>
 <div class="section" id="lambda">
 <h2>5.2. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>はじめに、Lambda関数を下記のリンクからダウンロードして下さい。</p>
+<p>はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。</p>
 <p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip</a></p>
 <p>サービス一覧から[Lambda] をクリックして開きます。</p>
 <img alt="_images/lambda.png" src="_images/lambda.png" />
@@ -121,8 +137,8 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>下記のような画面が表示されるので、必要事項を入力して下さい。
-&#8220;関数パッケージ&#8221; の横の[アップロード] ボタンを押して、先ほどダウンロードしたLambda関数のZIPファイルをアップロードして下さい。
+<p>Amazon S3にLambda関数が保存してありますので、URLを指定してアップロードします。
+下記のような画面が表示されるので、必要事項を入力して下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -144,7 +160,7 @@
 <tr><td>コード エントリ タイプ</td>
 <td>ZIPファイルをアップロード</td>
 </tr>
-<tr><td>関数パッケージ</td>
+<tr><td>S3 リンクの URL</td>
 <td>ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)</td>
 </tr>
 <tr><td>ロール</td>
@@ -194,6 +210,15 @@
             <span class="p">],</span>
             <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;logs:CreateLogGroup&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;logs:CreateLogStream&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;logs:PutLogEvents&quot;</span>
+          <span class="p">],</span>
+          <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:logs:*:*:*&quot;</span>
         <span class="p">}</span>
     <span class="p">]</span>
 <span class="p">}</span>
@@ -378,15 +403,16 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 </tr>
 <tr><td>Attribute</td>
 <td><ul class="first last simple">
-<li>(＊ アスタリスク)</li>
+<li></li>
 </ul>
 </td>
 </tr>
 <tr><td>Topic filter</td>
-<td>publish_out-&lt;参加者番号&gt;</td>
+<td>sensor/&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
+<p>&#8220;*&#8221;は、半角の＊(アスタリスク)です。</p>
 <img alt="_images/create-rule-3.png" src="_images/create-rule-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
