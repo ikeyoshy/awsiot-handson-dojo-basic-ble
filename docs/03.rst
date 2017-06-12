@@ -63,7 +63,7 @@ Rebootを促すメッセージが出ますが、Rebootしないで下さい。
 ================ ============================
 Application	      MQTT Client
 Host/IP	          記録しておいたEndpoint情報
-Port        	    **8**883 (1883になっているので注意して下さい)
+Port        	    8883 (1883になっているので注意して下さい)
 Publish Topic	    sensor/<参加者番号> (AWS IoTのルールエンジンで使用します。)
 Client ID         ranger-gw-<参加者番号> ([Create thing]で作ったThing名)
 Username          空欄
