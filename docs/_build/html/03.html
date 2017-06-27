@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. BLEゲートウェイの設定 &mdash; awsiot-handson-dojo-basic v0.0 documentation</title>
+    <title>3. BLEゲートウェイの設定 &mdash; awsiot-handson-dojo-basic-ble v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
+    <link rel="top" title="awsiot-handson-dojo-basic-ble v0.0 documentation" href="index.html" />
     <link rel="next" title="4. センサーデータの確認" href="04.html" />
     <link rel="prev" title="2. AWS IoT基本設定" href="02.html" /> 
   </head>
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="02.html" title="2. AWS IoT基本設定"
              accesskey="P">前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -113,7 +113,7 @@
 <td>記録しておいたEndpoint情報</td>
 </tr>
 <tr><td>Port</td>
-<td><a href="#id4"><span class="problematic" id="id5">**</span></a>8**883 (1883になっているので注意して下さい)</td>
+<td>8883 (1883になっているので注意して下さい)</td>
 </tr>
 <tr><td>Publish Topic</td>
 <td>sensor/&lt;参加者番号&gt; (AWS IoTのルールエンジンで使用します。)</td>
@@ -143,8 +143,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id6">
-<h2>3.5. 証明書の登録<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h2>3.5. 証明書の登録<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Advanced」タブクリックし、AWS IoTで作成した証明書をインポートします。</p>
 <p>&#8220;Certificate&#8221;の横の[ファイルを選択] ボタンを押して、「証明書の作成」のセクションで保存しておいた証明書を選択し、[Upload Certificate] ボタンを押して、証明書をアップロードして下さい。</p>
 <p>&#8220;Key&#8221;の横の[ファイルを選択] ボタンを押して、保存しておいた認証鍵を選択し、[Upload Key] ボタンを押して、認証鍵をアップロードして下さい。</p>
@@ -178,8 +178,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>3.6. BLEフィルター設定<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h2>3.6. BLEフィルター設定<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>レンジャーシステムズのBLEゲートウェイは、周囲の受信可能なBeaconを全て受信する仕様です。目的のセンサーのBeaconだけを受信するには、BLEフィルター設定を行います。今回のハンズオンでは、温湿度センサー(iBS01T)を使用しますので、BLE Beaconのパターン設定を行います。最後に、[Save] ボタンを押して設定を保存します。</p>
 <p>この設定により、周囲のBeaconの中から、温湿度センサー(iBS01T)のBeaconだけを取得できるようになります。設定画面上部のRSSIは、取得するBeaconの電波強度です。近くのBeaconだけを受信したい場合に使用します。今回は設定しません。</p>
 <p>まだ、Rebootしないで下さい。</p>
@@ -207,8 +207,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id8">
-<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id6">
+<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTにデータを送信する際、ゲートウェイは、時刻情報を付加します。
 「System」タブをクリックし、タイムサーバーの設定を行います。
 この設定を行わないと、センサーデータの取得日時が1970年になってしまいますので、必ず設定して下さい。&#8221;NTP Setting&#8221; に下記を設定してください。</p>
@@ -244,8 +244,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id9">
-<h2>3.8. WiFi設定<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id7">
+<h2>3.8. WiFi設定<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
 [Wi-Fi] タブをクリックし、Wi-Fi設定画面に移動します。</p>
 <img alt="_images/wifi.png" src="_images/wifi.png" />
@@ -264,13 +264,13 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id10">
-<h2>3.9. 最終確認<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id8">
+<h2>3.9. 最終確認<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイの設定を再度確認して下さい。
 ゲストWiFiを使用している場合、Reboot後にゲートウェイのIPアドレスを知る事が難しいため、ゲートウェイの再設の変更が出来なくなる場合があります。その場合、ゲートウェイを初期化して、最初から設定をやり直す必要があります。ご注意下さい。</p>
 </div>
-<div class="section" id="id11">
-<h2>3.10. 再起動<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id9">
+<h2>3.10. 再起動<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Reboot」タブをクリックし、ゲートウェイを再起動して下さい。</p>
 <img alt="_images/reboot.png" src="_images/reboot.png" />
 <div class="line-block">
@@ -278,8 +278,8 @@
 </div>
 <p>念のため、一度、USBケーブルを抜いて再起動して下さい。</p>
 </div>
-<div class="section" id="id12">
-<h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id10">
+<h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>センサーのスライドスイッチをスライドさせて、電源を入れて下さい。</p>
 <p>Beaconの送信が始まります。</p>
 <img alt="_images/sensor-power-on-off.png" src="_images/sensor-power-on-off.png" />
@@ -302,13 +302,13 @@
 <li><a class="reference external" href="#id2">3.2. ゲートウェイを初期化する</a></li>
 <li><a class="reference external" href="#wifi">3.3. ゲートウェイにWiFiで接続する</a></li>
 <li><a class="reference external" href="#id3">3.4. クラウド接続の設定</a></li>
-<li><a class="reference external" href="#id6">3.5. 証明書の登録</a></li>
-<li><a class="reference external" href="#id7">3.6. BLEフィルター設定</a></li>
-<li><a class="reference external" href="#id8">3.7. タイムサーバーの設定</a></li>
-<li><a class="reference external" href="#id9">3.8. WiFi設定</a></li>
-<li><a class="reference external" href="#id10">3.9. 最終確認</a></li>
-<li><a class="reference external" href="#id11">3.10. 再起動</a></li>
-<li><a class="reference external" href="#id12">3.11. センサーの電源を入れる</a></li>
+<li><a class="reference external" href="#id4">3.5. 証明書の登録</a></li>
+<li><a class="reference external" href="#id5">3.6. BLEフィルター設定</a></li>
+<li><a class="reference external" href="#id6">3.7. タイムサーバーの設定</a></li>
+<li><a class="reference external" href="#id7">3.8. WiFi設定</a></li>
+<li><a class="reference external" href="#id8">3.9. 最終確認</a></li>
+<li><a class="reference external" href="#id9">3.10. 再起動</a></li>
+<li><a class="reference external" href="#id10">3.11. センサーの電源を入れる</a></li>
 </ul>
 </li>
 </ul>
@@ -353,7 +353,7 @@
         <li class="right" >
           <a href="02.html" title="2. AWS IoT基本設定"
              >前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. シナリオ1: センサーデータをS3に保存する &mdash; awsiot-handson-dojo-basic v0.0 documentation</title>
+    <title>5. シナリオ1: センサーデータをS3に保存する &mdash; awsiot-handson-dojo-basic-ble v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -20,8 +20,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
-    <link rel="next" title="6. シナリオ2: センサーデータを可視化する" href="06.html" />
+    <link rel="top" title="awsiot-handson-dojo-basic-ble v0.0 documentation" href="index.html" />
+    <link rel="next" title="6. シナリオ2: センサーデータを可視化する-1" href="06.html" />
     <link rel="prev" title="4. センサーデータの確認" href="04.html" /> 
   </head>
   <body>
@@ -32,12 +32,12 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="06.html" title="6. シナリオ2: センサーデータを可視化する"
+          <a href="06.html" title="6. シナリオ2: センサーデータを可視化する-1"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="04.html" title="4. センサーデータの確認"
              accesskey="P">前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -115,7 +115,7 @@
 </div>
 <div class="section" id="lambda">
 <h2>5.2. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。</p>
+<p>はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でアップロードします。</p>
 <p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip</a></p>
 <p>サービス一覧から[Lambda] をクリックして開きます。</p>
 <img alt="_images/lambda.png" src="_images/lambda.png" />
@@ -137,7 +137,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Amazon S3にLambda関数が保存してありますので、URLを指定してアップロードします。
+<p>ダウンロード済みのLambda関数のzipファイルをアップロードします。
 下記のような画面が表示されるので、必要事項を入力して下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。</p>
 <table border="1" class="docutils">
@@ -160,7 +160,7 @@
 <tr><td>コード エントリ タイプ</td>
 <td>ZIPファイルをアップロード</td>
 </tr>
-<tr><td>S3 リンクの URL</td>
+<tr><td>関数パッケージ</td>
 <td>ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)</td>
 </tr>
 <tr><td>ロール</td>
@@ -500,7 +500,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
                                   title="前の章へ">4. センサーデータの確認</a></p>
             <h4>次のトピックへ</h4>
             <p class="topless"><a href="06.html"
-                                  title="次の章へ">6. シナリオ2: センサーデータを可視化する</a></p>
+                                  title="次の章へ">6. シナリオ2: センサーデータを可視化する-1</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/05.txt"
@@ -530,12 +530,12 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="06.html" title="6. シナリオ2: センサーデータを可視化する"
+          <a href="06.html" title="6. シナリオ2: センサーデータを可視化する-1"
              >次へ</a> |</li>
         <li class="right" >
           <a href="04.html" title="4. センサーデータの確認"
              >前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

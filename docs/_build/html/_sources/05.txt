@@ -71,7 +71,7 @@ S3の設定画面が表示されれます。[バケットを作成する] ボタ
 データ変換用のLambda関数を準備する
 ======================================
 
-はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。
+はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でアップロードします。
 
 https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip
 
@@ -99,7 +99,7 @@ Lambda関数の作成画面が表示されるので、サーチボックスに"F
 
 |
 
-Amazon S3にLambda関数が保存してありますので、URLを指定してアップロードします。
+ダウンロード済みのLambda関数のzipファイルをアップロードします。
 下記のような画面が表示されるので、必要事項を入力して下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。
 
@@ -108,8 +108,8 @@ Amazon S3にLambda関数が保存してありますので、URLを指定して�
 ======================== =======================================
 名前                        ranger-raw-data-to-json-<参加者番号>
 説明                        An Amazon Kinesis Firehose stream processor that converts input records from BLE GW format to JSON.
-コード エントリ タイプ         ZIPファイルをアップロード
-S3 リンクの URL              ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)
+コード エントリ タイプ             ZIPファイルをアップロード
+関数パッケージ                    ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)
 ロール                      カスタムロールの作成
 ======================== =======================================
 

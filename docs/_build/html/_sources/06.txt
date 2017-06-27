@@ -1,146 +1,140 @@
 =====================================
-シナリオ2: センサーデータを可視化する
+シナリオ2: センサーデータを可視化する-1
 =====================================
 
-Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaでグラフ表示します。データ変換には、シナリオ1で使用したLambda関数を使用します。
+LambdaでJSON形式に変換されたセンサーデータをAWS IoTへトピック名を換えてPublishし、そのトピックをWebアプリケーションでSubscribeしグラフ表示します。
 
 .. image:: images/06/overview.png
 
 |
 
-ElasticSearch Serviceのドメインを作成する
-==============================================
+データ変換用のLambda関数を準備する
+======================================
 
-サービス一覧から[ElasticSearch Service] をクリックして開きます。
+レンジャーシステムズ製のBLEゲートウェイがpublishするトピックは、"sensor/<参加者番号>" でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTに再度publishします。
 
-.. image:: images/06/es.png
+まず、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でアップロードします。
 
-|
 
-Elasticsearch Serviceの画面が開きますので、[Get started] をクリックして下さい。
+https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/sensor-raw-data-to-json-mqtt-publish.zip
 
-.. image:: images/06/es-get-started.png
+サービス一覧から[Lambda] をクリックして開きます。
 
-|
-
-Create Elasticsearch domain画面になります。
-
-Elasticsearch domain nameに、"firehose-to-es-domain-<参加者番号>" と入力して、[Next]をクリックして下さい。
-
-.. image:: images/06/cretate-es-domain.png
+.. image:: images/05/lambda.png
 
 |
 
-次の画面では、何も入力せずに、[Next]をクリックして下さい。
-Set the domain access policy toで、"Allow open access to the domain"を選択して下さい。
+Lambda関数の設定画面が表示されるので、[Lambda 関数の作成] ボタンをクリックします。
 
-.. image:: images/06/domain-access-policy.png
-
-|
-
-確認画面が表示されるので、I accept the risk をチェックし、[OK] を押して下さい。
-
-.. image:: images/06/domain-access-policy-risk-confirm.png
+.. image:: images/06/create-lambda-func.png
 
 |
 
-access policyが表示されるので、[Next]をクリックして下さい。
+Lambda関数の作成画面が表示されるので、[Blunk Function] もしくは、[ブランク関数]をクリックします。
 
-.. image:: images/06/domain-access-policy-2.png
-
-|
-
-確認画面が出てきますので、[Confirm and create]をクリックして下さい。
-Elasticsearch ドメインが出来るまで、数分かかります。
-
-.. image:: images/06/confirm-create.png
+.. image:: images/06/blank-function.png
 
 |
 
-Kinesis Firehoseの設定
-===============================
+トリガーの設定画面が表示されるので、[次へ]をクリックします。
 
-サービス一覧から[Kinesis]をクリックして開きます。
-
-Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。
-
-[Create Delivery Stream] をクリックして下さい。
-
-.. image:: images/05/create-delivery-stream.png
+.. image:: images/06/lambda-trigger.png
 
 |
 
-[Create Delivery Stream] をクリックして下さい。
+ダウンロード済みのLambda関数のZIPファイルをアップロードします。
+下記のような画面が表示されるので、必要事項を入力し、[アップロード] ボタンをクリックして、アップロードして下さい。
+ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。
 
-DestinationをElasticsearch Serviceとして、Delivery stream nameを設定し、先ほど設定したElasticsearch ドメインを選んで、[Next] をクリックして下さい。
+=========================== =======================================
+項目                          設定
+=========================== =======================================
+名前                           sensor-raw-data-to-json-mqtt-publish-<参加者番号>
+説明                           To convert input raw data from BLE GW to JSON
+ランタイム                       Python 2.7
+コード エントリ タイプ                 ZIPファイルをアップロード
+関数パッケージ                        sensor-raw-data-to-json-mqtt-publish.zip (先ほどダウンロードしたもの)
+ロール                         カスタムロールの作成
+=========================== =======================================
 
-======================= =======================================
-項目                      設定
-======================= =======================================
-Destination              Amazon Elasticsearch Service
-Delivery stream name     sensor-data-to-es-<参加者番号>
-Elasticsearch domain     firehose-to-es-domain-<参加者番号>
-Index                    sensordata
-Type                     scenario2
-S3 bucket                sensor-data-<参加者番号>
-======================= =======================================
 
-.. image:: images/06/cretae-delivery-stream.png
+.. image:: images/06/lambda-1.png
 
 |
 
-Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。
 
 =================== =======================================
 項目                    設定
 =================== =======================================
-Data transformation    Enable
-Lambda function        ranger-raw-data-to-json-<参加者番号>
-Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
-Error Logging          Disable
-IAM role               Firehose delivery IAM role
+IAM ロール              新しいIAMロールの作成
+ロール名                lambda_awsiot_mqtt_publish-<参加者番号>
 =================== =======================================
 
-.. image:: images/06/cretae-delivery-stream-2.png
-
-.. image:: images/06/cretae-delivery-stream-3.png
+.. image:: images/06/lambda-role.png
 
 |
 
-IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
+[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。
 
-"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。
-
-=================== =======================================
-項目                    設定
-=================== =======================================
-IAM ロール              新しい IAMロールの作成
-ロール名                firehose_delivery_role_es-<参加者番号>
-=================== =======================================
-
-.. image:: images/06/firehose-iam-role.png
+.. image:: images/06/lambda-role-2.png
 
 |
 
-Firehoseの設定画面で、[Next] をクリックして下さい。
+::
 
-.. image:: images/06/cretae-delivery-stream-4.png
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": "iot:*",
+              "Resource": "*"
+          },
+          {
+              "Action": [
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:logs:*:*:*"
+          }
+      ]
+  }
 
 |
 
-最後に、[Create Delivery Stream] をクリックして下さい。
 
-.. image:: images/06/cretae-delivery-stream-5.png
+ロールが[既存のロール] に変更され、ロール名として、"lambda_awsiot_mqtt_publish-<参加者番号>" が表示されていることを確認し、[次へ] をクリックして下さい。
 
-|
-
-Elasticsearch Delivery Streamsの作成が開始されました。
-
-.. image:: images/06/cretae-delivery-stream-6.png
+.. image:: images/06/lambda-role-3.png
 
 |
 
-Kinesis Firehose用のAWS IoT ルールを作成
+確認画面が表示されますので、下までスクロースし、[関数の作成] をクリックして下さい。
+
+.. image:: images/05/lambda-create.png
+
+|
+
+Lambda関数の作成に成功すると、下記の様な画面が表示されます。
+
+.. image:: images/06/edit-lambda-func.png
+
+|
+
+Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、'us-east-1')
+
+目的のセンサーからのデータだけを取り込むために、Lambda関数内の"my_temphumid_sensor_mac" を修正します。
+ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。","カンマで区切れば、複数のセンサーの登録も可能です。
+
+.. image:: images/06/edit-lambda-func-2.png
+.. image:: images/05/src_mac.png
+
+|
+
+Lambda起動用のAWS IoT ルールを作成
 =================================================
 
 サービス一覧から[AWS IoT]をクリックして開きます。
@@ -158,10 +152,10 @@ Kinesis Firehose用のAWS IoT ルールを作成
 下記の項目を入力し、[Add action]をクリックします。
 
 ============= ====================================
-設定項目         値
+設定項目             値
 ============= ====================================
-Name	         iotrule_firehose_es_<参加者番号>
-Attribute	     * (＊ アスタリスク)
+Name	         awsiot_lambda_direct_<参加者番号>
+Attribute	     encode(*, 'base64') as payload, topic() as topic_name
 Topic filter   sensor/<参加者番号>
 ============= ====================================
 
@@ -169,20 +163,37 @@ Topic filter   sensor/<参加者番号>
 
 |
 
-"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action] をクリックします。
+※ レンジャーシステムズ製のBLEゲートウェイが送信するデータは、CSV形式であるため、Lambdaで受け取る事が出来ません。
+  ルールエンジンの組み込み関数 "Encode()"を使用する事で、非JSONのデータをエンコードし、Lambdaに渡せる様になります。
+  今回は、キー payloadとして、センサーデータをエンコードしています。
+  詳しくは、下記をご参照下さい。
+  http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html
+  topic() as topic_name は、受信したトピック名 "sensor/<参加者番号>" をキー "topic_name"として、Lambdaに渡しています。
+  実際にLambdaが受け取っているデータは、下記になります。
 
-.. image:: images/05/select-action.png
+::
+
+  {
+    'topic_name': 'sensor/<参加者番号>',
+    'payload': 'JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K'
+  }
 
 |
 
-Stream nameで、sensor-data-to-es-<参加者番号> を選択し、シナリオ1で作成したIAM roleを選択し、[Update role] をクリックします。
-Successfully updated role. と表示されたら、[Add action] をクリックします。
+"Invoke a Lambda function passing the message data" を選択し、[Confgure action] をクリックします。
+
+.. image:: images/06/select-action-1.png
+.. image:: images/06/select-action-2.png
+
+|
+
+Function nameで、sensor-data-to-es-<参加者番号> を選択し、[Add action] をクリックします。
+この時点で、
 
 ============= ====================================
-設定項目         値
+設定項目           値
 ============= ====================================
-Stream name     sensor-data-to-es-<参加者番号>
-IAM role name   IOT_to_Kinesis_Firehose-<参加者番号>
+Function name   sensor-raw-data-to-json-mqtt-publish-<参加者番号>
 ============= ====================================
 
 .. image:: images/06/add-action.png
@@ -191,139 +202,87 @@ IAM role name   IOT_to_Kinesis_Firehose-<参加者番号>
 
 Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。
 
-.. image:: images/06/create-rule-3.png
+.. image:: images/06/create-rule-2.png
 
 |
 
-Kibanaでデータを確認
-==============================
+Lambda関数でpublishされたデータを確認する
+============================================
 
-マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。
+Gatewayがpublishするトピックは、"sensor/<参加者番号> でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTにpublishしています。AWS IoTのTestから、変換されたデータを確認してみましょう。
 
-ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。
+テスト画面を表示します。AWS IoTのメニューから[Test]をクリックすると下記の画面が表示されます。
+"Subscription topic" に "sensor/<参加者番号>/#" と入力し、[Subscribe to topic] ボタンを押します。
 
-.. image:: images/06/es-dashboard.png
-
-|
-
-[Domain]のいリンクをクリックして開きます。[Kibana]のリンクをクリックして開きます。
-
-.. image:: images/06/kibana-link.png
+.. image:: images/06/test.png
 
 |
 
-Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。
-60秒周期でElasticSearch Serviceにデータが追加される設定になっているため、@timestamp 現れるまで数分かかることがあります。
+左に、sensor/<参加者番号>/# と表示されますので、クリックします。
 
-======================  =========================
-設定項目                  値
-======================  =========================
-Index name or pattern   sensordata
-Time-field names        @timestamp (リストから選択)
-======================  =========================
+Lambda関数が正しくデータ変換できていれば、下記の様にトピック名 "sensor/<参加者番号>/json" として、JSON形式に変換されたデータが表示されます。
 
-.. image:: images/06/kibana-index-create.png
+.. image:: images/06/test-2.png
 
 |
 
-tempreature, humidity, rssi, @timestamp のフィールドが表示されている事を確認します。
+JSON形式に変換されたデータ、下記のフォーマットになっています。
 
-.. image:: images/06/kibana-indices.png
+::
 
-|
-
-メニューにある[Discover]をクリックし、データが届いている事を確認します。
-
-.. image:: images/06/kibana-discover.png
-
-|
-
-メニューにある[Visualize]をクリックし、グラフの種類として[Line chart]を選択します。
-
-.. image:: images/06/kibana-visualize.png
-
-|
-
-[From a new search]から、"sensordata"を選択します。
-
-.. image:: images/06/kibana-sensordata.png
+  {
+    "dst_mac": "AC83F3A041D2",             ← ゲートウェイのMACアドレス
+    "timestamp": "2017-06-12T06:21:22",    ← タイムスタンプ
+    "tempreature": 23.41,                  ← 温度
+    "humidity": 43,                        ← 湿度
+    "vbat": 3.34,                          ← 電池電圧
+    "unixtime": "1497248482",              ← UNIX形式のタイムスタンプ (1970/01/01 00:00:00 UTC) からの経過秒数)
+    "rssi": -64,                           ← Beaconの電波強度
+    "sensor": "Tempreature and Humidity",  ← センサーのタイプ
+    "src_mac": "FFEAD7E638B8"              ← センサーのMACアドレス
+  }
 
 |
 
-データに[sensordata]が選択され、Y軸にサンプル数(Count)が設定されている事を確認し、X軸の設定を開始するために[X-Axis]をクリックします。
+表示されない場合は、Lambda関数内の"my_temphumid_sensor_mac" の修正が間違っていないかなど、確認して下さい。
 
-.. image:: images/06/kibana-count.png
+Webアプリケーションでデータを確認
+=======================================
 
-|
+下記のURLをクリックし、WebアプリケーションをPCのWebブラウザで開いて下さい。
+      http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com
 
-[Aggregation]に[Data Histogram]を選択し[▶]をクリックすると、右側にグラフが表示されることを確認します。
+下記のデモ画面が表示されますので、[Auto Refresh with AWS IoT Data]をクリックして、AWS IoTのデータを表示する画面に切り替えて下さい。
 
-.. image:: images/06/kibana-count-graph.png
-
-|
-
-[Save] ボタンをクリックし、[Title]に[Sensor Data - Sampling Count]と入力し、[Save]をクリックします。
-
-.. image:: images/06/kibana-save-count.png
+.. image:: images/06/web-app-open.png
 
 |
 
-保存されたら、Y軸の設定を表示し、[Aggregation]を[Average]に変更し、[Field]に[tempreature](温度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。
+AWS IoTのグラフ表示画面が表示されます。
 
-.. image:: images/06/kibana-temp.png
-
-|
-
-[Add metrics]をクリックし、湿度データを追加します。[Y-Axis]をクリックし、[Aggregation]を[Average]に変更し、[Field]に[humidity](湿度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。
-
-.. image:: images/06/kibana-humid.png
+.. image:: images/06/web-app-iot.png
 
 |
 
-Beaconの電波強度(rssi)も同様に追加します。
+エンドポイントやトピック名などの必要事項を入力し、最後に [Start]ボタンを押して下さい。
 
-.. image:: images/06/kibana-rssi.png
+======================= ======================================
+項目                       値
+======================= ======================================
+Endpoint URL              記録しておいたEndpoint情報
+accessKeyId               AWSアカウント もしくは、ユーザーのアクセスキーID
+secretAccessKey           AWSアカウント もしくは、ユーザーのシークレットアクセスキー
+Topic                     sensor/<参加者番号>/json
+Display last n data       200 (グラフに表示する過去のデータ数)
+======================= ======================================
 
-|
+※ アクセスキーは、AWSにアクセスするための認証情報です。
+  詳しくは、下記をご参照下さい。
+  https://aws.amazon.com/jp/developers/access-keys/
 
-[Save] ボタンをクリックし、[Title]に[Sensor Data - temp - humid - rssi]と入力し、[Save]をクリックします。
+暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。
 
-.. image:: images/06/kibana-save-temphumidrssi.png
-
-|
-
-メニューにある[Dashboard]をクリックし、[Add] ボタンをクリックします。
-
-.. image:: images/06/kibana-dashboard.png
-
-|
-
-[ Sensor Data - temp - humid - rssi]をクリックし、下側にグラフが追加されたのを確認します。
-
-.. image:: images/06/kibana-dashboard-add-temphumidrssi.png
-
-|
-
-[Sensor Data - Sampling Count]をクリックし、下側にグラフが追加されたのを確認します。
-
-.. image:: images/06/kibana-dashboard-add-count.png
-
-|
-
-[Save] ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。
-
-.. image:: images/06/kibana-dashboard-save.png
-
-|
-
-右上の[Last 15 minutes]をクリックすると、表示する期間や表示を自動更新する頻度を変更できます。
-
-.. image:: images/06/kibana-update.png
-
-|
-
-グラフをマウスで操作して、位置やサイズを変更することもできます。
-
-.. image:: images/06/kibana-size-pos.png
+.. image:: images/06/web-app-linechart.png
 
 |

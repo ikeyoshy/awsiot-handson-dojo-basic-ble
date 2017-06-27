@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>6. シナリオ2: センサーデータを可視化する &mdash; awsiot-handson-dojo-basic v0.0 documentation</title>
+    <title>6. シナリオ2: センサーデータを可視化する-1 &mdash; awsiot-handson-dojo-basic-ble v0.0 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -20,8 +20,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="top" title="awsiot-handson-dojo-basic v0.0 documentation" href="index.html" />
-    <link rel="next" title="7. その他の設定（オプション）" href="08.html" />
+    <link rel="top" title="awsiot-handson-dojo-basic-ble v0.0 documentation" href="index.html" />
+    <link rel="next" title="7. シナリオ2+: センサーデータを可視化する-2" href="07.html" />
     <link rel="prev" title="5. シナリオ1: センサーデータをS3に保存する" href="05.html" /> 
   </head>
   <body>
@@ -32,12 +32,12 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="08.html" title="7. その他の設定（オプション）"
+          <a href="07.html" title="7. シナリオ2+: センサーデータを可視化する-2"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
              accesskey="P">前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -47,68 +47,44 @@
           <div class="body">
             
   <div class="section" id="id1">
-<h1>6. シナリオ2: センサーデータを可視化する<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>Lambdaでデータ変換されたセンサーデータをElasticSearch Serviceへ送り、Kibanaでグラフ表示します。データ変換には、シナリオ1で使用したLambda関数を使用します。</p>
+<h1>6. シナリオ2: センサーデータを可視化する-1<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>LambdaでJSON形式に変換されたセンサーデータをAWS IoTへトピック名を換えてPublishし、そのトピックをWebアプリケーションでSubscribeしグラフ表示します。</p>
 <img alt="_images/overview2.png" src="_images/overview2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="section" id="elasticsearch-service">
-<h2>6.1. ElasticSearch Serviceのドメインを作成する<a class="headerlink" href="#elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>サービス一覧から[ElasticSearch Service] をクリックして開きます。</p>
-<img alt="_images/es.png" src="_images/es.png" />
+<div class="section" id="lambda">
+<h2>6.1. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>レンジャーシステムズ製のBLEゲートウェイがpublishするトピックは、&#8221;sensor/&lt;参加者番号&gt;&#8221; でしたが、Lambda関数でJSON形式に変換し、トピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、AWS IoTに再度publishします。</p>
+<p>まず、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でアップロードします。</p>
+<p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/sensor-raw-data-to-json-mqtt-publish.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/sensor-raw-data-to-json-mqtt-publish.zip</a></p>
+<p>サービス一覧から[Lambda] をクリックして開きます。</p>
+<img alt="_images/lambda.png" src="_images/lambda.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Elasticsearch Serviceの画面が開きますので、[Get started] をクリックして下さい。</p>
-<img alt="_images/es-get-started.png" src="_images/es-get-started.png" />
+<p>Lambda関数の設定画面が表示されるので、[Lambda 関数の作成] ボタンをクリックします。</p>
+<img alt="_images/create-lambda-func.png" src="_images/create-lambda-func.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Create Elasticsearch domain画面になります。</p>
-<p>Elasticsearch domain nameに、&#8221;firehose-to-es-domain-&lt;参加者番号&gt;&#8221; と入力して、[Next]をクリックして下さい。</p>
-<img alt="_images/cretate-es-domain.png" src="_images/cretate-es-domain.png" />
+<p>Lambda関数の作成画面が表示されるので、[Blunk Function] もしくは、[ブランク関数]をクリックします。</p>
+<img alt="_images/blank-function.png" src="_images/blank-function.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>次の画面では、何も入力せずに、[Next]をクリックして下さい。
-Set the domain access policy toで、&#8221;Allow open access to the domain&#8221;を選択して下さい。</p>
-<img alt="_images/domain-access-policy.png" src="_images/domain-access-policy.png" />
+<p>トリガーの設定画面が表示されるので、[次へ]をクリックします。</p>
+<img alt="_images/lambda-trigger.png" src="_images/lambda-trigger.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>確認画面が表示されるので、I accept the risk をチェックし、[OK] を押して下さい。</p>
-<img alt="_images/domain-access-policy-risk-confirm.png" src="_images/domain-access-policy-risk-confirm.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>access policyが表示されるので、[Next]をクリックして下さい。</p>
-<img alt="_images/domain-access-policy-2.png" src="_images/domain-access-policy-2.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>確認画面が出てきますので、[Confirm and create]をクリックして下さい。
-Elasticsearch ドメインが出来るまで、数分かかります。</p>
-<img alt="_images/confirm-create.png" src="_images/confirm-create.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</div>
-<div class="section" id="kinesis-firehose">
-<h2>6.2. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>サービス一覧から[Kinesis]をクリックして開きます。</p>
-<p>Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。</p>
-<p>[Create Delivery Stream] をクリックして下さい。</p>
-<img alt="_images/create-delivery-stream.png" src="_images/create-delivery-stream.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Create Delivery Stream] をクリックして下さい。</p>
-<p>DestinationをElasticsearch Serviceとして、Delivery stream nameを設定し、先ほど設定したElasticsearch ドメインを選んで、[Next] をクリックして下さい。</p>
+<p>ダウンロード済みのLambda関数のZIPファイルをアップロードします。
+下記のような画面が表示されるので、必要事項を入力し、[アップロード] ボタンをクリックして、アップロードして下さい。
+ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="37%" />
-<col width="63%" />
+<col width="25%" />
+<col width="75%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -116,66 +92,31 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>Destination</td>
-<td>Amazon Elasticsearch Service</td>
+<tr><td>名前</td>
+<td>sensor-raw-data-to-json-mqtt-publish-&lt;参加者番号&gt;</td>
 </tr>
-<tr><td>Delivery stream name</td>
-<td>sensor-data-to-es-&lt;参加者番号&gt;</td>
+<tr><td>説明</td>
+<td>To convert input raw data from BLE GW to JSON</td>
 </tr>
-<tr><td>Elasticsearch domain</td>
-<td>firehose-to-es-domain-&lt;参加者番号&gt;</td>
+<tr><td>ランタイム</td>
+<td>Python 2.7</td>
 </tr>
-<tr><td>Index</td>
-<td>sensordata</td>
+<tr><td>コード エントリ タイプ</td>
+<td>ZIPファイルをアップロード</td>
 </tr>
-<tr><td>Type</td>
-<td>scenario2</td>
+<tr><td>関数パッケージ</td>
+<td>sensor-raw-data-to-json-mqtt-publish.zip (先ほどダウンロードしたもの)</td>
 </tr>
-<tr><td>S3 bucket</td>
-<td>sensor-data-&lt;参加者番号&gt;</td>
-</tr>
-</tbody>
-</table>
-<img alt="_images/cretae-delivery-stream.png" src="_images/cretae-delivery-stream.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="24%" />
-<col width="76%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">項目</th>
-<th class="head">設定</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Data transformation</td>
-<td>Enable</td>
-</tr>
-<tr><td>Lambda function</td>
-<td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Buffer interval</td>
-<td>60 (Elasticsearch Serviceに60秒周期でデータが追加されます)</td>
-</tr>
-<tr><td>Error Logging</td>
-<td>Disable</td>
-</tr>
-<tr><td>IAM role</td>
-<td>Firehose delivery IAM role</td>
+<tr><td>ロール</td>
+<td>カスタムロールの作成</td>
 </tr>
 </tbody>
 </table>
-<img alt="_images/cretae-delivery-stream-2.png" src="_images/cretae-delivery-stream-2.png" />
-<img alt="_images/cretae-delivery-stream-3.png" src="_images/cretae-delivery-stream-3.png" />
+<img alt="_images/lambda-1.png" src="_images/lambda-1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM roleの設定画面が開きます。</p>
-<p>&#8220;新しい IAMロールの作成&#8221; を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。</p>
+<p>IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="31%" />
@@ -188,35 +129,72 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </thead>
 <tbody valign="top">
 <tr><td>IAM ロール</td>
-<td>新しい IAMロールの作成</td>
+<td>新しいIAMロールの作成</td>
 </tr>
 <tr><td>ロール名</td>
-<td>firehose_delivery_role_es-&lt;参加者番号&gt;</td>
+<td>lambda_awsiot_mqtt_publish-&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
-<img alt="_images/firehose-iam-role1.png" src="_images/firehose-iam-role1.png" />
+<img alt="_images/lambda-role1.png" src="_images/lambda-role1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Firehoseの設定画面で、[Next] をクリックして下さい。</p>
-<img alt="_images/cretae-delivery-stream-4.png" src="_images/cretae-delivery-stream-4.png" />
+<p>[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
+<img alt="_images/lambda-role-21.png" src="_images/lambda-role-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>最後に、[Create Delivery Stream] をクリックして下さい。</p>
-<img alt="_images/cretae-delivery-stream-5.png" src="_images/cretae-delivery-stream-5.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;iot:*&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;logs:CreateLogGroup&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;logs:CreateLogStream&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;logs:PutLogEvents&quot;</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:logs:*:*:*&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Elasticsearch Delivery Streamsの作成が開始されました。</p>
-<img alt="_images/cretae-delivery-stream-6.png" src="_images/cretae-delivery-stream-6.png" />
+<p>ロールが[既存のロール] に変更され、ロール名として、&#8221;lambda_awsiot_mqtt_publish-&lt;参加者番号&gt;&#8221; が表示されていることを確認し、[次へ] をクリックして下さい。</p>
+<img alt="_images/lambda-role-3.png" src="_images/lambda-role-3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>確認画面が表示されますので、下までスクロースし、[関数の作成] をクリックして下さい。</p>
+<img alt="_images/lambda-create.png" src="_images/lambda-create.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Lambda関数の作成に成功すると、下記の様な画面が表示されます。</p>
+<img alt="_images/edit-lambda-func1.png" src="_images/edit-lambda-func1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、&#8217;us-east-1&#8217;)</p>
+<p>目的のセンサーからのデータだけを取り込むために、Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; を修正します。
+ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。&#8221;,&#8221;カンマで区切れば、複数のセンサーの登録も可能です。</p>
+<img alt="_images/edit-lambda-func-21.png" src="_images/edit-lambda-func-21.png" />
+<img alt="_images/src_mac.png" src="_images/src_mac.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="kinesis-firehoseaws-iot">
-<h2>6.3. Kinesis Firehose用のAWS IoT ルールを作成<a class="headerlink" href="#kinesis-firehoseaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="lambdaaws-iot">
+<h2>6.2. Lambda起動用のAWS IoT ルールを作成<a class="headerlink" href="#lambdaaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
 <img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
 <div class="line-block">
@@ -230,8 +208,8 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <p>下記の項目を入力し、[Add action]をクリックします。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="27%" />
-<col width="73%" />
+<col width="18%" />
+<col width="82%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">設定項目</th>
@@ -240,13 +218,10 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </thead>
 <tbody valign="top">
 <tr><td>Name</td>
-<td>iotrule_firehose_es_&lt;参加者番号&gt;</td>
+<td>awsiot_lambda_direct_&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Attribute</td>
-<td><ul class="first last simple">
-<li>(＊ アスタリスク)</li>
-</ul>
-</td>
+<td>encode(<a href="#id2"><span class="problematic" id="id3">*</span></a>, &#8216;base64&#8217;) as payload, topic() as topic_name</td>
 </tr>
 <tr><td>Topic filter</td>
 <td>sensor/&lt;参加者番号&gt;</td>
@@ -257,17 +232,36 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;Send messages to an Amazon Kinesis Firehose stream&#8221; を選択し、[Confgure action] をクリックします。</p>
-<img alt="_images/select-action.png" src="_images/select-action.png" />
+<dl class="docutils">
+<dt>※ レンジャーシステムズ製のBLEゲートウェイが送信するデータは、CSV形式であるため、Lambdaで受け取る事が出来ません。</dt>
+<dd>ルールエンジンの組み込み関数 &#8220;Encode()&#8221;を使用する事で、非JSONのデータをエンコードし、Lambdaに渡せる様になります。
+今回は、キー payloadとして、センサーデータをエンコードしています。
+詳しくは、下記をご参照下さい。
+<a class="reference external" href="http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html">http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html</a>
+topic() as topic_name は、受信したトピック名 &#8220;sensor/&lt;参加者番号&gt;&#8221; をキー &#8220;topic_name&#8221;として、Lambdaに渡しています。
+実際にLambdaが受け取っているデータは、下記になります。</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s1">&#39;topic_name&#39;</span><span class="p">:</span> <span class="s1">&#39;sensor/&lt;参加者番号&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;payload&#39;</span><span class="p">:</span> <span class="s1">&#39;JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Stream nameで、sensor-data-to-es-&lt;参加者番号&gt; を選択し、シナリオ1で作成したIAM roleを選択し、[Update role] をクリックします。
-Successfully updated role. と表示されたら、[Add action] をクリックします。</p>
+<p>&#8220;Invoke a Lambda function passing the message data&#8221; を選択し、[Confgure action] をクリックします。</p>
+<img alt="_images/select-action-1.png" src="_images/select-action-1.png" />
+<img alt="_images/select-action-2.png" src="_images/select-action-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Function nameで、sensor-data-to-es-&lt;参加者番号&gt; を選択し、[Add action] をクリックします。
+この時点で、</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="25%" />
-<col width="75%" />
+<col width="20%" />
+<col width="80%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">設定項目</th>
@@ -275,11 +269,8 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>Stream name</td>
-<td>sensor-data-to-es-&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>IAM role name</td>
-<td>IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;</td>
+<tr><td>Function name</td>
+<td>sensor-raw-data-to-json-mqtt-publish-&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -288,131 +279,97 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 <div class="line"><br /></div>
 </div>
 <p>Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。</p>
-<img alt="_images/create-rule-31.png" src="_images/create-rule-31.png" />
+<img alt="_images/create-rule-21.png" src="_images/create-rule-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="kibana">
-<h2>6.4. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。</p>
-<p>ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。</p>
-<img alt="_images/es-dashboard.png" src="_images/es-dashboard.png" />
+<div class="section" id="lambdapublish">
+<h2>6.3. Lambda関数でpublishされたデータを確認する<a class="headerlink" href="#lambdapublish" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Gatewayがpublishするトピックは、&#8221;sensor/&lt;参加者番号&gt; でしたが、Lambda関数でJSON形式に変換し、トピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、AWS IoTにpublishしています。AWS IoTのTestから、変換されたデータを確認してみましょう。</p>
+<p>テスト画面を表示します。AWS IoTのメニューから[Test]をクリックすると下記の画面が表示されます。
+&#8220;Subscription topic&#8221; に &#8220;sensor/&lt;参加者番号&gt;/#&#8221; と入力し、[Subscribe to topic] ボタンを押します。</p>
+<img alt="_images/test1.png" src="_images/test1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[Domain]のいリンクをクリックして開きます。[Kibana]のリンクをクリックして開きます。</p>
-<img alt="_images/kibana-link.png" src="_images/kibana-link.png" />
+<p>左に、sensor/&lt;参加者番号&gt;/# と表示されますので、クリックします。</p>
+<p>Lambda関数が正しくデータ変換できていれば、下記の様にトピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、JSON形式に変換されたデータが表示されます。</p>
+<img alt="_images/test-21.png" src="_images/test-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Kibanaで表示させるindexを指定します。以下の値を入力して、[Create]をクリックします。
-60秒周期でElasticSearch Serviceにデータが追加される設定になっているため、&#64;timestamp 現れるまで数分かかることがあります。</p>
+<p>JSON形式に変換されたデータ、下記のフォーマットになっています。</p>
+<div class="highlight-python"><pre>{
+  "dst_mac": "AC83F3A041D2",             ← ゲートウェイのMACアドレス
+  "timestamp": "2017-06-12T06:21:22",    ← タイムスタンプ
+  "tempreature": 23.41,                  ← 温度
+  "humidity": 43,                        ← 湿度
+  "vbat": 3.34,                          ← 電池電圧
+  "unixtime": "1497248482",              ← UNIX形式のタイムスタンプ (1970/01/01 00:00:00 UTC) からの経過秒数)
+  "rssi": -64,                           ← Beaconの電波強度
+  "sensor": "Tempreature and Humidity",  ← センサーのタイプ
+  "src_mac": "FFEAD7E638B8"              ← センサーのMACアドレス
+}</pre>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>表示されない場合は、Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; の修正が間違っていないかなど、確認して下さい。</p>
+</div>
+<div class="section" id="web">
+<h2>6.4. Webアプリケーションでデータを確認<a class="headerlink" href="#web" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<dl class="docutils">
+<dt>下記のURLをクリックし、WebアプリケーションをPCのWebブラウザで開いて下さい。</dt>
+<dd><a class="reference external" href="http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com">http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com</a></dd>
+</dl>
+<p>下記のデモ画面が表示されますので、[Auto Refresh with AWS IoT Data]をクリックして、AWS IoTのデータを表示する画面に切り替えて下さい。</p>
+<img alt="_images/web-app-open.png" src="_images/web-app-open.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>AWS IoTのグラフ表示画面が表示されます。</p>
+<img alt="_images/web-app-iot.png" src="_images/web-app-iot.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>エンドポイントやトピック名などの必要事項を入力し、最後に [Start]ボタンを押して下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="45%" />
-<col width="55%" />
+<col width="28%" />
+<col width="72%" />
 </colgroup>
 <thead valign="bottom">
-<tr><th class="head">設定項目</th>
+<tr><th class="head">項目</th>
 <th class="head">値</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>Index name or pattern</td>
-<td>sensordata</td>
+<tr><td>Endpoint URL</td>
+<td>記録しておいたEndpoint情報</td>
 </tr>
-<tr><td>Time-field names</td>
-<td>&#64;timestamp (リストから選択)</td>
+<tr><td>accessKeyId</td>
+<td>AWSアカウント もしくは、ユーザーのアクセスキーID</td>
+</tr>
+<tr><td>secretAccessKey</td>
+<td>AWSアカウント もしくは、ユーザーのシークレットアクセスキー</td>
+</tr>
+<tr><td>Topic</td>
+<td>sensor/&lt;参加者番号&gt;/json</td>
+</tr>
+<tr><td>Display last n data</td>
+<td>200 (グラフに表示する過去のデータ数)</td>
 </tr>
 </tbody>
 </table>
-<img alt="_images/kibana-index-create.png" src="_images/kibana-index-create.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>tempreature, humidity, rssi, &#64;timestamp のフィールドが表示されている事を確認します。</p>
-<img alt="_images/kibana-indices.png" src="_images/kibana-indices.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>メニューにある[Discover]をクリックし、データが届いている事を確認します。</p>
-<img alt="_images/kibana-discover.png" src="_images/kibana-discover.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>メニューにある[Visualize]をクリックし、グラフの種類として[Line chart]を選択します。</p>
-<img alt="_images/kibana-visualize.png" src="_images/kibana-visualize.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[From a new search]から、&#8221;sensordata&#8221;を選択します。</p>
-<img alt="_images/kibana-sensordata.png" src="_images/kibana-sensordata.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>データに[sensordata]が選択され、Y軸にサンプル数(Count)が設定されている事を確認し、X軸の設定を開始するために[X-Axis]をクリックします。</p>
-<img alt="_images/kibana-count.png" src="_images/kibana-count.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Aggregation]に[Data Histogram]を選択し[▶]をクリックすると、右側にグラフが表示されることを確認します。</p>
-<img alt="_images/kibana-count-graph.png" src="_images/kibana-count-graph.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Save] ボタンをクリックし、[Title]に[Sensor Data - Sampling Count]と入力し、[Save]をクリックします。</p>
-<img alt="_images/kibana-save-count.png" src="_images/kibana-save-count.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>保存されたら、Y軸の設定を表示し、[Aggregation]を[Average]に変更し、[Field]に[tempreature](温度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。</p>
-<img alt="_images/kibana-temp.png" src="_images/kibana-temp.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Add metrics]をクリックし、湿度データを追加します。[Y-Axis]をクリックし、[Aggregation]を[Average]に変更し、[Field]に[humidity](湿度)を指定します。[▶]をクリックしてグラフに適切なデータが表示されることを確認します。</p>
-<img alt="_images/kibana-humid.png" src="_images/kibana-humid.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Beaconの電波強度(rssi)も同様に追加します。</p>
-<img alt="_images/kibana-rssi.png" src="_images/kibana-rssi.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Save] ボタンをクリックし、[Title]に[Sensor Data - temp - humid - rssi]と入力し、[Save]をクリックします。</p>
-<img alt="_images/kibana-save-temphumidrssi.png" src="_images/kibana-save-temphumidrssi.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>メニューにある[Dashboard]をクリックし、[Add] ボタンをクリックします。</p>
-<img alt="_images/kibana-dashboard.png" src="_images/kibana-dashboard.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[ Sensor Data - temp - humid - rssi]をクリックし、下側にグラフが追加されたのを確認します。</p>
-<img alt="_images/kibana-dashboard-add-temphumidrssi.png" src="_images/kibana-dashboard-add-temphumidrssi.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Sensor Data - Sampling Count]をクリックし、下側にグラフが追加されたのを確認します。</p>
-<img alt="_images/kibana-dashboard-add-count.png" src="_images/kibana-dashboard-add-count.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>[Save] ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。</p>
-<img alt="_images/kibana-dashboard-save.png" src="_images/kibana-dashboard-save.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>右上の[Last 15 minutes]をクリックすると、表示する期間や表示を自動更新する頻度を変更できます。</p>
-<img alt="_images/kibana-update.png" src="_images/kibana-update.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>グラフをマウスで操作して、位置やサイズを変更することもできます。</p>
-<img alt="_images/kibana-size-pos.png" src="_images/kibana-size-pos.png" />
+<dl class="docutils">
+<dt>※ アクセスキーは、AWSにアクセスするための認証情報です。</dt>
+<dd>詳しくは、下記をご参照下さい。
+<a class="reference external" href="https://aws.amazon.com/jp/developers/access-keys/">https://aws.amazon.com/jp/developers/access-keys/</a></dd>
+</dl>
+<p>暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。</p>
+<img alt="_images/web-app-linechart.png" src="_images/web-app-linechart.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -427,11 +384,11 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
         <div class="sphinxsidebarwrapper">
             <h3><a href="index.html">目次</a></h3>
             <ul>
-<li><a class="reference external" href="#">6. シナリオ2: センサーデータを可視化する</a><ul>
-<li><a class="reference external" href="#elasticsearch-service">6.1. ElasticSearch Serviceのドメインを作成する</a></li>
-<li><a class="reference external" href="#kinesis-firehose">6.2. Kinesis Firehoseの設定</a></li>
-<li><a class="reference external" href="#kinesis-firehoseaws-iot">6.3. Kinesis Firehose用のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#kibana">6.4. Kibanaでデータを確認</a></li>
+<li><a class="reference external" href="#">6. シナリオ2: センサーデータを可視化する-1</a><ul>
+<li><a class="reference external" href="#lambda">6.1. データ変換用のLambda関数を準備する</a></li>
+<li><a class="reference external" href="#lambdaaws-iot">6.2. Lambda起動用のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#lambdapublish">6.3. Lambda関数でpublishされたデータを確認する</a></li>
+<li><a class="reference external" href="#web">6.4. Webアプリケーションでデータを確認</a></li>
 </ul>
 </li>
 </ul>
@@ -440,8 +397,8 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
             <p class="topless"><a href="05.html"
                                   title="前の章へ">5. シナリオ1: センサーデータをS3に保存する</a></p>
             <h4>次のトピックへ</h4>
-            <p class="topless"><a href="08.html"
-                                  title="次の章へ">7. その他の設定（オプション）</a></p>
+            <p class="topless"><a href="07.html"
+                                  title="次の章へ">7. シナリオ2+: センサーデータを可視化する-2</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/06.txt"
@@ -471,12 +428,12 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="08.html" title="7. その他の設定（オプション）"
+          <a href="07.html" title="7. シナリオ2+: センサーデータを可視化する-2"
              >次へ</a> |</li>
         <li class="right" >
           <a href="05.html" title="5. シナリオ1: センサーデータをS3に保存する"
              >前へ</a> |</li>
-        <li><a href="index.html">awsiot-handson-dojo-basic v0.0 documentation</a> &raquo;</li> 
+        <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
