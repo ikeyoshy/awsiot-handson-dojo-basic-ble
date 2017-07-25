@@ -155,7 +155,7 @@ Lambda起動用のAWS IoT ルールを作成
 設定項目             値
 ============= ====================================
 Name	         awsiot_lambda_direct_<参加者番号>
-Attribute	     encode(*, 'base64') as payload, topic() as topic_name
+Attribute	     encode(*, \'base64\') as payload, topic() as topic_name
 Topic filter   sensor/<参加者番号>
 ============= ====================================
 
