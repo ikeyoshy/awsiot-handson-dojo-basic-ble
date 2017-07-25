@@ -111,7 +111,7 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 ============= ============================
 Name	          awsiot-handson-policy-<参加者番号>
 Action	        iot:*
-Resource ARN	  *
+Resource ARN	  /*
 Effect	        Allow (チェックを入れて下さい)
 ============= ============================
 
