@@ -114,13 +114,10 @@
 <h2>事前準備<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <div class="section" id="web">
 <h3>Webブラウザの確認<a class="headerlink" href="#web" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<dl class="docutils">
-<dt>ハンズオンで使用するPC上のGoogle Chromeで下記のページをアクセスし、</dt>
-<dd><a class="reference external" href="http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com">http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com</a>
-グラフが下記の様にグラフが表示されることをご確認下さい。</dd>
-</dl>
+<p>ハンズオンで使用するPC上のGoogle Chromeで下記のページをアクセスし、</p>
+<p><a class="reference external" href="http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com">http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com</a></p>
+<p>下記の様にグラフが表示されることをご確認下さい。グラフがアニメーションのように動けば大丈夫です。</p>
 <img alt="_images/ng-line-chart.gif" src="_images/ng-line-chart.gif" />
-<img alt="_images/ng-line-chart.mov" src="_images/ng-line-chart.mov" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -128,9 +125,20 @@
 <div class="section" id="iam">
 <h3>IAMユーザーの作成<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>複数の参加者で1つのAWSアカウントを共用する場合は、各参加者のためにIAMユーザーを作成して頂く必要があります。</p>
+<ul class="simple">
+<li>AWS マネジメントコンソールのIAMから、「ユーザー」をクリックします。</li>
+<li>「ユーザーの追加」ボタンをクリックします。</li>
+<li>ユーザー名を付けます。</li>
+<li>「自動生成パスワード」、「AWS マネジメントコンソールへのアクセス」を有効にして、「次のステップ：アクセス権限」をクリックします。</li>
+<li>「既存のポリシーを直接アタッチ」をクリックします。</li>
+<li>「AdministratorAccess」を選択します。</li>
+<li>「次のステップ：確認」をクリックします。</li>
+<li>「ユーザーの作成」をクリックします。</li>
+<li>「csvのダウンロード」をクリックし、閉じます。</li>
+</ul>
+<p>※ アクセスキー ID、シークレットアクセスキーは、後にグラフ表示のところで使用します。その際、保存したcsvファイルを参照して下さい。</p>
 <p>参考：AWS アカウント内での IAM ユーザーの作成方法</p>
-<blockquote>
-<a class="reference external" href="http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html">http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html</a></blockquote>
+<p><a class="reference external" href="http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html">http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html</a></p>
 </div>
 </div>
 <div class="section" id="id6">

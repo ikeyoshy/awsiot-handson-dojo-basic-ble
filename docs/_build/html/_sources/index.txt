@@ -55,11 +55,12 @@ Webブラウザの確認
 -------------------------
 
 ハンズオンで使用するPC上のGoogle Chromeで下記のページをアクセスし、
-  http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com
-  グラフが下記の様にグラフが表示されることをご確認下さい。
+
+http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com
+
+下記の様にグラフが表示されることをご確認下さい。グラフがアニメーションのように動けば大丈夫です。
 
 .. image:: images/index/ng-line-chart.gif
-.. image:: images/index/ng-line-chart.mov
 
 |
 
@@ -68,9 +69,21 @@ IAMユーザーの作成
 
 複数の参加者で1つのAWSアカウントを共用する場合は、各参加者のためにIAMユーザーを作成して頂く必要があります。
 
+* AWS マネジメントコンソールのIAMから、「ユーザー」をクリックします。
+* 「ユーザーの追加」ボタンをクリックします。
+* ユーザー名を付けます。
+* 「自動生成パスワード」、「AWS マネジメントコンソールへのアクセス」を有効にして、「次のステップ：アクセス権限」をクリックします。
+* 「既存のポリシーを直接アタッチ」をクリックします。
+* 「AdministratorAccess」を選択します。
+* 「次のステップ：確認」をクリックします。
+* 「ユーザーの作成」をクリックします。
+* 「csvのダウンロード」をクリックし、閉じます。
+
+※ アクセスキー ID、シークレットアクセスキーは、後にグラフ表示のところで使用します。その際、保存したcsvファイルを参照して下さい。
+
 参考：AWS アカウント内での IAM ユーザーの作成方法
 
-  http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html
+http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html
 
 
 
