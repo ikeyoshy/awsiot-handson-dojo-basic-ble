@@ -59,6 +59,7 @@ Webブラウザの確認
   グラフが下記の様にグラフが表示されることをご確認下さい。
 
 .. image:: images/index/ng-line-chart.gif
+.. image:: images/index/ng-line-chart.mov
 
 |
 
