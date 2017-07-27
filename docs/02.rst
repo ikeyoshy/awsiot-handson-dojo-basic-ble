@@ -110,12 +110,12 @@ EndpointのURLが表示されます。このEndpointは、ゲートウェイが�
 項目            値
 ============= ============================
 Name	          awsiot-handson-policy-<参加者番号>
-Action	        iot:*
+Action	        iot:\*
 Resource ARN	  \*
 Effect	        Allow (チェックを入れて下さい)
 ============= ============================
 
-"*"は、半角の＊(アスタリスク)です。
+「*」は、半角の＊(アスタリスク)です。
 
 .. image:: images/02/create-policy-3.png
 
