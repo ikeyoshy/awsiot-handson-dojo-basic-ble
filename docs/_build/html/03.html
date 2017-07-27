@@ -180,8 +180,13 @@
 </div>
 <div class="section" id="id5">
 <h2>3.6. BLEフィルター設定<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズのBLEゲートウェイは、周囲の受信可能なBeaconを全て受信する仕様です。目的のセンサーのBeaconだけを受信するには、BLEフィルター設定を行います。今回のハンズオンでは、温湿度センサー(iBS01T)を使用しますので、BLE Beaconのパターン設定を行います。最後に、[Save] ボタンを押して設定を保存します。</p>
-<p>この設定により、周囲のBeaconの中から、温湿度センサー(iBS01T)のBeaconだけを取得できるようになります。設定画面上部のRSSIは、取得するBeaconの電波強度です。近くのBeaconだけを受信したい場合に使用します。今回は設定しません。</p>
+<p>レンジャーシステムズのBLEゲートウェイは、受信可能なBeaconを全て受信する仕様になっています。このため、BLEフィルター設定をしていなければ、<a href="#id6"><span class="problematic" id="id7">**</span></a>周囲のBeaconを全て受信し、AWS IoTに送信してしまいます。<a href="#id8"><span class="problematic" id="id9">**</span></a>今回使用する温湿度センサーが送信するBeaconだけをAWS IoTに送信させるために、<a href="#id10"><span class="problematic" id="id11">**</span></a>BLEフィルター設定**を行います。</p>
+<p>温湿度センサーは、Payload Pattern(02010612FF590080BC4D0100D80A2D00000000000000)の様なBeaconを送信します。冒頭のBLE情報、企業コード、モデル番号は、温湿度センサーの固定値です。<a href="#id12"><span class="problematic" id="id13">**</span></a>このパターンを持つBeaconだけをAWS IoTに送信させるための設定が、BLEフィルター設定となります。<a href="#id14"><span class="problematic" id="id15">**</span></a>Beaconの固定部分のPayload Maskのビットをセット(FF)にして、その部分だけを比較するようにします。電池電圧、ボタンの状態、温度、湿度は変動しますので、比較の対象をから外すために、Payload Maskを00にします。</p>
+<img alt="_images/PayloadMaskDescription.png" src="_images/PayloadMaskDescription.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Payload Pattern、Payload Mask を入力し、[Save] ボタンを押して設定を保存します。</p>
 <p>まだ、Rebootしないで下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -206,9 +211,10 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>設定画面上部のRSSIは、取得するBeaconの電波強度です。RSSIは、温湿度センサーとBLEゲートウェイの距離が離れれば離れるほど小さな値になります。近くのBeaconだけを受信したい場合は、RSSIの値を適宜調整します。今回は、-100dBmの設定のままにし、変更しません。</p>
 </div>
-<div class="section" id="id6">
-<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id16">
+<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTにデータを送信する際、ゲートウェイは、時刻情報を付加します。
 「System」タブをクリックし、タイムサーバーの設定を行います。
 この設定を行わないと、センサーデータの取得日時が1970年になってしまいますので、必ず設定して下さい。&#8221;NTP Setting&#8221; に下記を設定してください。</p>
@@ -244,8 +250,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h2>3.8. WiFi設定<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id17">
+<h2>3.8. WiFi設定<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
 [Wi-Fi] タブをクリックし、Wi-Fi設定画面に移動します。</p>
 <img alt="_images/wifi.png" src="_images/wifi.png" />
@@ -264,13 +270,13 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id8">
-<h2>3.9. 最終確認<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id18">
+<h2>3.9. 最終確認<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイの設定を再度確認して下さい。
 ゲストWiFiを使用している場合、Reboot後にゲートウェイのIPアドレスを知る事が難しいため、ゲートウェイの再設の変更が出来なくなる場合があります。その場合、ゲートウェイを初期化して、最初から設定をやり直す必要があります。ご注意下さい。</p>
 </div>
-<div class="section" id="id9">
-<h2>3.10. 再起動<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id19">
+<h2>3.10. 再起動<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Reboot」タブをクリックし、ゲートウェイを再起動して下さい。</p>
 <img alt="_images/reboot.png" src="_images/reboot.png" />
 <div class="line-block">
@@ -278,8 +284,8 @@
 </div>
 <p>念のため、一度、USBケーブルを抜いて再起動して下さい。</p>
 </div>
-<div class="section" id="id10">
-<h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id20">
+<h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>センサーのスライドスイッチをスライドさせて、電源を入れて下さい。</p>
 <p>Beaconの送信が始まります。</p>
 <img alt="_images/sensor-power-on-off.png" src="_images/sensor-power-on-off.png" />
@@ -304,11 +310,11 @@
 <li><a class="reference external" href="#id3">3.4. クラウド接続の設定</a></li>
 <li><a class="reference external" href="#id4">3.5. 証明書の登録</a></li>
 <li><a class="reference external" href="#id5">3.6. BLEフィルター設定</a></li>
-<li><a class="reference external" href="#id6">3.7. タイムサーバーの設定</a></li>
-<li><a class="reference external" href="#id7">3.8. WiFi設定</a></li>
-<li><a class="reference external" href="#id8">3.9. 最終確認</a></li>
-<li><a class="reference external" href="#id9">3.10. 再起動</a></li>
-<li><a class="reference external" href="#id10">3.11. センサーの電源を入れる</a></li>
+<li><a class="reference external" href="#id16">3.7. タイムサーバーの設定</a></li>
+<li><a class="reference external" href="#id17">3.8. WiFi設定</a></li>
+<li><a class="reference external" href="#id18">3.9. 最終確認</a></li>
+<li><a class="reference external" href="#id19">3.10. 再起動</a></li>
+<li><a class="reference external" href="#id20">3.11. センサーの電源を入れる</a></li>
 </ul>
 </li>
 </ul>
