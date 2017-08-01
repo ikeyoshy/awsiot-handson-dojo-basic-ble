@@ -30,6 +30,8 @@ S3に保存されるデータは、下記のJSON形式になります。
 S3バケットを作成
 ====================
 
+Amazon S3は、高い耐久性を持つ、容量無制限で安価なオブジェクトストレージ・サービスです。このシナリオでは、温湿度センサーのデータをS3に保存します。データをS3に保存すれば、AWSの各種データベース、Amazon Athena, Amazon Redshift, Amazon EMR、Amazon Machine Lerningなどの各種分析サービスとの連携が容易になり、データレイクとして使用する事が出来ます。
+
 データを保存するS3バケットを作成します。
 
 サービス一覧から[S3]をクリックして開きます。
@@ -290,10 +292,9 @@ Kinesis Firehose Delivery Streamsの作成が開始されました。
 AWS IoT ルールの設定
 ==============================================
 
-AWS IoTでは、受信したデータをルールエンジンを用いて、他のAWSの各種サービスと連携できます。
-ルールエンジンの設定は、SQLステートメントとアクションで構成されます。SQLステートメントのトピックフィルターでデータを抽出し、アクションとしてAWSの各種サービスを指定します。
+AWS IoTでは、受信したデータをルールエンジンを用いて、他のAWSの各種サービスと容易に連携できます。ルールエンジンの設定は、SQLステートメントとアクションで構成されます。SQLステートメントのトピックフィルターでデータを抽出し、アクションとしてAWSの各種サービスを指定することができます。
 
-このシナリオでは、BLEゲートウェイが送信するトピック "sensor/<参加者番号>" を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsを設定します。
+このシナリオでは、BLEゲートウェイが送信するトピック "sensor/<参加者番号>" を、トピックフィルターとして設定し、送付先(アクション)を先ほど作成したKinesis Firehose Delivery Streamsとします。
 
 サービス一覧から[AWS IoT]をクリックして開きます。
 
@@ -325,6 +326,8 @@ Topic filter   sensor/<参加者番号>
 
 "*"は、半角の＊(アスタリスク)です。
 
+Topic filterは、BLEゲートが送信するトピックになります。
+
 .. image:: images/05/create-rule-3.png
 
 |
@@ -335,13 +338,13 @@ Topic filter   sensor/<参加者番号>
 
 |
 
-Stream nameで、"sensor-data-to-s3-<参加者番号>" を選択し、[Create a new role] をクリックします。
+Stream nameで、先ほど作成した、Kinesis Firehose Delivery Streamsの "sensor-data-to-s3-<参加者番号>" を選択し、[Create a new role] をクリックします。
 
 .. image:: images/05/configure-action.png
 
 |
 
-IAM role nameに、"IOT_to_Kinesis_Firehose-<参加者番号>" と入力し、[Create a new role] をクリックします。
+IAM role nameに、"IOT_to_Kinesis_Firehose-<参加者番号>" と入力し、[Create a new role] をクリックします。このIAMロールでは、Kinesis Firehoseへのデータの送信の権限を設定します。
 
 .. image:: images/05/create-role.png
 
@@ -359,6 +362,7 @@ Create a rule 画面に戻ります。[Create rule]  をクリックして、ル
 .. image:: images/05/create-rule-4.png
 
 |
+
 
 S3に保存されたデータを確認する
 ==================================
@@ -396,3 +400,5 @@ S3に保存されたデータを確認する
 {"dst_mac": "F0B3865C39C3", "@timestamp": "2017-05-17T01:13:28", "humidity": 44, "vbat": 3.31, "tempreature": 25.25, "rssi": -44, "model": "590080BC", "src_mac": "E9070D5A15FB"}
 
 |
+
+これで、シナリオ1は、終わりです。バイナリデータをAWS IoTで受信し、Kinesis FirehoseでLambda関数を用いて、JSON形式にデータ変換を行い、S3に保存することができました。

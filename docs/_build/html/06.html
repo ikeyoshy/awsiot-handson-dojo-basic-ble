@@ -48,7 +48,7 @@
             
   <div class="section" id="id1">
 <h1>6. シナリオ2: センサーデータを可視化する-1<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>LambdaでJSON形式に変換されたセンサーデータをAWS IoTへトピック名を換えてPublishし、そのトピックをWebアプリケーションでSubscribeしグラフ表示します。</p>
+<p>このシナリオでは、BLEゲートウェイが送信するバイナリデータをLambdaで受信し、JSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで変換後のトピックをサブスクライブしグラフ表示します。</p>
 <img alt="_images/overview2.png" src="_images/overview2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -141,6 +141,7 @@
 <div class="line"><br /></div>
 </div>
 <p>[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
+<p>このIAMロールでは、Lambda関数のアクセス権限を設定します。Lambda関数で変換したデータをAWS IoTへパブリッシュするので、AWS IoTへのアクセスを許可し、CloudWatchログへのログの出力を許可しています。</p>
 <img alt="_images/lambda-role-21.png" src="_images/lambda-role-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -187,8 +188,8 @@
 <p>Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、&#8217;us-east-1&#8217;)</p>
 <p>目的のセンサーからのデータだけを取り込むために、Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; を修正します。
 ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。&#8221;,&#8221;カンマで区切れば、複数のセンサーの登録も可能です。</p>
-<img alt="_images/edit-lambda-func-21.png" src="_images/edit-lambda-func-21.png" />
 <img alt="_images/src_mac.png" src="_images/src_mac.png" />
+<img alt="_images/edit-lambda-func-21.png" src="_images/edit-lambda-func-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -221,7 +222,7 @@
 <td>awsiot_lambda_direct_&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Attribute</td>
-<td>encode(<a href="#id2"><span class="problematic" id="id3">*</span></a>, &#8216;base64&#8217;) as payload, topic() as topic_name</td>
+<td>encode(*, &#8216;base64&#8217;) as payload, topic() as topic_name</td>
 </tr>
 <tr><td>Topic filter</td>
 <td>sensor/&lt;参加者番号&gt;</td>

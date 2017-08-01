@@ -71,6 +71,7 @@
 </div>
 <div class="section" id="id1">
 <h2>5.1. S3バケットを作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Amazon S3は、高い耐久性を持つ、容量無制限で安価なオブジェクトストレージ・サービスです。このシナリオでは、温湿度センサーのデータをS3に保存します。データをS3に保存すれば、AWSの各種データベース、Amazon Athena, Amazon Redshift, Amazon EMR、Amazon Machine Lerningなどの各種分析サービスとの連携が容易になり、データレイクとして使用する事が出来ます。</p>
 <p>データを保存するS3バケットを作成します。</p>
 <p>サービス一覧から[S3]をクリックして開きます。</p>
 <img alt="_images/s3.png" src="_images/s3.png" />
@@ -376,9 +377,8 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 </div>
 <div class="section" id="aws-iot">
 <h2>5.4. AWS IoT ルールの設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTでは、受信したデータをルールエンジンを用いて、他のAWSの各種サービスと連携できます。
-ルールエンジンの設定は、SQLステートメントとアクションで構成されます。SQLステートメントのトピックフィルターでデータを抽出し、アクションとしてAWSの各種サービスを指定します。</p>
-<p>このシナリオでは、BLEゲートウェイが送信するトピック &#8220;sensor/&lt;参加者番号&gt;&#8221; を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsを設定します。</p>
+<p>AWS IoTでは、受信したデータをルールエンジンを用いて、他のAWSの各種サービスと容易に連携できます。ルールエンジンの設定は、SQLステートメントとアクションで構成されます。SQLステートメントのトピックフィルターでデータを抽出し、アクションとしてAWSの各種サービスを指定することができます。</p>
+<p>このシナリオでは、BLEゲートウェイが送信するトピック &#8220;sensor/&lt;参加者番号&gt;&#8221; を、トピックフィルターとして設定し、送付先(アクション)を先ほど作成したKinesis Firehose Delivery Streamsとします。</p>
 <p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
 <img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
 <div class="line-block">
@@ -418,6 +418,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 </tbody>
 </table>
 <p>&#8220;*&#8221;は、半角の＊(アスタリスク)です。</p>
+<p>Topic filterは、BLEゲートが送信するトピックになります。</p>
 <img alt="_images/create-rule-3.png" src="_images/create-rule-3.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -427,12 +428,12 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Stream nameで、&#8221;sensor-data-to-s3-&lt;参加者番号&gt;&#8221; を選択し、[Create a new role] をクリックします。</p>
+<p>Stream nameで、先ほど作成した、Kinesis Firehose Delivery Streamsの &#8220;sensor-data-to-s3-&lt;参加者番号&gt;&#8221; を選択し、[Create a new role] をクリックします。</p>
 <img alt="_images/configure-action.png" src="_images/configure-action.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>IAM role nameに、&#8221;IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;&#8221; と入力し、[Create a new role] をクリックします。</p>
+<p>IAM role nameに、&#8221;IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;&#8221; と入力し、[Create a new role] をクリックします。このIAMロールでは、Kinesis Firehoseへのデータの送信の権限を設定します。</p>
 <img alt="_images/create-role.png" src="_images/create-role.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -479,6 +480,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>これで、シナリオ1は、終わりです。バイナリデータをAWS IoTで受信し、Kinesis FirehoseでLambda関数を用いて、JSON形式にデータ変換を行い、S3に保存することができました。</p>
 </div>
 </div>
 
