@@ -50,7 +50,10 @@
 <h1>1. イントロダクション<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="id2">
 <h2>1.1. ハンズオンシナリオ<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>BLEゲートウェイに接続された温度／湿度センサーの情報をAWS IoTに送り、S3に保存し、Kibanaでセンサーの情報をグラフ化します。</p>
+<p>AWS IoTにBLEゲートウェイを登録し、温度、湿度の収集を行います。</p>
+<p>シナリオ１では、収集されたデータを活用しやすい形式に変換し、クラウド保存スペースに保存します。</p>
+<p>シナリオ２では、データ変換を行い、Webアプリケーションでグラフ化し、モニターします。</p>
+<p>シナリオ2+は、Elastic Search Service + Kibanaで可視化を行います。(オプションシナリオです。)</p>
 <img alt="_images/overview.png" src="_images/overview.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -58,17 +61,22 @@
 </div>
 <div class="section" id="id3">
 <h2>1.2. 利用するデバイス、アプリケーション、サービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p><strong>レンジャーシステムズ BLE Gateway (iBS01W)</strong></p>
+<div class="section" id="ble-gateway-ibs01w">
+<h3>1.2.1. レンジャーシステムズ BLE Gateway (iBS01W)<a class="headerlink" href="#ble-gateway-ibs01w" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
-<dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE経由で温度/湿度データ取得し、AWS IoTへのデータ送信に利用します。レンジャーシステムズ社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が非常に高い製品です。他にLTE版のゲートウエイもあります。</dt>
+<dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE(Bluetooth Low Energy)経由で温度/湿度データ収集し、AWS IoTへの温度/湿度データの送信に利用します。レンジャーシステムズ社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が非常に高い製品です。他にLTE版のゲートウエイもあります。</dt>
 <dd><a class="reference external" href="http://www.ranger-systems.co.jp/iot/">http://www.ranger-systems.co.jp/iot/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>レンジャーシステムズ 温湿度センサー (iBS01T)</strong></p>
+</div>
+<div class="section" id="ibs01t">
+<h3>1.2.2. レンジャーシステムズ 温湿度センサー (iBS01T)<a class="headerlink" href="#ibs01t" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <p>レンジャーシステムズ社が提供するBLE Beacon温湿度センサーです。ボタン電池で動作し、電池寿命は1.4年で、長時間使用できます。</p>
-<p><strong>AWSアカウント</strong></p>
+</div>
+<div class="section" id="aws">
+<h3>1.2.3. AWSアカウント<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらの通りです。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/register-flow/">https://aws.amazon.com/jp/register-flow/</a></dd>
@@ -76,7 +84,9 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>AWS IoT</strong></p>
+</div>
+<div class="section" id="aws-iot">
+<h3>1.2.4. AWS IoT<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのセンサーデータの受信で利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
@@ -85,7 +95,9 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Amazon Kinesis Firehose</strong></p>
+</div>
+<div class="section" id="amazon-kinesis-firehose">
+<h3>1.2.5. Amazon Kinesis Firehose<a class="headerlink" href="#amazon-kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工すし、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/kinesis/firehose/">https://aws.amazon.com/jp/kinesis/firehose/</a></dd>
@@ -93,7 +105,9 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Amazon Elasticsearch Service</strong></p>
+</div>
+<div class="section" id="amazon-elasticsearch-service">
+<h3>1.2.6. Amazon Elasticsearch Service<a class="headerlink" href="#amazon-elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>オープンソースのElasticsearchを利用できるマネージド型のサービスです。本ハンズオンでは、データのストアとElasticsearchで利用できるKibanaを利用してデータの可視化に利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/elasticsearch-service/">https://aws.amazon.com/jp/elasticsearch-service/</a></dd>
@@ -101,7 +115,9 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Amazon S3 (Simple Storage Service)</strong></p>
+</div>
+<div class="section" id="amazon-s3-simple-storage-service">
+<h3>1.2.7. Amazon S3 (Simple Storage Service)<a class="headerlink" href="#amazon-s3-simple-storage-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>スケーラブルなクラウドストレージです。Webのコンテンツを配置してWebサーバとしても利用できます。本ハンズオンでは、センサーから取得したデータの保存先として使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/sns/">https://aws.amazon.com/jp/sns/</a></dd>
@@ -109,7 +125,9 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>AWS Lambda</strong></p>
+</div>
+<div class="section" id="aws-lambda">
+<h3>1.2.8. AWS Lambda<a class="headerlink" href="#aws-lambda" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Kinesis Firehose内でセンサーデータの加工に使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/lambda/">https://aws.amazon.com/jp/lambda/</a></dd>
@@ -117,13 +135,16 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p><strong>Amazon CloudWatch</strong></p>
+</div>
+<div class="section" id="amazon-cloudwatch">
+<h3>1.2.9. Amazon CloudWatch<a class="headerlink" href="#amazon-cloudwatch" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
 <dt>AWSクラウドリソースとAWSで実行するアプリケーションのモニタリングサービスです。メトリクスの収集、ログファイルの収集が可能です。本ハンズオンではCloudWatch Logsを利用してAWS IoTのログを収集、閲覧します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/cloudwatch/">https://aws.amazon.com/jp/cloudwatch/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
+</div>
 </div>
 </div>
 </div>
@@ -138,7 +159,18 @@
             <ul>
 <li><a class="reference external" href="#">1. イントロダクション</a><ul>
 <li><a class="reference external" href="#id2">1.1. ハンズオンシナリオ</a></li>
-<li><a class="reference external" href="#id3">1.2. 利用するデバイス、アプリケーション、サービス</a></li>
+<li><a class="reference external" href="#id3">1.2. 利用するデバイス、アプリケーション、サービス</a><ul>
+<li><a class="reference external" href="#ble-gateway-ibs01w">1.2.1. レンジャーシステムズ BLE Gateway (iBS01W)</a></li>
+<li><a class="reference external" href="#ibs01t">1.2.2. レンジャーシステムズ 温湿度センサー (iBS01T)</a></li>
+<li><a class="reference external" href="#aws">1.2.3. AWSアカウント</a></li>
+<li><a class="reference external" href="#aws-iot">1.2.4. AWS IoT</a></li>
+<li><a class="reference external" href="#amazon-kinesis-firehose">1.2.5. Amazon Kinesis Firehose</a></li>
+<li><a class="reference external" href="#amazon-elasticsearch-service">1.2.6. Amazon Elasticsearch Service</a></li>
+<li><a class="reference external" href="#amazon-s3-simple-storage-service">1.2.7. Amazon S3 (Simple Storage Service)</a></li>
+<li><a class="reference external" href="#aws-lambda">1.2.8. AWS Lambda</a></li>
+<li><a class="reference external" href="#amazon-cloudwatch">1.2.9. Amazon CloudWatch</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

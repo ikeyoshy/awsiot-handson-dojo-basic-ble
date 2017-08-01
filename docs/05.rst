@@ -2,7 +2,9 @@
 シナリオ1: センサーデータをS3に保存する
 =======================================
 
-ゲートウェイは、温湿度センサーが送信するBeaconを受信し、定期的にAWS IoTに送信します。AWS IoTではルールに基づきKinesis Firehoseにデータを送り、Kinesis Firehoseは、受け取ったデータをLambda関数で加工し、S3に保存します。
+Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service にロードすることができます。
+
+BLEゲートウェイは、温湿度センサーが送信するBeaconを受信し、バイナリデータとしてAWS IoTに送信しています。AWS IoTのルールエンジンにご自身のセンサーデータのトピック名"sensor/<参加者番号>"を登録して、そのメッセージだけを「Amazon Kinesis Firehose」に送信します。Kinesis Firehoseでは、Lambda関数を使用して、受け取ったバイナリデータを活用が容易なJSON形式に変換し、Amazon S3へ保存します。
 
 .. image:: images/05/overview.png
 
@@ -61,7 +63,7 @@ S3の設定画面が表示されれます。[バケットを作成する] ボタ
 
 |
 
-"sensor-data-<参加者番号>" のバケットがリージョン：[米国東部(バージニア北部)] に作成されているか確認して下さい。
+"sensor-data-<参加者番号>" のバケットがリージョン：[米国東部(バージニア北部)] に作成されているか確認して下さい。複数の参加者で1つのAWSアカウントを共用している場合、他のIAMユーザーのバケットも表示されます。
 
 .. image:: images/05/s3-create-bucket-4.png
 
@@ -71,7 +73,9 @@ S3の設定画面が表示されれます。[バケットを作成する] ボタ
 データ変換用のLambda関数を準備する
 ======================================
 
-はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でアップロードします。
+Kinesis Firehoseは、受け取ったデータをLambda関数を使用して加工できます。ここでは、AWSに変換用のLambda関数を登録します。
+
+はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でAWSにアップロードします。
 
 https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip
 
@@ -93,13 +97,13 @@ Lambda関数の作成画面が表示されるので、サーチボックスに"F
 
 |
 
-トリガーの設定画面が表示されるので、[次へ]をクリックします。
+トリガーの設定画面が表示されますが、何もせず、[次へ]をクリックします。
 
 .. image:: images/05/lambda-4.png
 
 |
 
-ダウンロード済みのLambda関数のzipファイルをアップロードします。
+先ほどダウンロードしたLambda関数のzipファイルをAWSにアップロードします。
 下記のような画面が表示されるので、必要事項を入力して下さい。
 ロール：[カスタムロールの作成] を選択すると、別画面でIAMの設定画面が出てきますので、設定に従って、ロールの設定を行って下さい。
 

@@ -48,14 +48,14 @@
             
   <div class="section" id="ble">
 <h1>3. BLEゲートウェイの設定<a class="headerlink" href="#ble" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>レンジャーシステムズ製のBLEゲートウェイの設定を行います。</p>
+<p>レンジャーシステムズ製のBLEゲートウェイの設定を行います。AWS IoTに接続する為のせっていの他に、ゲートウェイのWiFi設定やBLE温湿度センサーが送信するBeaconの取得方法などの設定を行います。</p>
 <div class="section" id="id1">
 <h2>3.1. 電源投入<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。</p>
-<p>USBケーブルを本体に接続し、電源供給元(USBコンセント、PCのUSBポート等)に接続してください。</p>
+<p>USBケーブルを本体に接続し、電源供給元(USB電源アダプタ、もしくは、PCのUSBポート)に接続してください。</p>
 </div>
 <div class="section" id="id2">
-<h2>3.2. ゲートウェイを初期化する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>3.2. BLEゲートウェイを初期化する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイの電源が入った状態で、本体裏面にあるリセット用ボタンを5秒以上長押しすると、工場出荷状態に戻すことが出来ます。クリップなどでボタンを押して下さい。</p>
 <img alt="_images/reset.png" src="_images/reset.png" />
 <div class="line-block">
@@ -64,7 +64,7 @@
 </div>
 <div class="section" id="wifi">
 <h2>3.3. ゲートウェイにWiFiで接続する<a class="headerlink" href="#wifi" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>本ゲートウェイは、工場出荷状態ではWiFiアクセスポイント(親機)モードになっており、PCから直接WiFiで接続し、設定を行います。</p>
+<p>BLEゲートウェイの設定を行うために、WiFi接続します。本ゲートウェイは、工場出荷状態ではWiFiのアクセスポイント(親機)モードになっており、PCから直接WiFiで接続し、Webブラウザから、設定を行います。</p>
 <p>電源投入後、ゲートウェイの起動が終わると、WiFi接続が可能なPC等のネットワーク画面で「BLE-WIFI_YY_ZZ」というSSIDが表示されます。</p>
 <ul>
 <li><p class="first">ハンズオンで使用するゲートウェイのモデル名は、iGS01です。SSIDは、「BLE-WIFI_YY_ZZ」になります。</p>
@@ -82,8 +82,8 @@
 * WiFiのパスワードは、&#8221;12345678&#8221;です。</p>
 </li>
 </ul>
-<p>ゲートウェイに接続したまま、インターネットブラウザで「192.168.10.1」にアクセスするとゲートウェイの設定画面 が表示されます。
-ユーザー名とパスワードを求めるポップアップが表示されますので、以下を入力し、ログインしてください。</p>
+<p>ゲートウェイに接続したまま、Webブラウザから IPアドレス「192.168.10.1」にアクセスするとゲートウェイの設定画面 が表示されます。(Webブラウザは、Google Chromeを使用して下さい。)</p>
+<p>ユーザー名とパスワードを求めるポップアップが表示されますので、以下を入力し、ログインしてください。</p>
 <p>【ユーザー名】admin
 【パスワード 】admin</p>
 <img alt="_images/login.png" src="_images/login.png" />
@@ -91,8 +91,8 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id3">
-<h2>3.4. クラウド接続の設定<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="aws-iot">
+<h2>3.4. AWS IoTへ接続するための設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Applicatoins」タブをクリックし、ゲートウェイがAWS IoTに接続するための設定を行って下さい。最後に、[Save] ボタンを押して設定を保存します。</p>
 <p>Rebootを促すメッセージが出ますが、Rebootしないで下さい。</p>
 <table border="1" class="docutils">
@@ -113,13 +113,13 @@
 <td>記録しておいたEndpoint情報</td>
 </tr>
 <tr><td>Port</td>
-<td>8883 (1883になっているので注意して下さい)</td>
+<td>8883 (最初は、1883になっているので8883に書き換えて下さい)</td>
 </tr>
 <tr><td>Publish Topic</td>
-<td>sensor/&lt;参加者番号&gt; (AWS IoTのルールエンジンで使用します。)</td>
+<td>sensor/&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Client ID</td>
-<td>ranger-gw-&lt;参加者番号&gt; ([Create thing]で作ったThing名)</td>
+<td>ranger-gw-&lt;参加者番号&gt;    (AWS IoTで作成したデバイス名)</td>
 </tr>
 <tr><td>Username</td>
 <td>空欄</td>
@@ -128,7 +128,7 @@
 <td>空欄</td>
 </tr>
 <tr><td>MQTTS</td>
-<td>Enable</td>
+<td>Enable       (標準プロトコルのMQTTを指定)</td>
 </tr>
 <tr><td>Root CA</td>
 <td>AWSIoT Root CA</td>
@@ -142,12 +142,22 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>Publish Topicとは、AWS IoTに送信(Publish)されるMQTTメッセージのトピック名になります。AWS IoTでは、このトピック名をAWS IOTのルールエンジンが評価し、設定したトピック名のメッセージだけを他のAWSのサービスに渡すことができるようになります。このハンズオンでは、複数の参加者で1つのAWSアカウントを共用する場合を考慮し、トピック名に&lt;参加者番号&gt;を付加して、他のIAMユーザーのゲートウェイが送信してくる計測データと区別できるようにしています。
+トピック名は、自由に付ける事が可能で、&#8221;/&#8221;で階層化できます。</p>
+<p>例：</p>
+<ul class="simple">
+<li>sensor/01</li>
+<li>sensor/templature/room-1</li>
+<li>switch/door/room-2B</li>
+</ul>
+<p>AWS IoTでは、MQTT、HTTP、WebSocketなどの標準的なプロトコルが使用します。このゲートウェイでは、MQTTを使用ししてAWS IoTと通信します。AWS IoTでは、TLSで暗号化されたMQTT用のポート番号 Port = 8883 を使用します。</p>
 </div>
-<div class="section" id="id4">
-<h2>3.5. 証明書の登録<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>「Advanced」タブクリックし、AWS IoTで作成した証明書をインポートします。</p>
-<p>&#8220;Certificate&#8221;の横の[ファイルを選択] ボタンを押して、「証明書の作成」のセクションで保存しておいた証明書を選択し、[Upload Certificate] ボタンを押して、証明書をアップロードして下さい。</p>
-<p>&#8220;Key&#8221;の横の[ファイルを選択] ボタンを押して、保存しておいた認証鍵を選択し、[Upload Key] ボタンを押して、認証鍵をアップロードして下さい。</p>
+<div class="section" id="id3">
+<h2>3.5. 証明書の登録<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>先の章で、AWS IoTのマネジメントコンソールから証明書を作成しました。このセクションでは、作成した証明書をAWS IoTのデバイスであるBLEゲートウェイにインストールします。この証明書を使用する事で、BLEゲートウェイは、安全にAWS IoTに接続できます。</p>
+<p>BLEゲートウェイのWeb画面の「Advanced」タブをクリックしてください。</p>
+<p>&#8220;Certificate&#8221;の横の[ファイルを選択] ボタンを押して、「証明書の作成」のセクションで保存しておいた証明書(Certificate)を選択し、[Upload Certificate] ボタンを押して、証明書をアップロードします。</p>
+<p>&#8220;Key&#8221;の横の[ファイルを選択] ボタンを押して、保存しておいたプライベートキー(Private key)を選択し、[Upload Key] ボタンを押して、プライベートキーをアップロードして下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="21%" />
@@ -163,7 +173,7 @@
 <td>xxxxxxxxxx-certificate.pem.crt (証明書)</td>
 </tr>
 <tr><td>Key</td>
-<td>xxxxxxxxxx-private.pem.key (認証鍵)</td>
+<td>xxxxxxxxxx-private.pem.key (プライベートキー)</td>
 </tr>
 </tbody>
 </table>
@@ -171,17 +181,17 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>正常にアップロードが終わると、下記の様に証明書の内容が表示されます。
-まだ、Rebootしないで下さい。</p>
+<p>正常にアップロードが終わると、下記の様に「&#8212;&#8211; BEGEIN」で始まる証明書の内容が表示されます。「&#8212;&#8211; BEGEIN」が表示されない場合、証明書が間違っているか、Webブラウザの互換性の問題が疑われます。問題がある場合は、トレーナーに問い合わせて下さい。</p>
+<p>まだ、Rebootしないで下さい。</p>
 <img alt="_images/upload-certificate.png" src="_images/upload-certificate.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id5">
-<h2>3.6. BLEフィルター設定<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズのBLEゲートウェイは、受信可能なBeaconを全て受信する仕様になっています。このため、BLEフィルター設定をしていなければ、<a href="#id6"><span class="problematic" id="id7">**</span></a>周囲のBeaconを全て受信し、AWS IoTに送信してしまいます。<a href="#id8"><span class="problematic" id="id9">**</span></a>今回使用する温湿度センサーが送信するBeaconだけをAWS IoTに送信させるために、<a href="#id10"><span class="problematic" id="id11">**</span></a>BLEフィルター設定**を行います。</p>
-<p>温湿度センサーは、Payload Pattern(02010612FF590080BC4D0100D80A2D00000000000000)の様なBeaconを送信します。冒頭のBLE情報、企業コード、モデル番号は、温湿度センサーの固定値です。<a href="#id12"><span class="problematic" id="id13">**</span></a>このパターンを持つBeaconだけをAWS IoTに送信させるための設定が、BLEフィルター設定となります。<a href="#id14"><span class="problematic" id="id15">**</span></a>Beaconの固定部分のPayload Maskのビットをセット(FF)にして、その部分だけを比較するようにします。電池電圧、ボタンの状態、温度、湿度は変動しますので、比較の対象をから外すために、Payload Maskを00にします。</p>
+<div class="section" id="id4">
+<h2>3.6. BLEフィルター設定<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>レンジャーシステムズのBLEゲートウェイは、受信可能なBeaconを全て受信する仕様になっています。このため、BLEフィルター設定をしていなければ、<strong>周囲のBeaconを全て受信し、AWS IoTに送信してしまいます。</strong> 今回使用する温湿度センサーが送信するBeaconだけをAWS IoTに送信させるために、<a href="#id5"><span class="problematic" id="id6">**</span></a>BLEフィルター設定**を行います。</p>
+<p>温湿度センサーは、Payload Pattern(02010612FF590080BC4D0100D80A2D00000000000000)の様なBeaconを送信します。冒頭のBLE情報、企業コード、モデル番号は、温湿度センサーの固定値です。<a href="#id7"><span class="problematic" id="id8">**</span></a>このパターンを持つBeaconだけをAWS IoTに送信させるための設定が、BLEフィルター設定となります。<a href="#id9"><span class="problematic" id="id10">**</span></a>Beaconの固定部分のPayload Maskのビットをセット(FF)にして、その部分だけを比較するようにします。電池電圧、ボタンの状態、温度、湿度は変動しますので、比較の対象をから外すために、Payload Maskを(00)にします。</p>
 <img alt="_images/PayloadMaskDescription.png" src="_images/PayloadMaskDescription.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -211,13 +221,13 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>設定画面上部のRSSIは、取得するBeaconの電波強度です。RSSIは、温湿度センサーとBLEゲートウェイの距離が離れれば離れるほど小さな値になります。近くのBeaconだけを受信したい場合は、RSSIの値を適宜調整します。今回は、-100dBmの設定のままにし、変更しません。</p>
+<p>設定画面上部のRSSIは、取得するBLE Beaconの電波強度です。RSSIは、温湿度センサーとBLEゲートウェイの距離が離れれば離れるほど小さな値になります。近くのBeaconだけを受信したい場合は、RSSIの値を適宜調整します。今回は、-100dBmの設定のままにし、変更しません。(-100dBmに設定すると、受信可能なBeaconは、全て受信します。)</p>
 </div>
-<div class="section" id="id16">
-<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTにデータを送信する際、ゲートウェイは、時刻情報を付加します。
-「System」タブをクリックし、タイムサーバーの設定を行います。
-この設定を行わないと、センサーデータの取得日時が1970年になってしまいますので、必ず設定して下さい。&#8221;NTP Setting&#8221; に下記を設定してください。</p>
+<div class="section" id="id11">
+<h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWS IoTにデータを送信する際、ゲートウェイは、センサーデータに時刻情報を付加し、AWS IoTに送信します。
+BLEゲートウェイには、時計(RTC)が内蔵されていないため、ゲートウェイの電源をOFFにすると時計が1970年に戻ってしまいます。タイムサーバーの設定を行うと、BLEゲートウェイはインターネット上のタイムサーバー(NTPサーバー)と時刻同期し、正確な時刻情報をAWS IoTに送信できるようになります。</p>
+<p>BLEゲートウェイのWeb画面の「System」タブをクリックし、&#8221;NTP Setting&#8221; に下記を設定してください。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="29%" />
@@ -238,9 +248,6 @@
 <tr><td>Update Period</td>
 <td>10 mins</td>
 </tr>
-<tr><td>Update Period</td>
-<td>1 day</td>
-</tr>
 </tbody>
 </table>
 <p>最後に、[Save NTP Setting] ボタンを押して、設定を保存します。</p>
@@ -250,15 +257,15 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id17">
-<h2>3.8. WiFi設定<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>WiFi設定を変更し、インターネットに接続出来るWiFiアクセスポイントに接続します。
-[Wi-Fi] タブをクリックし、Wi-Fi設定画面に移動します。</p>
+<div class="section" id="id12">
+<h2>3.8. WiFi設定<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>これまで、アクセスポイント(親機)モードになっているBLEゲートウェイにWiFi接続し、設定を行ってきました。このままでは、BLEゲートウエイはインターネットに接続出来ません。BLEゲートウェイをStation(子機)モードに設定し、インターネットに接続出来るWiFiアクセスポイントに接続します。</p>
+<p>[Wi-Fi] タブをクリックし、Wi-Fi設定画面に移動します。</p>
 <img alt="_images/wifi.png" src="_images/wifi.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;Wi-Fi Mode&#8221;を&#8221;Station&#8221;に変更し、[Scan] ボタンを押して周囲のアクセスポイントを探索します。探索が終了すると、&#8221;Done.&#8221;と表示されます。&#8221;Site survey&#8221;から、接続対象のアクセスポイントを選んでください。</p>
+<p>&#8220;Wi-Fi Mode&#8221;を&#8221;Station&#8221;に変更し、[Scan] ボタンを押して周囲のアクセスポイントを探索します。探索が終了すると、&#8221;Done.&#8221;と表示されます。&#8221;Site survey&#8221;から、接続対象のアクセスポイントを選んでください。接続対象のアクセスポイントの情報は、別途、トレーナーから指示があります。</p>
 <img alt="_images/site.png" src="_images/site.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -270,13 +277,13 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id18">
-<h2>3.9. 最終確認<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id13">
+<h2>3.9. 最終確認<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイの設定を再度確認して下さい。
 ゲストWiFiを使用している場合、Reboot後にゲートウェイのIPアドレスを知る事が難しいため、ゲートウェイの再設の変更が出来なくなる場合があります。その場合、ゲートウェイを初期化して、最初から設定をやり直す必要があります。ご注意下さい。</p>
 </div>
-<div class="section" id="id19">
-<h2>3.10. 再起動<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id14">
+<h2>3.10. 再起動<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Reboot」タブをクリックし、ゲートウェイを再起動して下さい。</p>
 <img alt="_images/reboot.png" src="_images/reboot.png" />
 <div class="line-block">
@@ -284,14 +291,15 @@
 </div>
 <p>念のため、一度、USBケーブルを抜いて再起動して下さい。</p>
 </div>
-<div class="section" id="id20">
-<h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id20" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id15">
+<h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>センサーのスライドスイッチをスライドさせて、電源を入れて下さい。</p>
-<p>Beaconの送信が始まります。</p>
+<p>センサーデータ(温度、湿度など)の送信が始まります。</p>
 <img alt="_images/sensor-power-on-off.png" src="_images/sensor-power-on-off.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>これで、ゲートウェイ・デバイスの設定は、終わりです。次に、AWS IoTにセンサーデータが来ているか確認してみましょう。</p>
 </div>
 </div>
 
@@ -305,16 +313,16 @@
             <ul>
 <li><a class="reference external" href="#">3. BLEゲートウェイの設定</a><ul>
 <li><a class="reference external" href="#id1">3.1. 電源投入</a></li>
-<li><a class="reference external" href="#id2">3.2. ゲートウェイを初期化する</a></li>
+<li><a class="reference external" href="#id2">3.2. BLEゲートウェイを初期化する</a></li>
 <li><a class="reference external" href="#wifi">3.3. ゲートウェイにWiFiで接続する</a></li>
-<li><a class="reference external" href="#id3">3.4. クラウド接続の設定</a></li>
-<li><a class="reference external" href="#id4">3.5. 証明書の登録</a></li>
-<li><a class="reference external" href="#id5">3.6. BLEフィルター設定</a></li>
-<li><a class="reference external" href="#id16">3.7. タイムサーバーの設定</a></li>
-<li><a class="reference external" href="#id17">3.8. WiFi設定</a></li>
-<li><a class="reference external" href="#id18">3.9. 最終確認</a></li>
-<li><a class="reference external" href="#id19">3.10. 再起動</a></li>
-<li><a class="reference external" href="#id20">3.11. センサーの電源を入れる</a></li>
+<li><a class="reference external" href="#aws-iot">3.4. AWS IoTへ接続するための設定</a></li>
+<li><a class="reference external" href="#id3">3.5. 証明書の登録</a></li>
+<li><a class="reference external" href="#id4">3.6. BLEフィルター設定</a></li>
+<li><a class="reference external" href="#id11">3.7. タイムサーバーの設定</a></li>
+<li><a class="reference external" href="#id12">3.8. WiFi設定</a></li>
+<li><a class="reference external" href="#id13">3.9. 最終確認</a></li>
+<li><a class="reference external" href="#id14">3.10. 再起動</a></li>
+<li><a class="reference external" href="#id15">3.11. センサーの電源を入れる</a></li>
 </ul>
 </li>
 </ul>
