@@ -73,7 +73,7 @@ S3の設定画面が表示されれます。[バケットを作成する] ボタ
 データ変換用のLambda関数を準備する
 ======================================
 
-Kinesis Firehoseは、受け取ったデータをLambda関数を使用して加工できます。ここでは、AWSに変換用のLambda関数を登録します。
+Amazon Kinesis Firehoseは、受け取ったデータをLambda関数を使用して加工できます。ここでは、AWSにデータ変換用のLambda関数を登録します。
 
 はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でAWSにアップロードします。
 
@@ -121,7 +121,7 @@ Lambda関数の作成画面が表示されるので、サーチボックスに"F
 
 |
 
-IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。
+IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。このIAMロールでは、Lambda関数のアクセス権限を設定します。Kinesis Firehoseからデータを受け取り、データ変換を行い、Kinesis Firehoseへデータを書き戻すことを可能にし、CloudWatchログへのログの出力を許可しています。
 
 =================== =======================================
 項目                    設定
@@ -185,17 +185,24 @@ Lambda関数の作成に成功すると、下記の様な画面が表示され�
 
 |
 
-目的のセンサーからのデータだけを取り込むために、Lambda関数内の"my_temphumid_sensor_mac" を修正します。
-ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。
+BLEゲートウェイは、周囲のBLE Beaconを全て受信し、AWS IoTへ送信します。AWS IoTのルールエンジンのトピックフィルターで、トピック "sensor/<参加者番号>"だけを処理するようにしますが、BLEゲートウェイは、他のユーザーの温湿度センサーのデータもAWS IoTへ送信します。
 
-.. image:: images/05/edit-lambda-func-2.png
+AWS IoTに送信するデータの中に、BLEセンサーのBDアドレス (Bluetooth Device Address = MACアドレス)を付加していますので、ご自身の温湿度センサーからのデータだけを処理するために、この情報を利用し、Lambda関数でBLEセンサーのBDアドレスを確認し、ご自身の温湿度センサーだけをLambda関数で処理するようにします。
+
+Lambda関数内の"my_temphumid_sensor_mac" をご自身の温湿度センサーのMACアドレスに書き換えます。
+
+ご自身のセンサーのラベルに記載されているセンサーのMACアドレスを確認し、Lambda関数内のの"my_temphumid_sensor_mac" を修正し、[保存] ボタンを押して下さい。
 
 .. image:: images/05/src_mac.png
+
+.. image:: images/05/edit-lambda-func-2.png
 
 |
 
 Kinesis Firehoseの設定
 ==============================
+
+Lambda関数の登録が終わりましたので、Amaozn Kinesis Firehoseの設定を行います。Kinesis Firehoseのストリーム名を指定し、データの吐き出し先をS3とします。また、データ変換を有効にして、変換用のLambda関数を指定します。S3へデータを書き出す周期は、60秒周期とします。
 
 サービス一覧から[Kinesis]をクリックして開きます。
 
@@ -215,7 +222,7 @@ Kinesisの画面が開きますので、[Firehose コンソールに移動] を�
 
 |
 
-DestinationをS3として、Delivery stream nameを設定し、先ほど作成したS3バケットを選んで、[Next] をクリックして下さい。
+Destination(データの吐き出し先)をS3として、Delivery stream nameを設定し、先ほど作成したS3バケットを選んで、[Next] をクリックして下さい。
 
 ========================= =======================================
 項目                         設定
@@ -249,7 +256,7 @@ IAM role                 Firehose delivery IAM role
 
 |
 
-"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。
+"新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。ここでは、自動的にIAMロールが作成されます。ここで作成されるIAMロールでは、Kinesis Firehoseのアクセス権限を設定しています。S3へのアクセス、Lambda関数の実行が許可されます。
 
 =================== =======================================
 項目                    設定
@@ -274,7 +281,7 @@ Firehoseの設定画面で、[Next] をクリックして下さい。
 
 |
 
-S3 Delivery Streamsの作成が開始されました。
+Kinesis Firehose Delivery Streamsの作成が開始されました。
 
 .. image:: images/05/create-delivery-stream-7.png
 
@@ -282,6 +289,8 @@ S3 Delivery Streamsの作成が開始されました。
 
 Kinesis Firehose用のAWS IoT ルールを作成
 ==============================================
+
+AWS IoTで受け取ったデータをKinesis Firehose宛に送信するために、AWS IoTのルールを設定します。トピック "sensor/<参加者番号>" を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsとします。
 
 サービス一覧から[AWS IoT]をクリックして開きます。
 
@@ -304,10 +313,10 @@ Kinesis Firehose用のAWS IoT ルールを作成
 下記の項目を入力し、[Add action]をクリックします。
 
 ============= ====================================
-設定項目         値
+設定項目           値
 ============= ====================================
 Name	         iotrule_firehose_s3_<参加者番号>
-Attribute	     *
+Attribute	     \*
 Topic filter   sensor/<参加者番号>
 ============= ====================================
 
