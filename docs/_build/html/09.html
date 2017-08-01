@@ -142,7 +142,8 @@ Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックしま�
 </div>
 <div class="section" id="lambda">
 <h2>9.7. Lambda関数を削除<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>マネージメントコンソールのサービス一覧から[Lambda]をクリックして開きます。Lammbda関数 ranger-raw-data-to-json-&lt;参加者番号&gt;をチェックし、[アクション]から、&#8221;関数の削除&#8221;を選びます。確認画面が表示されるので[削除]をクリックします。</p>
+<p>マネージメントコンソールのサービス一覧から[Lambda]をクリックして開きます。Lammbda関数 ranger-raw-data-to-json-&lt;参加者番号&gt;をチェックし、[アクション]から、&#8221;関数の削除&#8221;を選びます。確認画面が表示されるので[削除]をクリックします。
+同様に、Lammbda関数 rsensor-raw-data-to-json-mqtt-publish-&lt;参加者番号&gt;も削除して下さい。</p>
 <img alt="_images/lambda-delete.png" src="_images/lambda-delete.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -177,6 +178,7 @@ Domain”firehose-to-es-domain-&lt;参加者番号&gt;”をクリックしま�
 <li>IOT_to_Kinesis_Firehose-&lt;参加者番号&gt;</li>
 <li>firehose_delivery_role-&lt;参加者番号&gt;</li>
 <li>lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;</li>
+<li>lambda_awsiot_mqtt_publish-&lt;参加者番号&gt;</li>
 </ul>
 <img alt="_images/IAM-role-delete.png" src="_images/IAM-role-delete.png" />
 <div class="line-block">

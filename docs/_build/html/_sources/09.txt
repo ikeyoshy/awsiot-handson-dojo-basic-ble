@@ -28,7 +28,7 @@
 ハンズオン終了後には以下の設定を削除してください。
 
 AWS IoTのリソースを削除
-==========================
+=============================
 
 AWS IoTの証明書、ポリシー、デバイスを削除するためには、削除前にアタッチされているリソースをデタッチする必要があります。（ルールは他のリソースとの関連性はありません）
 
@@ -109,6 +109,7 @@ Lambda関数を削除
 =======================
 
 マネージメントコンソールのサービス一覧から[Lambda]をクリックして開きます。Lammbda関数 ranger-raw-data-to-json-<参加者番号>をチェックし、[アクション]から、"関数の削除"を選びます。確認画面が表示されるので[削除]をクリックします。
+同様に、Lammbda関数 rsensor-raw-data-to-json-mqtt-publish-<参加者番号>も削除して下さい。
 
 .. image:: images/09/lambda-delete.png
 
@@ -148,6 +149,7 @@ IAMロールを削除
 * IOT_to_Kinesis_Firehose-<参加者番号>
 * firehose_delivery_role-<参加者番号>
 * lambda_KinesisFirehoseAccess-<参加者番号>
+* lambda_awsiot_mqtt_publish-<参加者番号>
 
 .. image:: images/09/IAM-role-delete.png
 

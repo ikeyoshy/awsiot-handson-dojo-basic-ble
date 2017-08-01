@@ -167,10 +167,11 @@ Topic filter   sensor/<参加者番号>
 |
 
 ※ レンジャーシステムズ製のBLEゲートウェイが送信するデータは、CSV形式であるため、Lambdaで受け取る事が出来ません。
-  ルールエンジンの組み込み関数 "Encode()"を使用する事で、非JSONのデータをエンコードし、Lambdaに渡せる様になります。
-  今回は、キー payloadとして、センサーデータをエンコードしています。
+  ルールエンジンの組み込み関数 "Encode()"を使用する事で、非JSONのデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
+  今回は、キー payloadとして、BLE BeaconのPayload(センサーデータ)をエンコードしています。
   詳しくは、下記をご参照下さい。
   http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html
+
   topic() as topic_name は、受信したトピック名 "sensor/<参加者番号>" をキー "topic_name"として、Lambdaに渡しています。
   実際にLambdaが受け取っているデータは、下記になります。
 
@@ -209,7 +210,7 @@ Create a rule画面に戻ります。[Create rule]  をクリックして、ル�
 
 |
 
-Lambda関数でpublishされたデータを確認する
+Lambda関数がpublishしたデータを確認する
 ============================================
 
 Gatewayがpublishするトピックは、"sensor/<参加者番号> でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTにpublishしています。AWS IoTのTestから、変換されたデータを確認してみましょう。
