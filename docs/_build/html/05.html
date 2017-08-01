@@ -374,9 +374,11 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="kinesis-firehoseaws-iot">
-<h2>5.4. Kinesis Firehose用のAWS IoT ルールを作成<a class="headerlink" href="#kinesis-firehoseaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTで受け取ったデータをKinesis Firehose宛に送信するために、AWS IoTのルールを設定します。トピック &#8220;sensor/&lt;参加者番号&gt;&#8221; を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsとします。</p>
+<div class="section" id="aws-iot">
+<h2>5.4. AWS IoT ルールの設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>AWS IoTでは、受信したデータをルールエンジンを用いて、他のAWSの各種サービスと連携できます。
+ルールエンジンの設定は、SQLステートメントとアクションで構成されます。SQLステートメントのトピックフィルターでデータを抽出し、アクションとしてAWSの各種サービスを指定します。</p>
+<p>このシナリオでは、BLEゲートウェイが送信するトピック &#8220;sensor/&lt;参加者番号&gt;&#8221; を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsを設定します。</p>
 <p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
 <img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
 <div class="line-block">
@@ -492,7 +494,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <li><a class="reference external" href="#id1">5.1. S3バケットを作成</a></li>
 <li><a class="reference external" href="#lambda">5.2. データ変換用のLambda関数を準備する</a></li>
 <li><a class="reference external" href="#kinesis-firehose">5.3. Kinesis Firehoseの設定</a></li>
-<li><a class="reference external" href="#kinesis-firehoseaws-iot">5.4. Kinesis Firehose用のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#aws-iot">5.4. AWS IoT ルールの設定</a></li>
 <li><a class="reference external" href="#id2">5.5. S3に保存されたデータを確認する</a></li>
 </ul>
 </li>

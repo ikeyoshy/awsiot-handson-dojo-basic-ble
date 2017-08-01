@@ -287,10 +287,13 @@ Kinesis Firehose Delivery Streamsの作成が開始されました。
 
 |
 
-Kinesis Firehose用のAWS IoT ルールを作成
+AWS IoT ルールの設定
 ==============================================
 
-AWS IoTで受け取ったデータをKinesis Firehose宛に送信するために、AWS IoTのルールを設定します。トピック "sensor/<参加者番号>" を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsとします。
+AWS IoTでは、受信したデータをルールエンジンを用いて、他のAWSの各種サービスと連携できます。
+ルールエンジンの設定は、SQLステートメントとアクションで構成されます。SQLステートメントのトピックフィルターでデータを抽出し、アクションとしてAWSの各種サービスを指定します。
+
+このシナリオでは、BLEゲートウェイが送信するトピック "sensor/<参加者番号>" を、トピックフィルターとして設定し、送付先を先ほど作成したKinesis Firehose Delivery Streamsを設定します。
 
 サービス一覧から[AWS IoT]をクリックして開きます。
 
