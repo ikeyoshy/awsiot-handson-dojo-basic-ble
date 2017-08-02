@@ -158,7 +158,7 @@ Lambda起動用のAWS IoT ルールを作成
 設定項目             値
 ============= ====================================
 Name	         awsiot_lambda_direct_<参加者番号>
-Attribute	     下記から "encode(...)"をコピーして下さい。
+Attribute	     ※ 下記から "encode(...)"をコピーして下さい。
 Topic filter   sensor/<参加者番号>
 ============= ====================================
 
@@ -173,7 +173,7 @@ Topic filter   sensor/<参加者番号>
 |
 
 ※ レンジャーシステムズ製のBLEゲートウェイが送信するデータは、CSV形式であるため、Lambdaで受け取る事が出来ません。
-  ルールエンジンの組み込み関数 "Encode()"を使用する事で、非JSONのデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
+  ルールエンジンの組み込み関数 "encode()"を使用する事で、非JSON形式のデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
   今回は、キー payloadとして、BLE BeaconのPayload(センサーデータ)をエンコードしています。
   詳しくは、下記をご参照下さい。
   http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html
