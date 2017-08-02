@@ -4,8 +4,7 @@
 
 BLEゲートウェイは、温湿度センサーが送信するBeaconを受信し、バイナリデータとしてAWS IoTに送信しています。AWS IoTのルールエンジンにご自身のセンサーデータのトピック名"sensor/<参加者番号>"を登録して、そのメッセージだけを「Amazon Kinesis Firehose」に送信します。Kinesis Firehoseでは、Lambda関数を使用して、受け取ったバイナリデータを活用が容易なJSON形式に変換し、Amazon S3へ保存します。
 
-Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service にロードすることができます。
-
+Amazon Kinesis Firehose は、受け取ったストリーミングデータを AWSの各種サービスにロードする最も簡単な方法です。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service にロードすることができます。
 
 .. image:: images/05/overview.png
 
@@ -27,6 +26,9 @@ S3に保存されるデータは、下記のJSON形式のデータになりま�
   }
 
 |
+
+このシナリオでは、最初にデータの保存先であるS3とデータ変換用のLambda関数の設定を行い、最後にKinesis Firehoseの設定を行います。
+
 
 S3バケットを作成
 ====================
@@ -192,9 +194,9 @@ BLEゲートウェイは、BLEフィルター設定で、指定したBLEセン�
 
 AWS IoTに送信するデータの中に、BLEセンサーのMACアドレスが付加されていますので、この値を利用して、Lambda関数でBLEセンサーのBDアドレスを確認し、ご自身の温湿度センサーだけをLambda関数で処理するようにします。
 
-Lambda関数内の"my_temphumid_sensor_mac" をご自身の温湿度センサーのMACアドレスに書き換えます。
+このLambda関数は、"my_temphumid_sensor_mac" に記載されているMACアドレスを持つデータだけを処理します。アップロードしたLambda関数の"my_temphumid_sensor_mac"を、ご自身の温湿度センサーのMACアドレスに書き換えましょう。
 
-ご自身のセンサーのラベルに記載されているセンサーのMACアドレスを確認し、Lambda関数内のの"my_temphumid_sensor_mac" を修正し、[保存] ボタンを押して下さい。
+ご自身の温湿度センサーのラベルに記載されているMACアドレスを確認し、Lambda関数内のの"my_temphumid_sensor_mac" を修正し、[保存] ボタンを押して下さい。
 
 .. image:: images/05/src_mac.png
 
@@ -203,9 +205,9 @@ Lambda関数内の"my_temphumid_sensor_mac" をご自身の温湿度センサー
 |
 
 Kinesis Firehoseの設定
-==============================
+======================================
 
-Lambda関数の登録が終わりましたので、Amaozn Kinesis Firehoseの設定を行います。Kinesis Firehoseのストリーム名を指定し、データの吐き出し先をS3とします。また、データ変換を有効にして、変換用のLambda関数を指定します。S3へデータを書き出す周期は、60秒周期とします。
+Lambda関数の登録が終わりましたので、Amaozn Kinesis Firehoseの設定を行います。Kinesis Firehoseのストリーム名を指定し、データの吐き出し先をS3とします。また、データ変換を有効にして、先ほど登録した変換用のLambda関数を指定します。S3へデータを書き出す周期は、60秒周期とします。
 
 サービス一覧から[Kinesis]をクリックして開きます。
 
@@ -247,7 +249,7 @@ IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設�
 ======================= =======================================
 Data transformation      Enable
 Lambda function          ranger-raw-data-to-json-<参加者番号>
-Buffer interval          60 (S3へ60秒周期でファイルが保存されます)
+Buffer interval          60　(S3へ60秒周期でファイルが保存されます)
 Error Logging            Disable
 IAM role                 Firehose delivery IAM role
 ======================= =======================================
@@ -272,7 +274,7 @@ IAM ロール              新しい IAMロールの作成
 
 |
 
-Firehoseの設定画面で、[Next] をクリックして下さい。
+Kinesis Firehoseの設定画面で、 先ほど作成したIAMロール "firehose_delivery_role-<参加者番号>" が選択されていることを確認し、[Next] をクリックして下さい。
 
 .. image:: images/05/create-delivery-stream-5.png
 
