@@ -210,10 +210,10 @@ Create a rule画面に戻ります。[Create rule]  をクリックして、ル�
 
 |
 
-Lambda関数がpublishしたデータを確認する
+Lambda関数がパブリッシュしたデータを確認する
 ============================================
 
-Gatewayがpublishするトピックは、"sensor/<参加者番号> でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTにpublishしています。AWS IoTのTestから、変換されたデータを確認してみましょう。
+BLEゲートウェイがパブリッシュするトピックは、"sensor/<参加者番号> でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTにパブリッシュしています。AWS IoTのテストから、変換されたデータを確認してみましょう。
 
 テスト画面を表示します。AWS IoTのメニューから[Test]をクリックすると下記の画面が表示されます。
 "Subscription topic" に "sensor/<参加者番号>/#" と入力し、[Subscribe to topic] ボタンを押します。
@@ -287,7 +287,7 @@ Display last n data       200 (グラフに表示する過去のデータ数)
   https://aws.amazon.com/jp/developers/access-keys/
 
 暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
-温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温湿度センサーの位置や確度を変えるだけで
 
 .. image:: images/06/web-app-linechart.png
 
