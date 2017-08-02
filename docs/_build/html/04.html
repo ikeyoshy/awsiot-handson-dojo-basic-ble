@@ -62,7 +62,7 @@
 <div class="line"><br /></div>
 </div>
 <p>テスト画面を表示します。メニューから[Test]をクリックすると下記の画面が表示されます。
-&#8220;Subscription topic&#8221; に &#8220;sensor/&lt;参加者番号&gt;&#8221; を入力し、[Subscribe to topic] ボタンを押します。これで、AWS IoTマネージメントコンソールで、トピック &#8220;sensor/&lt;参加者番号&gt;&#8221;をサブスクライブできるようになりました。</p>
+&#8220;Subscription topic&#8221; に &#8220;sensor/&lt;参加者番号&gt;&#8221; と入力し、[Subscribe to topic] ボタンを押します。これで、AWS IoTマネージメントコンソールで、トピック &#8220;sensor/&lt;参加者番号&gt;&#8221;をサブスクライブできるようになりました。</p>
 <img alt="_images/test.png" src="_images/test.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -77,21 +77,22 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>何も表示されない場合、温湿度センサーの電源が入っているか確認して下さい。電源が入っていれば、温湿度センサーのボタンを押すとLEDが緑色に点灯します。電源が入っていても、テストでデータが表示されない場合、トレーナーに聞いて下さい。</p>
+<p>何も表示されない場合、温湿度センサーの電源が入っているか確認して下さい。電源が入っていれば、温湿度センサーのボタンを押すとLEDが緑色に点灯します。電源が入っていても、テストでデータが表示されない場合、トレーナーに問い合わせて下さい。</p>
 <img alt="_images/LED.png" src="_images/LED.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>ゲートウェイが送信するデータは、下記の様な形式になっています。</p>
+<p>ゲートウェイが送信するデータは、下記の様なcsv形式になっています。</p>
 <div class="highlight-python"><pre>$GPRP,C02C61CB558F,AC83F3A041D2,-44,02010612FF590080BC440104FFFFFFFFFFFFFFFFFFFF,1493638145</pre>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>各データの内訳は、下記の様になっています。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="32%" />
-<col width="68%" />
+<col width="39%" />
+<col width="61%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -103,7 +104,7 @@
 <td>ヘッダー</td>
 </tr>
 <tr><td>C02C61CB558F</td>
-<td>BLEセンサーのBDアドレス (Bluetooth Device Address = MACアドレス)</td>
+<td>BLEセンサーのBDアドレス</td>
 </tr>
 <tr><td>AC83F3A041D2</td>
 <td>ゲートウェイのBDアドレス</td>
@@ -119,12 +120,17 @@
 </tr>
 </tbody>
 </table>
-<p>温湿度センサーが送信するBeaconデータの中身(Payload)は、下記の様なバイナリデータになります。</p>
+<dl class="docutils">
+<dt>※ BDアドレスとは、BluetoothデバイスのMACアドレスです。</dt>
+<dd>(Bluetooth Device Address)</dd>
+</dl>
+<p>温湿度センサーが送信するBeaconデータの中身(Payload)は、下記の様なバイナリデータになっています。</p>
 <div class="highlight-python"><pre>02010612FF590080BC4D0100D80A2D00000000000000</pre>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>このバイナリデータの内訳は、下記の様になっています。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -159,14 +165,14 @@
 </tr>
 </tbody>
 </table>
-<p>本ハンズオンでは、Lambda関数を使用して、Beaconデータを活用が容易な JSON形式 のデータに加工して使用します。</p>
-<p>AWS IoTのテスト画面で、&#8221;Subscription topic&#8221;に &#8220;#&#8221; と入力し、[Subscribe to topic] ボタンを押すと、全てのメッセージを確認できます。複数の参加者で1つのAWSアカウントを共用している場合は、他のユーザーのBLEゲートウェイからのデータも参照することができます。</p>
+<p>本ハンズオンでは、Lambda関数を使用して、バイナリ形式のBeaconデータを活用が容易な JSON形式 のデータに加工して使用します。</p>
+<p>AWS IoTのテスト画面で、&#8221;Subscription topic&#8221;に &#8220;#&#8221; と入力し、[Subscribe to topic] ボタンを押すと、AWS IoTが受信した全てのメッセージを確認できます。複数の参加者で1つのAWSアカウントを共用している場合は、他のユーザーのBLEゲートウェイからのデータも参照することができます。</p>
 <img alt="_images/test-4.png" src="_images/test-4.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p><strong>トピックのワイルドカード</strong></p>
-<p>AWS IoTでは、トピックを指定する場合、ワイルドカードを指定できます。&#8221;#&#8221;は、トピック名の末尾の任意の文字列に合致します。Sensor/# へのサブスクリプションは、sensor/01, sensor/02, sensor/03 ... にマッチし、全てのIAMユーザのデータを見ることができます。</p>
+<p>AWS IoTでは、トピックを指定する場合、ワイルドカードを指定できます。&#8221;#&#8221;は、トピック名の末尾の任意の文字列に合致します。Sensor/# へのサブスクリプションは、sensor/01, sensor/02, sensor/03, sensor/01/pppp ... にマッチし、全てのIAMユーザのデータを見ることができます。</p>
 </div>
 </div>
 

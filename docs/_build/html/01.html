@@ -50,7 +50,7 @@
 <h1>1. イントロダクション<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="ws-iot-dojo">
 <h2>1.1. WS IoT ハンズオン Dojo コース<a class="headerlink" href="#ws-iot-dojo" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>今回のAWS IoT ハンズオン Dojo コースは、AWS IoTと可視化に的を絞ったものになります。</p>
+<p>今回のAWS IoT ハンズオン Dojo コースは、市販のIoTゲートウエイデバイスを使用してAWS IoTに接続し、データの保存、可視化を行う Basic-2 コースとなります。</p>
 <img alt="_images/dojo_course.png" src="_images/dojo_course.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -58,10 +58,21 @@
 </div>
 <div class="section" id="id2">
 <h2>1.2. ハンズオンシナリオ<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTにBLEゲートウェイを登録し、温度、湿度の収集を行います。</p>
-<p>シナリオ１では、収集されたデータを活用しやすい形式に変換し、クラウド保存スペースに保存します。</p>
-<p>シナリオ２では、データ変換を行い、Webアプリケーションでグラフ化し、モニターします。</p>
-<p>シナリオ2+は、Elastic Search Service + Kibanaで可視化を行います。(オプションシナリオです。)</p>
+<p>BLEゲートウェイをAWS IoTに登録し、AWS IoTへの接続の設定を行い、温度、湿度の収集を行います。</p>
+<ol class="arabic simple">
+<li>シナリオ１<ul>
+<li>収集されたデータを活用しやすい形式に変換し、クラウド保存スペースに保存します。</li>
+</ul>
+</li>
+<li>シナリオ２<ul>
+<li>データ変換を行い、Webアプリケーションでグラフ化し、モニターします。</li>
+</ul>
+</li>
+<li>シナリオ2+<ul>
+<li>Elastic Search Service + Kibanaで可視化を行います。(オプションシナリオです。)</li>
+</ul>
+</li>
+</ol>
 <img alt="_images/overview.png" src="_images/overview.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -72,7 +83,7 @@
 <div class="section" id="ble-gateway-ibs01w">
 <h3>1.3.1. レンジャーシステムズ BLE Gateway (iBS01W)<a class="headerlink" href="#ble-gateway-ibs01w" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
-<dt>レンジャーシステムズ社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE(Bluetooth Low Energy)経由で温度/湿度データ収集し、AWS IoTへの温度/湿度データの送信に利用します。レンジャーシステムズ社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が非常に高い製品です。他にLTE版のゲートウエイもあります。</dt>
+<dt>レンジャーシステムズ株式会社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE(Bluetooth Low Energy) 経由で温度/湿度データ収集し、AWS IoTへの温度/湿度データの送信に利用します。レンジャーシステムズ株式会社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が高い製品です。他にLTE版のゲートウエイもあります。</dt>
 <dd><a class="reference external" href="http://www.ranger-systems.co.jp/iot/">http://www.ranger-systems.co.jp/iot/</a></dd>
 </dl>
 <div class="line-block">
@@ -81,7 +92,7 @@
 </div>
 <div class="section" id="ibs01t">
 <h3>1.3.2. レンジャーシステムズ 温湿度センサー (iBS01T)<a class="headerlink" href="#ibs01t" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>レンジャーシステムズ社が提供するBLE Beacon温湿度センサーです。ボタン電池で動作し、電池寿命は1.4年で、長時間使用できます。</p>
+<p>レンジャーシステムズ株式会社が提供するBLE Beacon温湿度センサーです。ボタン電池で動作し、電池寿命は1.4年で、長時間使用できます。</p>
 </div>
 <div class="section" id="aws">
 <h3>1.3.3. AWSアカウント<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h3>
@@ -96,7 +107,7 @@
 <div class="section" id="aws-iot">
 <h3>1.3.4. AWS IoT<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
-<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型プラットフォームです。本ハンズオンでは、デバイスからのセンサーデータの受信で利用します。</dt>
+<dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型IoTプラットフォームです。本ハンズオンでは、デバイスからのセンサーデータの収集のために利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
 </dl>
 <img alt="_images/AWS_IoT.png" src="_images/AWS_IoT.png" />
@@ -107,7 +118,7 @@
 <div class="section" id="amazon-kinesis-firehose">
 <h3>1.3.5. Amazon Kinesis Firehose<a class="headerlink" href="#amazon-kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
-<dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得したBLE Beaconデータを加工すし、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。</dt>
+<dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得した温湿度センサーのデータを加工し、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/kinesis/firehose/">https://aws.amazon.com/jp/kinesis/firehose/</a></dd>
 </dl>
 <div class="line-block">
@@ -137,7 +148,7 @@
 <div class="section" id="aws-lambda">
 <h3>1.3.8. AWS Lambda<a class="headerlink" href="#aws-lambda" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <dl class="docutils">
-<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、Amazon Kinesis Firehose内でセンサーデータの加工に使用します。</dt>
+<dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、センサーデータの加工に使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/lambda/">https://aws.amazon.com/jp/lambda/</a></dd>
 </dl>
 <div class="line-block">

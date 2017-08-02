@@ -274,7 +274,7 @@ IAM ロール              新しい IAMロールの作成
 
 |
 
-Kinesis Firehoseの設定画面で、 先ほど作成したIAMロール "firehose_delivery_role-<参加者番号>" が選択されていることを確認し、[Next] をクリックして下さい。
+Kinesis Firehoseの設定画面で、 IAM Roleとして、先ほど作成したIAMロール "firehose_delivery_role-<参加者番号>" が選択されていることを確認し、[Next] をクリックして下さい。
 
 .. image:: images/05/create-delivery-stream-5.png
 

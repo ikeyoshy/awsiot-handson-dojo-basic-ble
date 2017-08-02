@@ -48,7 +48,7 @@
             
   <div class="section" id="id1">
 <h1>6. シナリオ2: センサーデータを可視化する-1<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>このシナリオでは、BLEゲートウェイが送信するバイナリデータをLambdaで受信し、JSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで変換後のトピックをサブスクライブしグラフ表示します。</p>
+<p>このシナリオでは、BLEゲートウェイが送信するバイナリデータをLambdaでJSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで変換後のトピックをサブスクライブしグラフ表示します。Webアプリケーションは、AWS IoTデバイスととして動作し、JSON形式に変換されたトピックをサブスクライブしてグラフ表示します。</p>
 <img alt="_images/overview2.png" src="_images/overview2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -185,7 +185,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、&#8217;us-east-1&#8217;)</p>
+<p>Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、&#8217;us-east-1&#8217;なので変更の必要はありません。)</p>
 <p>目的のセンサーからのデータだけを取り込むために、Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; を修正します。
 ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。&#8221;,&#8221;カンマで区切れば、複数のセンサーの登録も可能です。</p>
 <img alt="_images/src_mac.png" src="_images/src_mac.png" />
@@ -229,6 +229,15 @@
 </tr>
 </tbody>
 </table>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s1">&#39;topic_name&#39;</span><span class="p">:</span> <span class="s1">&#39;sensor/&lt;参加者番号&gt;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;payload&#39;</span><span class="p">:</span> <span class="s1">&#39;JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <img alt="_images/create-rule1.png" src="_images/create-rule1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -286,9 +295,9 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="lambdapublish">
-<h2>6.3. Lambda関数がpublishしたデータを確認する<a class="headerlink" href="#lambdapublish" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Gatewayがpublishするトピックは、&#8221;sensor/&lt;参加者番号&gt; でしたが、Lambda関数でJSON形式に変換し、トピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、AWS IoTにpublishしています。AWS IoTのTestから、変換されたデータを確認してみましょう。</p>
+<div class="section" id="id2">
+<h2>6.3. Lambda関数がパブリッシュしたデータを確認する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>BLEゲートウェイがパブリッシュするトピックは、&#8221;sensor/&lt;参加者番号&gt; でしたが、Lambda関数でJSON形式に変換し、トピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、AWS IoTにパブリッシュしています。AWS IoTのテストから、変換されたデータを確認してみましょう。</p>
 <p>テスト画面を表示します。AWS IoTのメニューから[Test]をクリックすると下記の画面が表示されます。
 &#8220;Subscription topic&#8221; に &#8220;sensor/&lt;参加者番号&gt;/#&#8221; と入力し、[Subscribe to topic] ボタンを押します。</p>
 <img alt="_images/test1.png" src="_images/test1.png" />
@@ -371,7 +380,7 @@
 <a class="reference external" href="https://aws.amazon.com/jp/developers/access-keys/">https://aws.amazon.com/jp/developers/access-keys/</a></dd>
 </dl>
 <p>暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
-温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。</p>
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温湿度センサーの位置や確度を変えるだけで</p>
 <img alt="_images/web-app-linechart.png" src="_images/web-app-linechart.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -390,7 +399,7 @@
 <li><a class="reference external" href="#">6. シナリオ2: センサーデータを可視化する-1</a><ul>
 <li><a class="reference external" href="#lambda">6.1. データ変換用のLambda関数を準備する</a></li>
 <li><a class="reference external" href="#lambdaaws-iot">6.2. Lambda起動用のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#lambdapublish">6.3. Lambda関数がpublishしたデータを確認する</a></li>
+<li><a class="reference external" href="#id2">6.3. Lambda関数がパブリッシュしたデータを確認する</a></li>
 <li><a class="reference external" href="#web">6.4. Webアプリケーションでデータを確認</a></li>
 </ul>
 </li>

@@ -48,13 +48,13 @@
             
   <div class="section" id="s3">
 <h1>5. シナリオ1: センサーデータをS3に保存する<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service にロードすることができます。</p>
 <p>BLEゲートウェイは、温湿度センサーが送信するBeaconを受信し、バイナリデータとしてAWS IoTに送信しています。AWS IoTのルールエンジンにご自身のセンサーデータのトピック名&#8221;sensor/&lt;参加者番号&gt;&#8221;を登録して、そのメッセージだけを「Amazon Kinesis Firehose」に送信します。Kinesis Firehoseでは、Lambda関数を使用して、受け取ったバイナリデータを活用が容易なJSON形式に変換し、Amazon S3へ保存します。</p>
+<p>Amazon Kinesis Firehose は、受け取ったストリーミングデータを AWSの各種サービスにロードする最も簡単な方法です。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service にロードすることができます。</p>
 <img alt="_images/overview1.png" src="_images/overview1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>S3に保存されるデータは、下記のJSON形式になります。</p>
+<p>S3に保存されるデータは、下記のJSON形式のデータになります。</p>
 <div class="highlight-python"><pre>{
   "model": "590080BC",       ← センサーのモデル番号
   "src_mac": "FFEAD7E638B8", ← センサーのMACアドレス
@@ -69,9 +69,10 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>このシナリオでは、最初にデータの保存先であるS3とデータ変換用のLambda関数の設定を行い、最後にKinesis Firehoseの設定を行います。</p>
 <div class="section" id="id1">
 <h2>5.1. S3バケットを作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Amazon S3は、高い耐久性を持つ、容量無制限で安価なオブジェクトストレージ・サービスです。このシナリオでは、温湿度センサーのデータをS3に保存します。データをS3に保存すれば、AWSの各種データベース、Amazon Athena, Amazon Redshift, Amazon EMR、Amazon Machine Lerningなどの各種分析サービスとの連携が容易になり、データレイクとして使用する事が出来ます。</p>
+<p>Amazon S3は、高い耐久性を持つ、容量無制限で安価なオブジェクトストレージ・サービスです。このシナリオでは、温湿度センサーのデータをS3に保存します。データをS3に保存すれば、AWSの各種データベース、Amazon Athena、Amazon Redshift、Amazon EMR、Amazon Machine Lerningなどの各種分析サービスとの連携が容易になり、データレイクとして活用する事が出来ます。</p>
 <p>データを保存するS3バケットを作成します。</p>
 <p>サービス一覧から[S3]をクリックして開きます。</p>
 <img alt="_images/s3.png" src="_images/s3.png" />
@@ -117,7 +118,7 @@
 </div>
 <div class="section" id="lambda">
 <h2>5.2. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Amazon Kinesis Firehoseは、受け取ったデータをLambda関数を使用して加工できます。ここでは、AWSにデータ変換用のLambda関数を登録します。</p>
+<p>Amazon Kinesis Firehoseは、受け取ったデータをLambda関数を使用して処理することができます。このセクションでは、AWSにデータ変換用のLambda関数を登録します。</p>
 <p>はじめに、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でAWSにアップロードします。</p>
 <p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-to-json.zip</a></p>
 <p>サービス一覧から[Lambda] をクリックして開きます。</p>
@@ -175,7 +176,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。このIAMロールでは、Lambda関数のアクセス権限を設定します。Kinesis Firehoseからデータを受け取り、データ変換を行い、Kinesis Firehoseへデータを書き戻すことを可能にし、CloudWatchログへのログの出力を許可しています。</p>
+<p>IAMの設定画面では、[新しいIAMロールの作成] を選択し、ロール名を入力し、[ポリシードキュメントを表示] をクリックして下さい。このIAMロールでは、Lambda関数のアクセス権限を設定します。Kinesis Firehoseからデータを受け取り、データ変換したデータをKinesis Firehoseへデータを書き戻すことを可能にし、CloudWatchログへのログの出力を許可しています。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -240,15 +241,15 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Lambda関数の作成に成功すると、下記の様な画面が表示されます。</p>
+<p>Lambda関数の作成に成功すると、下記の様な画面が表示され、アップロードしたLambda関数のソースコードが表示されます。</p>
 <img alt="_images/edit-lambda-func.png" src="_images/edit-lambda-func.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>BLEゲートウェイは、周囲のBLE Beaconを全て受信し、AWS IoTへ送信します。AWS IoTのルールエンジンのトピックフィルターで、トピック &#8220;sensor/&lt;参加者番号&gt;&#8221;だけを処理するようにしますが、BLEゲートウェイは、他のユーザーの温湿度センサーのデータもAWS IoTへ送信します。</p>
-<p>AWS IoTに送信するデータの中に、BLEセンサーのBDアドレス (Bluetooth Device Address = MACアドレス)を付加していますので、ご自身の温湿度センサーからのデータだけを処理するために、この情報を利用し、Lambda関数でBLEセンサーのBDアドレスを確認し、ご自身の温湿度センサーだけをLambda関数で処理するようにします。</p>
-<p>Lambda関数内の&#8221;my_temphumid_sensor_mac&#8221; をご自身の温湿度センサーのMACアドレスに書き換えます。</p>
-<p>ご自身のセンサーのラベルに記載されているセンサーのMACアドレスを確認し、Lambda関数内のの&#8221;my_temphumid_sensor_mac&#8221; を修正し、[保存] ボタンを押して下さい。</p>
+<p>BLEゲートウェイは、BLEフィルター設定で、指定したBLEセンサーのデータだけをAWS IoTへ送信するようになっていますが、他の参加者の温湿度センサーのBeaconも受信し、トピック &#8220;sensor/&lt;参加者番号&gt;&#8221;として、AWS IoTに送信しています。</p>
+<p>AWS IoTに送信するデータの中に、BLEセンサーのMACアドレスが付加されていますので、この値を利用して、Lambda関数でBLEセンサーのBDアドレスを確認し、ご自身の温湿度センサーだけをLambda関数で処理するようにします。</p>
+<p>このLambda関数は、&#8221;my_temphumid_sensor_mac&#8221; に記載されているMACアドレスを持つデータだけを処理します。アップロードしたLambda関数の&#8221;my_temphumid_sensor_mac&#8221;を、ご自身の温湿度センサーのMACアドレスに書き換えましょう。</p>
+<p>ご自身の温湿度センサーのラベルに記載されているMACアドレスを確認し、Lambda関数内のの&#8221;my_temphumid_sensor_mac&#8221; を修正し、[保存] ボタンを押して下さい。</p>
 <img alt="_images/src_mac.png" src="_images/src_mac.png" />
 <img alt="_images/edit-lambda-func-2.png" src="_images/edit-lambda-func-2.png" />
 <div class="line-block">
@@ -257,7 +258,7 @@
 </div>
 <div class="section" id="kinesis-firehose">
 <h2>5.3. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Lambda関数の登録が終わりましたので、Amaozn Kinesis Firehoseの設定を行います。Kinesis Firehoseのストリーム名を指定し、データの吐き出し先をS3とします。また、データ変換を有効にして、変換用のLambda関数を指定します。S3へデータを書き出す周期は、60秒周期とします。</p>
+<p>Lambda関数の登録が終わりましたので、Amaozn Kinesis Firehoseの設定を行います。Kinesis Firehoseのストリーム名を指定し、データの吐き出し先をS3とします。また、データ変換を有効にして、先ほど登録した変換用のLambda関数を指定します。S3へデータを書き出す周期は、60秒周期とします。</p>
 <p>サービス一覧から[Kinesis]をクリックして開きます。</p>
 <img alt="_images/kinesis.png" src="_images/kinesis.png" />
 <div class="line-block">
@@ -320,7 +321,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Buffer interval</td>
-<td>60 (S3へ60秒周期でファイルが保存されます)</td>
+<td>60　(S3へ60秒周期でファイルが保存されます)</td>
 </tr>
 <tr><td>Error Logging</td>
 <td>Disable</td>
@@ -359,7 +360,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Firehoseの設定画面で、[Next] をクリックして下さい。</p>
+<p>Kinesis Firehoseの設定画面で、 IAM Roleとして、先ほど作成したIAMロール &#8220;firehose_delivery_role-&lt;参加者番号&gt;&#8221; が選択されていることを確認し、[Next] をクリックして下さい。</p>
 <img alt="_images/create-delivery-stream-5.png" src="_images/create-delivery-stream-5.png" />
 <div class="line-block">
 <div class="line"><br /></div>

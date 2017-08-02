@@ -49,7 +49,7 @@
   <div class="section" id="aws-iot">
 <h1>2. AWS IoT基本設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>この章では、AWS IoTにIoTデバイスであるBLEゲートウェイを登録し、認証、認可の設定を行います。
-AWS IoTのコンソール画面で、IoTデバイスを作成します。証明書を作成し、アクセス権(ポリシー)を付与し、登録したデバイスに関連付ける設定を行います。作成した証明書は後ほどBLEゲートウェイにインストールします。これにより、BLEゲートウェイがAWS IoTに安全に接続し、暗号化通信によるセキュアなデータ送受信が可能になります。</p>
+AWS IoTのコンソール画面で、IoTデバイスを作成します。証明書を作成し、アクセス権(ポリシー) を付与し、登録したデバイスに関連付ける設定を行います。作成した証明書は後ほどBLEゲートウェイにインストールします。これにより、BLEゲートウェイがAWS IoTに安全に接続し、暗号化通信によるセキュアなデータ通信が可能になります。</p>
 <div class="section" id="aws">
 <h2>2.1. AWS マネジメントコンソールにサインイン<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>まずは、下記のURLにアクセスして、アカウントID、ユーザー名、パスワードを入力しAWSマネージメントコンソールにサインインして下さい。ルートアカウントでログインする場合は、「ルートアカウント認証情報を使用してサインイン」をクリックして下さい。</p>
@@ -84,7 +84,7 @@ AWS IoTのコンソール画面で、IoTデバイスを作成します。証明�
 </div>
 <div class="section" id="id1">
 <h2>2.2. デバイスの作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTにBLEゲートウェイを登録します。</p>
+<p>AWS IoTで使用するIoTデバイスを登録します。</p>
 <p>AWSマネージメントコンソールを開き、右上のリージョン一覧から
 [米国東部(バージニア北部)]を選択します。</p>
 <img alt="_images/regions-us&#64;2x.png" src="_images/regions-us&#64;2x.png" />
@@ -166,31 +166,6 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <div class="line"><br /></div>
 </div>
 <p>フォームにそれぞれ以下のパラメータを入力し、[Create] をクリックします。</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="25%" />
-<col width="75%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">項目</th>
-<th class="head">値</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Name</td>
-<td>awsiot-handson-policy-&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Action</td>
-<td>iot:*</td>
-</tr>
-<tr><td>Resource ARN</td>
-<td>*</td>
-</tr>
-<tr><td>Effect</td>
-<td>Allow (チェックを入れて下さい)</td>
-</tr>
-</tbody>
-</table>
 <p>「*」は、半角の＊(アスタリスク)です。</p>
 <img alt="_images/create-policy-3.png" src="_images/create-policy-3.png" />
 <div class="line-block">
@@ -202,7 +177,7 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>ここで作成するポリシーは、AWS IoTへの全てのアクセス権限(AWS IoTへの接続、データの送受信、デバイスシャドウの操作)を持っています。実運用では、セキュリティー向上のために、デバイスに必要とされる権限だけを付与することを勧めします。</p>
+<p>ここで作成するポリシーは、AWS IoTへの全てのアクセス権限(AWS IoTへの接続、データの送受信、デバイスシャドウの操作) を持っています。実運用では、セキュリティー向上のために、デバイスに必要とされる権限だけを付与することを勧めします。</p>
 <p>ここで作成したポリシーは、次のステップで作成する証明書と関連付けされます。最終的にデバイスと関連付けされ、デバイスのアクセス権限を規定することになります。</p>
 </div>
 <div class="section" id="id3">
@@ -219,14 +194,14 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <div class="line"><br /></div>
 </div>
 <p>下記の様に、&#8221;Certificate created!&#8221;と表示されたら、証明書(Certificate)とプライベートキー(Private key)をPCにダウンロードして下さい。各ファイルのサイズは、証明書が1,220バイト程度、プライベートキーが1,670バイト程度になります。</p>
-<p>これらは、後ほど、BLEゲートウェイにアップロードします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。
+<p>これらは、後ほど、BLEゲートウェイにインストールします。証明書の番号は、後ほど証明書の割当てのところで参照しますので、ノートパッドなどに記録しておいて下さい。
 証明書の番号とは、ファイル名が &#8220;xxxxxxxxxx-certificate.pem.crt&#8221; の場合、冒頭の &#8220;xxxxxxxxxx&#8221; になります。</p>
 <p>証明書とプライベートキーのダウンロードが終わったら、[Activate] をクリックして証明書を有効にして下さい。</p>
 <img alt="_images/certificate-created.png" src="_images/certificate-created.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>最後に、左上の[←]を２回押して、戻って下さい。先ほど作成した証明書が表示され、&#8221;<strong>ACTIVATE</strong>&#8221; (有効) 状態になっている確認して下さい。</p>
+<p>最後に、左上の[←]を２回押して、戻って下さい。先ほど作成した証明書が表示され、&#8221;<strong>ACTIVATE</strong>&#8221; (有効) 状態になっている確認して下さい。証明書が有効になっていない場合、その証明書を使っているデバイスは、AWS IoTに接続出来なくなります。</p>
 <img alt="_images/confirm-certificate.png" src="_images/confirm-certificate.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -262,7 +237,7 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>これで、AWS IoTの基本設定は、終わりです。次に、BLEゲートウェイがAWS IoTに接続するための設定を行います。</p>
+<p>これで、AWS IoTの基本設定は、終わりです。デバイス、証明書、ポリシーの関連付けが終わりました。次のセクションでは、BLEゲートウェイがAWS IoTに接続するための設定を行います。</p>
 </div>
 </div>
 

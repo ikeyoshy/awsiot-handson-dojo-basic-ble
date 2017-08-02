@@ -2,7 +2,7 @@
 シナリオ2: センサーデータを可視化する-1
 =====================================
 
-このシナリオでは、BLEゲートウェイが送信するバイナリデータをLambdaで受信し、JSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで変換後のトピックをサブスクライブしグラフ表示します。
+このシナリオでは、BLEゲートウェイが送信するバイナリデータをLambdaでJSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで変換後のトピックをサブスクライブしグラフ表示します。Webアプリケーションは、AWS IoTデバイスととして動作し、JSON形式に変換されたトピックをサブスクライブしてグラフ表示します。
 
 .. image:: images/06/overview.png
 
@@ -126,7 +126,7 @@ Lambda関数の作成に成功すると、下記の様な画面が表示され�
 
 |
 
-Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、'us-east-1')
+Lambda関数内でAWS SDKのboto3をインポートしますが、使用中のリージョンになっているか確認して下さい。(バージニア リージョンの場合、'us-east-1'なので変更の必要はありません。)
 
 目的のセンサーからのデータだけを取り込むために、Lambda関数内の"my_temphumid_sensor_mac" を修正します。
 ご自身のセンサーのラベルに記載されているセンサーのMACアドレスに修正し、[保存] ボタンを押して下さい。これによって、ご自身のセンサーのデータだけがLambda関数で処理されるようになります。","カンマで区切れば、複数のセンサーの登録も可能です。
@@ -161,6 +161,15 @@ Name	         awsiot_lambda_direct_<参加者番号>
 Attribute	     encode(\*, \'base64\') as payload, topic() as topic_name
 Topic filter   sensor/<参加者番号>
 ============= ====================================
+
+::
+
+  {
+    'topic_name': 'sensor/<参加者番号>',
+    'payload': 'JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K'
+  }
+
+|
 
 .. image:: images/06/create-rule.png
 
@@ -210,10 +219,10 @@ Create a rule画面に戻ります。[Create rule]  をクリックして、ル�
 
 |
 
-Lambda関数がpublishしたデータを確認する
+Lambda関数がパブリッシュしたデータを確認する
 ============================================
 
-Gatewayがpublishするトピックは、"sensor/<参加者番号> でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTにpublishしています。AWS IoTのTestから、変換されたデータを確認してみましょう。
+BLEゲートウェイがパブリッシュするトピックは、"sensor/<参加者番号> でしたが、Lambda関数でJSON形式に変換し、トピック名 "sensor/<参加者番号>/json" として、AWS IoTにパブリッシュしています。AWS IoTのテストから、変換されたデータを確認してみましょう。
 
 テスト画面を表示します。AWS IoTのメニューから[Test]をクリックすると下記の画面が表示されます。
 "Subscription topic" に "sensor/<参加者番号>/#" と入力し、[Subscribe to topic] ボタンを押します。
@@ -287,7 +296,7 @@ Display last n data       200 (グラフに表示する過去のデータ数)
   https://aws.amazon.com/jp/developers/access-keys/
 
 暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
-温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温湿度センサーの位置や確度を変えるだけで
 
 .. image:: images/06/web-app-linechart.png
 
