@@ -22,7 +22,7 @@ context – AWS Lambda はこのパラメーターを使用してランタイム
 =============================================
 
 ゲートウェイは、受信したBeaconをAWS IoTにパブリッシュします。Lambda関数では、登録したセンサーのMACアドレスののみを処理するようにしています。
-下記のmy_temphumid_sensor_macで、今回使用する温湿度センサーのMACアドレスを登録し、配列 acceptable_sensorsに含まれているMACアドレスだけを処理します。
+下記のmy_temphumid_sensor_macで、今回使用する温湿度センサーのMACアドレスを登録し、配列 acceptable_sensorsに含まれているMACアドレスだけを処理します。マグネットセンサー、3軸加速度センサーも登録されていますが、このハンズオンでは使用しません。
 
 .. code-block:: python
 

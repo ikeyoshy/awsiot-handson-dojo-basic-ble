@@ -145,11 +145,11 @@ IAMロールを削除
 
 本ハンズオンで作成した下記のロールのみにチェックを入れ、[ロールの削除]をクリックして下さい。
 
-* firehose_delivery_role_es-<参加者番号>
 * IOT_to_Kinesis_Firehose-<参加者番号>
 * firehose_delivery_role-<参加者番号>
 * lambda_KinesisFirehoseAccess-<参加者番号>
 * lambda_awsiot_mqtt_publish-<参加者番号>
+* firehose_delivery_role_es-<参加者番号>　(これは、オプションです。)
 
 .. image:: images/09/IAM-role-delete.png
 
