@@ -39,7 +39,7 @@
 AWSの後片付け
 =================================
 
-ハンズオン終了後のAWSの課金発生を無くすために、今回のハンズオンで作成したAWSのリソースを削除します。BLEゲートウェイの電源を切れば、AWS IoTでの課金は発生しなくなりますので、後日、削除して頂いても大丈夫です。S3とオプションシナリオのElastic Search Serviceだは、入力データが無くても課金対象になりますので、必ず削除して下さい。
+ハンズオン終了後のAWSの課金発生を無くすために、今回のハンズオンで作成したAWSのリソースを削除します。BLEゲートウェイの電源を切れば、AWS IoTでの課金は発生しなくなりますので、後日、削除して頂いても大丈夫です。S3とオプションシナリオのElastic Search Serviceだけは、入力データが無くても課金対象になりますので、必ず削除して下さい。
 
 AWS IoTのリソースを削除
 ------------------------------------
@@ -97,28 +97,6 @@ S3バケットを削除
 
 |
 
-ElsticSearch Serviceの設定を削除
-------------------------------------------------
-
-マネージメントコンソールのサービス一覧から[ElsticSearch Service]をクリックして開きます。
-Domain”firehose-to-es-domain-<参加者番号>”をクリックします。
-
-.. image:: images/09/elasticsearch-delete.png
-
-|
-
-画面の下までスクロールし、"Delete Elasticsearch domain"をクリックすると、[Delete domain] ボタンが表示されるので、クリックします。
-
-.. image:: images/09/elasticsearch-delete-2.png
-
-|
-
-確認画面が表示されますので、"Delete the domain ...."のチェックを入れ、[Delete] ボタンをクリックします。
-
-.. image:: images/09/elasticsearch-delete-fonfirm.png
-
-|
-
 Lambda関数を削除
 ------------------------
 
@@ -172,5 +150,29 @@ IAMロールを削除
 確認画面が表示されますので、[はい、削除する]をクリックして下さい。
 
 .. image:: images/09/IAM-role-delete-confirm.png
+
+|
+
+ElsticSearch Serviceの設定を削除
+------------------------------------------------
+
+ElsticSearch Serviceは、オプションシナリオで使用したものです。オプションシナリオ未実施の方は削除する必要はありません。スキップして下さい。
+
+マネージメントコンソールのサービス一覧から[ElsticSearch Service]をクリックして開きます。
+Domain”firehose-to-es-domain-<参加者番号>”をクリックします。
+
+.. image:: images/09/elasticsearch-delete.png
+
+|
+
+画面の下までスクロールし、"Delete Elasticsearch domain"をクリックすると、[Delete domain] ボタンが表示されるので、クリックします。
+
+.. image:: images/09/elasticsearch-delete-2.png
+
+|
+
+確認画面が表示されますので、"Delete the domain ...."のチェックを入れ、[Delete] ボタンをクリックします。
+
+.. image:: images/09/elasticsearch-delete-fonfirm.png
 
 |
