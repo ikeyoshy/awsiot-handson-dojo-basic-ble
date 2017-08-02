@@ -92,7 +92,7 @@ D80A          温度 (0x0AD8 = 27.76℃)
 
 本ハンズオンでは、Lambda関数を使用して、バイナリ形式のBeacon payloadを活用が容易な JSON形式 のデータに加工して使用します。
 
-AWS IoTのテスト画面で、"Subscription topic"に "#" と入力し、[Subscribe to topic] ボタンを押すと、BLEゲートウェイがAWS IoTに送信した全てのメッセージを確認できます。複数の参加者で1つのAWSアカウントを共用している場合は、他のユーザーのBLEゲートウェイからのデータも見ることができます。
+AWS IoTのテスト画面で、"Subscription topic"に "#" と入力し、[Subscribe to topic] ボタンを押すと、BLEゲートウェイがAWS IoTに送信した全てのメッセージを見ることができます。複数の参加者で1つのAWSアカウントを共用している場合は、他のユーザーのBLEゲートウェイからのデータも見ることができます。
 
 .. image:: images/04/test-4.png
 
@@ -101,3 +101,6 @@ AWS IoTのテスト画面で、"Subscription topic"に "#" と入力し、[Subsc
 **トピックのワイルドカード**
 
 AWS IoTでは、トピックを指定する場合、ワイルドカードを指定できます。"#"は、トピック名の末尾の任意の文字列に合致します。Sensor/# へのサブスクリプションは、sensor/01, sensor/02, sensor/03, sensor/01/pppp ... にマッチし、全てのIAMユーザのデータを見ることができます。
+
+ワイルドカード "+"も使用可能です。
+"+"は、トピック階層内の 1 つの項目に完全に一致します。たとえば、Sensor/+/room1 へのサブスクリプションでは、Sensor/temp/room1、Sensor/moisture/room1 などにパブリッシュされたメッセージを受信します。
