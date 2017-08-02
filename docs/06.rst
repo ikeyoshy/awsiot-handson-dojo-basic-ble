@@ -158,16 +158,13 @@ Lambda起動用のAWS IoT ルールを作成
 設定項目             値
 ============= ====================================
 Name	         awsiot_lambda_direct_<参加者番号>
-Attribute	     encode(\*, \'base64\') as payload, topic() as topic_name
+Attribute	     下記から "encode(...)"をコピーして下さい。
 Topic filter   sensor/<参加者番号>
 ============= ====================================
 
 ::
 
-  {
-    'topic_name': 'sensor/<参加者番号>',
-    'payload': 'JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K'
-  }
+  encode(*, 'base64') as payload, topic() as topic_name
 
 |
 
