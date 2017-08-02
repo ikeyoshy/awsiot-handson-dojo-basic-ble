@@ -61,11 +61,11 @@
 <p>BLEゲートウェイをAWS IoTに登録し、AWS IoTへの接続の設定を行い、温度、湿度の収集を行います。</p>
 <ol class="arabic simple">
 <li>シナリオ１<ul>
-<li>収集されたデータを活用しやすい形式に変換し、クラウド保存スペースに保存します。</li>
+<li>収集されたデータを活用しやすい形式に変換し、クラウド上に保存します。</li>
 </ul>
 </li>
 <li>シナリオ２<ul>
-<li>データ変換を行い、Webアプリケーションでグラフ化し、モニターします。</li>
+<li>収集されたデータを活用しやすい形式に変換し、Webアプリケーションでグラフ化し、モニターします。</li>
 </ul>
 </li>
 <li>シナリオ2+<ul>
@@ -80,8 +80,10 @@
 </div>
 <div class="section" id="id3">
 <h2>1.3. 利用するデバイス、アプリケーション、サービス<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h3>1.3.1. ハードウェアデバイス<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <div class="section" id="ble-gateway-ibs01w">
-<h3>1.3.1. レンジャーシステムズ BLE Gateway (iBS01W)<a class="headerlink" href="#ble-gateway-ibs01w" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.1.1. レンジャーシステムズ BLE Gateway (iBS01W)<a class="headerlink" href="#ble-gateway-ibs01w" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>レンジャーシステムズ株式会社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE(Bluetooth Low Energy) 経由で温度/湿度データ収集し、AWS IoTへの温度/湿度データの送信に利用します。レンジャーシステムズ株式会社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が高い製品です。他にLTE版のゲートウエイもあります。</dt>
 <dd><a class="reference external" href="http://www.ranger-systems.co.jp/iot/">http://www.ranger-systems.co.jp/iot/</a></dd>
@@ -91,11 +93,14 @@
 </div>
 </div>
 <div class="section" id="ibs01t">
-<h3>1.3.2. レンジャーシステムズ 温湿度センサー (iBS01T)<a class="headerlink" href="#ibs01t" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>レンジャーシステムズ株式会社が提供するBLE Beacon温湿度センサーです。ボタン電池で動作し、電池寿命は1.4年で、長時間使用できます。</p>
+<h4>1.3.1.2. レンジャーシステムズ 温湿度センサー (iBS01T)<a class="headerlink" href="#ibs01t" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>レンジャーシステムズ株式会社が提供するBLE Beacon 温湿度センサーです。ボタン電池で動作し、電池寿命は1.4年で、長時間使用できます。</p>
+</div>
 </div>
 <div class="section" id="aws">
-<h3>1.3.3. AWSアカウント<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h3>1.3.2. AWSのサービス<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="id5">
+<h4>1.3.2.1. AWSアカウント<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらの通りです。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/register-flow/">https://aws.amazon.com/jp/register-flow/</a></dd>
@@ -105,7 +110,7 @@
 </div>
 </div>
 <div class="section" id="aws-iot">
-<h3>1.3.4. AWS IoT<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.2.2. AWS IoT<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型IoTプラットフォームです。本ハンズオンでは、デバイスからのセンサーデータの収集のために利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/iot/">https://aws.amazon.com/jp/iot/</a></dd>
@@ -116,7 +121,7 @@
 </div>
 </div>
 <div class="section" id="amazon-kinesis-firehose">
-<h3>1.3.5. Amazon Kinesis Firehose<a class="headerlink" href="#amazon-kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.2.3. Amazon Kinesis Firehose<a class="headerlink" href="#amazon-kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得した温湿度センサーのデータを加工し、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/kinesis/firehose/">https://aws.amazon.com/jp/kinesis/firehose/</a></dd>
@@ -126,7 +131,7 @@
 </div>
 </div>
 <div class="section" id="amazon-elasticsearch-service">
-<h3>1.3.6. Amazon Elasticsearch Service<a class="headerlink" href="#amazon-elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.2.4. Amazon Elasticsearch Service<a class="headerlink" href="#amazon-elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>オープンソースのElasticsearchを利用できるマネージド型のサービスです。本ハンズオンでは、データのストアとElasticsearchで利用できるKibanaを利用してデータの可視化に利用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/elasticsearch-service/">https://aws.amazon.com/jp/elasticsearch-service/</a></dd>
@@ -136,7 +141,7 @@
 </div>
 </div>
 <div class="section" id="amazon-s3-simple-storage-service">
-<h3>1.3.7. Amazon S3 (Simple Storage Service)<a class="headerlink" href="#amazon-s3-simple-storage-service" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.2.5. Amazon S3 (Simple Storage Service)<a class="headerlink" href="#amazon-s3-simple-storage-service" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>スケーラブルなクラウドストレージです。Webのコンテンツを配置してWebサーバとしても利用できます。本ハンズオンでは、センサーから取得したデータの保存先として使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/sns/">https://aws.amazon.com/jp/sns/</a></dd>
@@ -146,7 +151,7 @@
 </div>
 </div>
 <div class="section" id="aws-lambda">
-<h3>1.3.8. AWS Lambda<a class="headerlink" href="#aws-lambda" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.2.6. AWS Lambda<a class="headerlink" href="#aws-lambda" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、センサーデータの加工に使用します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/lambda/">https://aws.amazon.com/jp/lambda/</a></dd>
@@ -156,13 +161,14 @@
 </div>
 </div>
 <div class="section" id="amazon-cloudwatch">
-<h3>1.3.9. Amazon CloudWatch<a class="headerlink" href="#amazon-cloudwatch" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<h4>1.3.2.7. Amazon CloudWatch<a class="headerlink" href="#amazon-cloudwatch" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <dl class="docutils">
 <dt>AWSクラウドリソースとAWSで実行するアプリケーションのモニタリングサービスです。メトリクスの収集、ログファイルの収集が可能です。本ハンズオンではCloudWatch Logsを利用してAWS IoTのログを収集、閲覧します。</dt>
 <dd><a class="reference external" href="https://aws.amazon.com/jp/cloudwatch/">https://aws.amazon.com/jp/cloudwatch/</a></dd>
 </dl>
 <div class="line-block">
 <div class="line"><br /></div>
+</div>
 </div>
 </div>
 </div>
@@ -180,15 +186,21 @@
 <li><a class="reference external" href="#ws-iot-dojo">1.1. WS IoT ハンズオン Dojo コース</a></li>
 <li><a class="reference external" href="#id2">1.2. ハンズオンシナリオ</a></li>
 <li><a class="reference external" href="#id3">1.3. 利用するデバイス、アプリケーション、サービス</a><ul>
-<li><a class="reference external" href="#ble-gateway-ibs01w">1.3.1. レンジャーシステムズ BLE Gateway (iBS01W)</a></li>
-<li><a class="reference external" href="#ibs01t">1.3.2. レンジャーシステムズ 温湿度センサー (iBS01T)</a></li>
-<li><a class="reference external" href="#aws">1.3.3. AWSアカウント</a></li>
-<li><a class="reference external" href="#aws-iot">1.3.4. AWS IoT</a></li>
-<li><a class="reference external" href="#amazon-kinesis-firehose">1.3.5. Amazon Kinesis Firehose</a></li>
-<li><a class="reference external" href="#amazon-elasticsearch-service">1.3.6. Amazon Elasticsearch Service</a></li>
-<li><a class="reference external" href="#amazon-s3-simple-storage-service">1.3.7. Amazon S3 (Simple Storage Service)</a></li>
-<li><a class="reference external" href="#aws-lambda">1.3.8. AWS Lambda</a></li>
-<li><a class="reference external" href="#amazon-cloudwatch">1.3.9. Amazon CloudWatch</a></li>
+<li><a class="reference external" href="#id4">1.3.1. ハードウェアデバイス</a><ul>
+<li><a class="reference external" href="#ble-gateway-ibs01w">1.3.1.1. レンジャーシステムズ BLE Gateway (iBS01W)</a></li>
+<li><a class="reference external" href="#ibs01t">1.3.1.2. レンジャーシステムズ 温湿度センサー (iBS01T)</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#aws">1.3.2. AWSのサービス</a><ul>
+<li><a class="reference external" href="#id5">1.3.2.1. AWSアカウント</a></li>
+<li><a class="reference external" href="#aws-iot">1.3.2.2. AWS IoT</a></li>
+<li><a class="reference external" href="#amazon-kinesis-firehose">1.3.2.3. Amazon Kinesis Firehose</a></li>
+<li><a class="reference external" href="#amazon-elasticsearch-service">1.3.2.4. Amazon Elasticsearch Service</a></li>
+<li><a class="reference external" href="#amazon-s3-simple-storage-service">1.3.2.5. Amazon S3 (Simple Storage Service)</a></li>
+<li><a class="reference external" href="#aws-lambda">1.3.2.6. AWS Lambda</a></li>
+<li><a class="reference external" href="#amazon-cloudwatch">1.3.2.7. Amazon CloudWatch</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

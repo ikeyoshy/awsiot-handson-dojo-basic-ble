@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-dojo-basic-ble v0.0 documentation" href="index.html" />
-    <link rel="prev" title="9. ハンズオン終了後" href="09.html" /> 
+    <link rel="prev" title="9. ハンズオン終了後の後片付け" href="09.html" /> 
   </head>
   <body>
     <div class="related">
@@ -31,7 +31,7 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="09.html" title="9. ハンズオン終了後"
+          <a href="09.html" title="9. ハンズオン終了後の後片付け"
              accesskey="P">前へ</a> |</li>
         <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -56,7 +56,7 @@
 <div class="section" id="id2">
 <h2>10.2. 目的のセンサーからのデータだけを処理する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイは、受信したBeaconをAWS IoTにパブリッシュします。Lambda関数では、登録したセンサーのMACアドレスののみを処理するようにしています。
-下記のmy_temphumid_sensor_macで、今回使用する温湿度センサーのMACアドレスを登録し、配列 acceptable_sensorsに含まれているMACアドレスだけを処理します。</p>
+下記のmy_temphumid_sensor_macで、今回使用する温湿度センサーのMACアドレスを登録し、配列 acceptable_sensorsに含まれているMACアドレスだけを処理します。マグネットセンサー、3軸加速度センサーも登録されていますが、このハンズオンでは使用しません。</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">my_temphumid_sensor_mac</span> <span class="o">=</span> <span class="s2">&quot;FFEAD7E638B8&quot;</span>
 <span class="n">my_magnet_sensor_mac</span>    <span class="o">=</span> <span class="s2">&quot;C02C61CB558F&quot;</span>
 <span class="n">my_3d_accel_sensor_mac</span>  <span class="o">=</span> <span class="s2">&quot;D9890D33C5E1&quot;</span>
@@ -178,7 +178,7 @@
 
             <h4>前のトピックへ</h4>
             <p class="topless"><a href="09.html"
-                                  title="前の章へ">9. ハンズオン終了後</a></p>
+                                  title="前の章へ">9. ハンズオン終了後の後片付け</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/10.txt"
@@ -208,7 +208,7 @@
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="09.html" title="9. ハンズオン終了後"
+          <a href="09.html" title="9. ハンズオン終了後の後片付け"
              >前へ</a> |</li>
         <li><a href="index.html">awsiot-handson-dojo-basic-ble v0.0 documentation</a> &raquo;</li> 
       </ul>

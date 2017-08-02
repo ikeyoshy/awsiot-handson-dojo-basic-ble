@@ -21,7 +21,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
     <link rel="top" title="awsiot-handson-dojo-basic-ble v0.0 documentation" href="index.html" />
-    <link rel="next" title="9. ハンズオン終了後" href="09.html" />
+    <link rel="next" title="9. ハンズオン終了後の後片付け" href="09.html" />
     <link rel="prev" title="7. シナリオ2+: センサーデータを可視化する-2" href="07.html" /> 
   </head>
   <body>
@@ -32,7 +32,7 @@
           <a href="genindex.html" title="総合索引"
              accesskey="I">索引</a></li>
         <li class="right" >
-          <a href="09.html" title="9. ハンズオン終了後"
+          <a href="09.html" title="9. ハンズオン終了後の後片付け"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="07.html" title="7. シナリオ2+: センサーデータを可視化する-2"
@@ -84,20 +84,20 @@
 </div>
 </div>
 <div class="section" id="id2">
-<h2>8.2. ３軸加速度センサーのデータを収集する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズの他のセンサーは、下記のBLEフィルター設定を行うことで、センサーデータの収集が可能です。</p>
+<h2>8.2. 他のセンサーの紹介<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>レンジャーシステムズのセンサーの紹介です。</p>
 <div class="section" id="ibs01h">
 <h3>8.2.1. マグネットセンサー(iBS01H)<a class="headerlink" href="#ibs01h" title="このヘッドラインへのパーマリンク">¶</a></h3>
 <img alt="_images/img_iot10.png" src="_images/img_iot10.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><pre>Payload Pattern:............................................
-Payload Mask   :............................................</pre>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<ul class="simple">
+<li>磁力を検知</li>
+<li>扉の開閉による部屋などの使用状況管理が可能</li>
+<li>電池寿命　2.5年(default setting)</li>
+<li>送信間隔　10秒毎（または、センサーの状態が変わった瞬間）</li>
+</ul>
 </div>
 <div class="section" id="ibs02ir-pir">
 <h3>8.2.2. 赤外線センサー (iBS02IR/PIR)<a class="headerlink" href="#ibs02ir-pir" title="このヘッドラインへのパーマリンク">¶</a></h3>
@@ -105,12 +105,10 @@ Payload Mask   :............................................</pre>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><pre>Payload Pattern:............................................
-Payload Mask   :............................................</pre>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<ul class="simple">
+<li>電池寿命　1.8年(default setting)</li>
+<li>送信間隔　10秒毎（または、センサーの状態が変わった瞬間）</li>
+</ul>
 </div>
 <div class="section" id="ibs01rg">
 <h3>8.2.3. 加速度センサー(iBS01RG)<a class="headerlink" href="#ibs01rg" title="このヘッドラインへのパーマリンク">¶</a></h3>
@@ -118,12 +116,15 @@ Payload Mask   :............................................</pre>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><pre>Payload Pattern:..........................................................
-Payload Mask   :..........................................................</pre>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<ul class="simple">
+<li>動き・振動、重力、衝撃を検知</li>
+<li>産業機器の未然予防などが可能</li>
+<li>モノが動いたことを検知（3軸）</li>
+<li>モノの動きをリアルタイムで検知（3軸）</li>
+<li>電池寿命　2年（default setting）</li>
+<li>検出　3軸（X/Y/Z）</li>
+<li>送信間隔　10秒毎（または、センサーの状態が変わった瞬間）</li>
+</ul>
 </div>
 </div>
 </div>
@@ -138,7 +139,7 @@ Payload Mask   :..........................................................</pre>
             <ul>
 <li><a class="reference external" href="#">8. その他の設定（オプション）</a><ul>
 <li><a class="reference external" href="#cloudwatch-logs">8.1. CloudWatch Logsの設定</a></li>
-<li><a class="reference external" href="#id2">8.2. ３軸加速度センサーのデータを収集する</a><ul>
+<li><a class="reference external" href="#id2">8.2. 他のセンサーの紹介</a><ul>
 <li><a class="reference external" href="#ibs01h">8.2.1. マグネットセンサー(iBS01H)</a></li>
 <li><a class="reference external" href="#ibs02ir-pir">8.2.2. 赤外線センサー (iBS02IR/PIR)</a></li>
 <li><a class="reference external" href="#ibs01rg">8.2.3. 加速度センサー(iBS01RG)</a></li>
@@ -153,7 +154,7 @@ Payload Mask   :..........................................................</pre>
                                   title="前の章へ">7. シナリオ2+: センサーデータを可視化する-2</a></p>
             <h4>次のトピックへ</h4>
             <p class="topless"><a href="09.html"
-                                  title="次の章へ">9. ハンズオン終了後</a></p>
+                                  title="次の章へ">9. ハンズオン終了後の後片付け</a></p>
             <h3>このページ</h3>
             <ul class="this-page-menu">
               <li><a href="_sources/08.txt"
@@ -183,7 +184,7 @@ Payload Mask   :..........................................................</pre>
           <a href="genindex.html" title="総合索引"
              >索引</a></li>
         <li class="right" >
-          <a href="09.html" title="9. ハンズオン終了後"
+          <a href="09.html" title="9. ハンズオン終了後の後片付け"
              >次へ</a> |</li>
         <li class="right" >
           <a href="07.html" title="7. シナリオ2+: センサーデータを可視化する-2"
