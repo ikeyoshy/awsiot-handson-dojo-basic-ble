@@ -197,7 +197,7 @@ AWS IoTに送信するデータの中に、BLEセンサーのMACアドレスが�
 
 このLambda関数は、"my_temphumid_sensor_mac" に記載されているMACアドレスを持つデータだけを処理します。アップロードしたLambda関数の"my_temphumid_sensor_mac"を、ご自身の温湿度センサーのMACアドレスに書き換えましょう。
 
-ご自身の温湿度センサーのラベルに記載されているMACアドレスを確認し、Lambda関数内のの"my_temphumid_sensor_mac" を修正し、[保存] ボタンを押して下さい。
+ご自身の温湿度センサーのラベルに記載されているMACアドレスを確認し、Lambda関数内のの"my_temphumid_sensor_mac" を書き換え、[保存] ボタンを押して下さい。
 
 .. image:: images/05/src_mac.png
 
