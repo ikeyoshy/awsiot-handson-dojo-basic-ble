@@ -209,8 +209,8 @@
 <p>下記の項目を入力し、[Add action]をクリックします。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="17%" />
-<col width="83%" />
+<col width="20%" />
+<col width="80%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">設定項目</th>
@@ -222,18 +222,14 @@
 <td>awsiot_lambda_direct_&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>Attribute</td>
-<td>encode(*, &#8216;base64&#8217;) as payload, topic() as topic_name</td>
+<td>※ 下記から &#8220;encode(...)&#8221;をコピーして下さい。</td>
 </tr>
 <tr><td>Topic filter</td>
 <td>sensor/&lt;参加者番号&gt;</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s1">&#39;topic_name&#39;</span><span class="p">:</span> <span class="s1">&#39;sensor/&lt;参加者番号&gt;&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;payload&#39;</span><span class="p">:</span> <span class="s1">&#39;JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K&#39;</span>
-<span class="p">}</span>
-</pre></div>
+<div class="highlight-python"><pre>encode(*, 'base64') as payload, topic() as topic_name</pre>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -244,7 +240,7 @@
 </div>
 <dl class="docutils">
 <dt>※ レンジャーシステムズ製のBLEゲートウェイが送信するデータは、CSV形式であるため、Lambdaで受け取る事が出来ません。</dt>
-<dd><p class="first">ルールエンジンの組み込み関数 &#8220;Encode()&#8221;を使用する事で、非JSONのデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
+<dd><p class="first">ルールエンジンの組み込み関数 &#8220;encode()&#8221;を使用する事で、非JSON形式のデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
 今回は、キー payloadとして、BLE BeaconのPayload(センサーデータ)をエンコードしています。
 詳しくは、下記をご参照下さい。
 <a class="reference external" href="http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html">http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html</a></p>
@@ -380,11 +376,12 @@
 <a class="reference external" href="https://aws.amazon.com/jp/developers/access-keys/">https://aws.amazon.com/jp/developers/access-keys/</a></dd>
 </dl>
 <p>暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
-温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温湿度センサーの位置や確度を変えるだけで</p>
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温度、湿度の変化は緩やかですが、RSSIは、温湿度センサーの位置や確度を変えるだけで大きく変化します。</p>
 <img alt="_images/web-app-linechart.png" src="_images/web-app-linechart.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>ここでこのシナリオは終わりです。時間がある方は、次のシナリオを試してみて下さい。</p>
 </div>
 </div>
 

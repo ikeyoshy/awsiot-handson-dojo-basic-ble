@@ -158,16 +158,13 @@ Lambda起動用のAWS IoT ルールを作成
 設定項目             値
 ============= ====================================
 Name	         awsiot_lambda_direct_<参加者番号>
-Attribute	     encode(\*, \'base64\') as payload, topic() as topic_name
+Attribute	     ※ 下記から "encode(...)"をコピーして下さい。
 Topic filter   sensor/<参加者番号>
 ============= ====================================
 
 ::
 
-  {
-    'topic_name': 'sensor/<参加者番号>',
-    'payload': 'JEdQUlAsRkZFQUQ3RTYzOEI4LEFDODNGM0EwNDFEMiwtNjMsMDIwMTA2MTJGRjU5MDA4MEJDNEUwMTAwMUIwOTJDMDAwMDAwMDAwMDAwMDAsMTQ5NzI1MjM5MQ0K'
-  }
+  encode(*, 'base64') as payload, topic() as topic_name
 
 |
 
@@ -176,7 +173,7 @@ Topic filter   sensor/<参加者番号>
 |
 
 ※ レンジャーシステムズ製のBLEゲートウェイが送信するデータは、CSV形式であるため、Lambdaで受け取る事が出来ません。
-  ルールエンジンの組み込み関数 "Encode()"を使用する事で、非JSONのデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
+  ルールエンジンの組み込み関数 "encode()"を使用する事で、非JSON形式のデータをBase64形式にエンコードする事でJSON形式に変換し、Lambdaに渡せる様になります。
   今回は、キー payloadとして、BLE BeaconのPayload(センサーデータ)をエンコードしています。
   詳しくは、下記をご参照下さい。
   http://docs.aws.amazon.com/ja_jp/iot/latest/developerguide/iot-sql-functions.html
@@ -296,8 +293,10 @@ Display last n data       200 (グラフに表示する過去のデータ数)
   https://aws.amazon.com/jp/developers/access-keys/
 
 暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
-温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温湿度センサーの位置や確度を変えるだけで
+温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温度、湿度の変化は緩やかですが、RSSIは、温湿度センサーの位置や確度を変えるだけで大きく変化します。
 
 .. image:: images/06/web-app-linechart.png
 
 |
+
+ここでこのシナリオは終わりです。時間がある方は、次のシナリオを試してみて下さい。
