@@ -49,12 +49,12 @@
   <div class="section" id="s3">
 <h1>5. シナリオ1: センサーデータをS3に保存する<a class="headerlink" href="#s3" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>BLEゲートウェイは、温湿度センサーが送信するBeaconを受信し、バイナリデータとしてAWS IoTに送信しています。AWS IoTのルールエンジンにご自身のセンサーデータのトピック名&#8221;sensor/&lt;参加者番号&gt;&#8221;を登録して、そのメッセージだけを「Amazon Kinesis Firehose」に送信します。Kinesis Firehoseでは、Lambda関数を使用して、受け取ったバイナリデータを活用が容易なJSON形式に変換し、Amazon S3へ保存します。</p>
-<p>Amazon Kinesis Firehose は、受け取ったストリーミングデータを AWSの各種サービスにロードする最も簡単な方法です。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service にロードすることができます。</p>
+<p>Amazon Kinesis Firehose は、受け取ったストリーミングデータを AWSの各種サービスに簡単にロードすることができます。ストリーミングデータをキャプチャ、変換して、Amazon Kinesis Analytics、Amazon S3、Amazon Redshift、および Amazon Elasticsearch Service に送信可能です。</p>
 <img alt="_images/overview1.png" src="_images/overview1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>S3に保存されるデータは、下記のJSON形式のデータになります。</p>
+<p>S3に保存するデータは、下記のJSON形式のデータになります。</p>
 <div class="highlight-python"><pre>{
   "model": "590080BC",       ← センサーのモデル番号
   "src_mac": "FFEAD7E638B8", ← センサーのMACアドレス
@@ -72,7 +72,7 @@
 <p>このシナリオでは、最初にデータの保存先であるS3とデータ変換用のLambda関数の設定を行い、最後にKinesis Firehoseの設定を行います。</p>
 <div class="section" id="id1">
 <h2>5.1. S3バケットを作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>Amazon S3は、高い耐久性を持つ、容量無制限で安価なオブジェクトストレージ・サービスです。このシナリオでは、温湿度センサーのデータをS3に保存します。データをS3に保存すれば、AWSの各種データベース、Amazon Athena、Amazon Redshift、Amazon EMR、Amazon Machine Lerningなどの各種分析サービスとの連携が容易になり、データレイクとして活用する事が出来ます。</p>
+<p>Amazon S3は、高い耐久性を持つ、容量無制限で安価なオブジェクトストレージ・サービスです。このシナリオでは、温湿度センサーのデータをS3に保存します。データをS3に保存すれば、AWSの各種データベースや、Amazon Athena、Amazon Redshift、Amazon EMR、Amazon Machine Lerningなどの各種分析サービスとの連携が容易になり、データレイクとして活用する事が出来ます。</p>
 <p>データを保存するS3バケットを作成します。</p>
 <p>サービス一覧から[S3]をクリックして開きます。</p>
 <img alt="_images/s3.png" src="_images/s3.png" />
@@ -98,6 +98,9 @@
 <tbody valign="top">
 <tr><td>バケット名</td>
 <td>sensor-data-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>リージョン</td>
+<td>米国東部(バージニア北部)</td>
 </tr>
 </tbody>
 </table>
@@ -200,11 +203,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
-<img alt="_images/lambda-role-2.png" src="_images/lambda-role-2.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<p>[編集] をクリックし、下記のポリシードキュメントをコピペして下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -231,6 +230,10 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<img alt="_images/lambda-role-2.png" src="_images/lambda-role-2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <p>ロールが[既存のロール] に変更され、ロール名として、&#8221;lambda_KinesisFirehoseAccess-&lt;参加者番号&gt;&#8221; が表示されていることを確認し、[次へ] をクリックして下さい。</p>
 <img alt="_images/lambda-6.png" src="_images/lambda-6.png" />
 <div class="line-block">
@@ -247,9 +250,9 @@
 <div class="line"><br /></div>
 </div>
 <p>BLEゲートウェイは、BLEフィルター設定で、指定したBLEセンサーのデータだけをAWS IoTへ送信するようになっていますが、他の参加者の温湿度センサーのBeaconも受信し、トピック &#8220;sensor/&lt;参加者番号&gt;&#8221;として、AWS IoTに送信しています。</p>
-<p>AWS IoTに送信するデータの中に、BLEセンサーのMACアドレスが付加されていますので、この値を利用して、Lambda関数でBLEセンサーのBDアドレスを確認し、ご自身の温湿度センサーだけをLambda関数で処理するようにします。</p>
+<p>AWS IoTに送信するデータの中に、BLEセンサーのMACアドレスが付加されていますので、この値を利用して、Lambda関数でBLEセンサーのBDアドレスを確認させ、ご自身の温湿度センサーが送信したデータだけをLambda関数で処理するようにします。</p>
 <p>このLambda関数は、&#8221;my_temphumid_sensor_mac&#8221; に記載されているMACアドレスを持つデータだけを処理します。アップロードしたLambda関数の&#8221;my_temphumid_sensor_mac&#8221;を、ご自身の温湿度センサーのMACアドレスに書き換えましょう。</p>
-<p>ご自身の温湿度センサーのラベルに記載されているMACアドレスを確認し、Lambda関数内のの&#8221;my_temphumid_sensor_mac&#8221; を修正し、[保存] ボタンを押して下さい。</p>
+<p>ご自身の温湿度センサーのラベルに記載されているMACアドレスを確認し、Lambda関数内のの&#8221;my_temphumid_sensor_mac&#8221; を書き換え、[保存] ボタンを押して下さい。</p>
 <img alt="_images/src_mac.png" src="_images/src_mac.png" />
 <img alt="_images/edit-lambda-func-2.png" src="_images/edit-lambda-func-2.png" />
 <div class="line-block">
@@ -481,7 +484,7 @@ IAM role で、&#8221;Firehose delivery IAM role&#8221; を選択すると、IAM
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>これで、シナリオ1は、終わりです。バイナリデータをAWS IoTで受信し、Kinesis FirehoseでLambda関数を用いて、JSON形式にデータ変換を行い、S3に保存することができました。</p>
+<p>これで、シナリオ1は、終わりです。バイナリデータをAWS IoTで受信し、Kinesis FirehoseでLambda関数を用いて、JSON形式に変換し、S3に保存することができました。</p>
 </div>
 </div>
 

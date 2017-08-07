@@ -52,11 +52,11 @@
 <div class="section" id="id1">
 <h2>3.1. 電源投入<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>レンジャーシステムズ製のBLEゲートウェイは、USBで給電する仕組みになっています。</p>
-<p>USBケーブルを本体に接続し、電源供給元(USB電源アダプタ、もしくは、PCのUSBポート)に接続してください。</p>
+<p>USBケーブルを本体に接続し、電源供給元(USB電源アダプタ、もしくは、PCのUSBポート)に接続して下さい。</p>
 </div>
 <div class="section" id="id2">
 <h2>3.2. BLEゲートウェイを初期化する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>ゲートウェイの電源が入った状態で、本体裏面にあるリセット用ボタンを5秒以上長押しすると、工場出荷状態に戻すことが出来ます。クリップなどでボタンを押して下さい。</p>
+<p>ゲートウェイの電源が入った状態で、本体裏面にあるリセット用ボタンを5秒以上長押しすると、工場出荷状態に戻すことが出来ます。クリップなどでリセットボタンを押して下さい。</p>
 <img alt="_images/reset.png" src="_images/reset.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -67,21 +67,26 @@
 <p>BLEゲートウェイの設定を行うために、BLEゲートウェイにWiFi接続します。本ゲートウェイは、工場出荷状態ではWiFiのアクセスポイント(親機)モードになっており、PCから直接WiFiで接続し、Webブラウザから設定を行うことができます。</p>
 <p>電源投入後、ゲートウェイの起動が終わると、WiFi接続が可能なPC等のネットワーク画面で「BLE-WIFI_YY_ZZ」というSSIDが表示されます。</p>
 <ul>
-<li><p class="first">ハンズオンで使用するゲートウェイのモデル名は、iGS01です。SSIDは、「BLE-WIFI_YY_ZZ」になります。</p>
+<li><p class="first">ハンズオンで使用するゲートウェイのモデル名は、iGS01です。
+SSIDは、「BLE-WIFI_YY_ZZ」になります。</p>
 </li>
 <li><p class="first">ゲートウェイのモデルがiGS02の場合、SSIDは、「IGS02_YY_ZZ」になります。</p>
 </li>
-<li><p class="first">YY_ZZ は、ゲートウェイの背面に記録されているMACアドレスの下２桁になります。
-* モデルがiGS01で、MACアドレスが &#8220;B03829159927&#8221; の場合、SSIDは、&#8221;BLE-WIFI_99_27&#8221;になります。</p>
+<li><p class="first">YY_ZZ は、ゲートウェイの背面に記録されているMACアドレスの下４桁になります。</p>
+<p>モデルがiGS01で、MACアドレスが &#8220;B0382915 <strong>9927</strong>&#8221; の場合、SSIDは、 <strong>BLE-WIFI_99_27</strong> になります。</p>
 <img alt="_images/MAC-01.png" src="_images/MAC-01.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </li>
-<li><p class="first">ご自身のゲートウェイのSSIDに接続して下さい。 WiFiのパスワードは、&#8221;12345678&#8221;です。</p>
+<li><p class="first">ご自身のゲートウェイのSSIDに接続して下さい。 WiFiのパスワードは、 <strong>12345678</strong> です。</p>
 </li>
 </ul>
-<p>ゲートウェイに接続したまま、Webブラウザから IPアドレス「192.168.10.1」にアクセスするとゲートウェイの設定画面 が表示されます。(Webブラウザは、Google Chromeを使用して下さい。)</p>
+<dl class="docutils">
+<dt>ゲートウェイに接続したまま、Webブラウザから</dt>
+<dd><a class="reference external" href="http://192.168.10.1">http://192.168.10.1</a></dd>
+</dl>
+<p>にアクセスすると、ゲートウェイの設定画面 にアクセス出来ます。 (Webブラウザは、 <strong>Google Chrome</strong> を使用して下さい。)</p>
 <p>ユーザー名とパスワードを求めるポップアップが表示されますので、以下を入力し、ログインしてください。</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -111,54 +116,11 @@
 <h2>3.4. AWS IoTへ接続するための設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Applicatoins」タブをクリックし、ゲートウェイがAWS IoTに接続するための設定を行って下さい。最後に、[Save] ボタンを押して設定を保存します。</p>
 <p>Rebootを促すメッセージが出ますが、まだ、Rebootしないで下さい。</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="21%" />
-<col width="79%" />
-</colgroup>
-<thead valign="bottom">
-<tr><th class="head">項目</th>
-<th class="head">値</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr><td>Application</td>
-<td>MQTT Client</td>
-</tr>
-<tr><td>Host/IP</td>
-<td>記録しておいたEndpoint情報</td>
-</tr>
-<tr><td>Port</td>
-<td>8883 　(最初は、1883になっているので8883に書き換えて下さい)</td>
-</tr>
-<tr><td>Publish Topic</td>
-<td>sensor/&lt;参加者番号&gt;</td>
-</tr>
-<tr><td>Client ID</td>
-<td>ranger-gw-&lt;参加者番号&gt;  　　(AWS IoTで作成したデバイス名)</td>
-</tr>
-<tr><td>Username</td>
-<td>空欄</td>
-</tr>
-<tr><td>Password</td>
-<td>空欄</td>
-</tr>
-<tr><td>MQTTS</td>
-<td>Enable 　　　 　　  (標準プロトコルのMQTTを指定)</td>
-</tr>
-<tr><td>Root CA</td>
-<td>AWSIoT Root CA</td>
-</tr>
-<tr><td>Use Certificate</td>
-<td>Enable</td>
-</tr>
-</tbody>
-</table>
 <img alt="_images/applications.png" src="_images/applications.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Publish Topicとは、AWS IoTに送信(Publish)されるMQTTメッセージのトピック名になります。AWS IoTでは、このトピック名をAWS IoTのルールエンジンが評価し、設定したトピック名のメッセージだけを他のAWSのサービスに渡すことができるようになります。このハンズオンでは、複数の参加者で1つのAWSアカウントを共用する場合を考慮し、トピック名に&lt;参加者番号&gt;を付加して、他のIAMユーザーのゲートウェイが送信してくる計測データと区別できるようにしています。
+<p><strong>Publish Topic</strong> は、AWS IoTに送信(Publish)されるMQTTメッセージのトピック名になります。AWS IoTでは、このトピック名をAWS IoTのルールエンジンが評価し、設定したトピック名のメッセージだけを、他のAWSのサービスに渡すことができるようになります。このハンズオンでは、複数の参加者で1つのAWSアカウントを共用する場合を考慮し、トピック名に&lt;参加者番号&gt;を付加して、他のIAMユーザーのBLEゲートウェイが送信してくるセンサーデータと区別できるようにしています。
 トピック名は、自由に付ける事が可能で、&#8221;/&#8221;で階層化できます。</p>
 <p>例：</p>
 <ul class="simple">
@@ -166,11 +128,11 @@
 <li>sensor/templature/room-1</li>
 <li>switch/door/room-2B</li>
 </ul>
-<p>AWS IoTでは、MQTT、HTTP、WebSocketなどの標準的なプロトコルが使用します。このゲートウェイでは、MQTTを使用してAWS IoTと通信します。AWS IoTでは、TLSで暗号化されたMQTT用のポート番号 Port = 8883 を使用します。</p>
+<p>AWS IoTでは、MQTT、HTTP、WebSocketなどの標準的なプロトコルが使用します。このゲートウェイでは、MQTTを使用してAWS IoTと通信します。AWS IoTでは、TLSで暗号化されたMQTT用の標準ポート番号 Port = 8883 を使用します。</p>
 </div>
 <div class="section" id="id3">
 <h2>3.5. 証明書の登録<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>先の章で、AWS IoTのマネジメントコンソールから証明書を作成しました。このセクションでは、作成した証明書をAWS IoTのデバイスであるBLEゲートウェイにインストールします。この証明書を使用する事で、BLEゲートウェイは、安全にAWS IoTに接続できるようになります。</p>
+<p>先のセクションで、AWS IoTのマネジメントコンソールから証明書を作成しました。このセクションでは、作成した証明書をAWS IoTのデバイスであるBLEゲートウェイにインストールします。この証明書を使用する事で、BLEゲートウェイは、安全にAWS IoTに接続できるようになります。</p>
 <p>BLEゲートウェイのWeb画面の「Advanced」タブをクリックしてください。</p>
 <p>&#8220;Certificate&#8221;の横の[ファイルを選択] ボタンを押して、「証明書の作成」のセクションで保存しておいた証明書(Certificate)を選択し、[Upload Certificate] ボタンを押して、証明書をアップロードします。</p>
 <p>&#8220;Key&#8221;の横の[ファイルを選択] ボタンを押して、保存しておいたプライベートキー(Private key)を選択し、[Upload Key] ボタンを押して、プライベートキーをアップロードして下さい。</p>
@@ -206,8 +168,8 @@
 </div>
 <div class="section" id="id4">
 <h2>3.6. BLEフィルター設定<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズのBLEゲートウェイは、受信可能なBeaconを全て受信する仕様になっています。このため、BLEフィルター設定をしていなければ、<strong>周囲のBeaconを全て受信し、AWS IoTに送信してしまいます。</strong> 今回使用する温湿度センサーが送信するBeaconだけをAWS IoTに送信させるために、 <strong>BLEフィルター設定</strong> を行います。</p>
-<p>温湿度センサーは、Payload Pattern(02010612FF590080BC4D0100D80A2D00000000000000)の様なBeaconを送信します。冒頭のBLE情報、企業コード、モデル番号は、温湿度センサー固有の情報で、固定値です。 <strong>このパターンを持つBeaconだけをAWS IoTに送信させるための設定が、BLEフィルター設定となります。</strong> Beaconの固定部分のPayload Maskのビットをセット(FF)にして、その部分だけを比較するようにします。電池電圧、ボタンの状態、温度、湿度は変動しますので、比較の対象をから外すために、Payload Maskを(00)にします。</p>
+<p>レンジャーシステムズのBLEゲートウェイは、受信可能なBeaconを全て受信する仕様になっています。このため、BLEフィルター設定をしていなければ、<strong>スマートホンや、スマートウォッチなどが発する周囲のBeaconを全て受信し、AWS IoTに送信してしまいます。</strong> 今回使用する温湿度センサーが送信するBeaconだけをAWS IoTに送信させるために、 <strong>BLEフィルター設定</strong> を行います。</p>
+<p>温湿度センサーは、Payload Pattern(02010612FF590080BC4D0100D80A2D00000000000000)の様なBeaconを送信します。冒頭のBLE情報、企業コード、モデル番号は、温湿度センサー固有の情報で、固定値です。 <strong>このパターンを持つBeaconだけをAWS IoTに送信させるための設定が、BLEフィルター設定</strong> となります。Beaconの固定部分のPayload Maskのビットをセット(FF)にして、その部分だけを比較するようにします。電池電圧、ボタンの状態、温度、湿度は変動しますので、比較の対象をから外すために、Payload Maskを(00)にします。</p>
 <img alt="_images/PayloadMaskDescription.png" src="_images/PayloadMaskDescription.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -241,8 +203,8 @@
 </div>
 <div class="section" id="id5">
 <h2>3.7. タイムサーバーの設定<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>AWS IoTにデータを送信する際、ゲートウェイは、センサーデータに時刻情報を付加し、AWS IoTに送信します。
-BLEゲートウェイには、時計(RTC) が内蔵されていないため、ゲートウェイの電源をOFFにすると時計が1970年に戻ってしまいます。タイムサーバーの設定を行うと、BLEゲートウェイはインターネット上のタイムサーバー(NTPサーバー)と時刻同期し、正確な時刻情報をAWS IoTに送信できるようになります。</p>
+<p>AWS IoTにデータを送信する際、ゲートウェイは、センサーデータにデータを受信した時刻を付加し、AWS IoTに送信します。
+BLEゲートウェイには、時計(RTC) が内蔵されていないため、ゲートウェイの電源をOFFにすると <strong>時刻が1970年 1月1日 00:00</strong> に戻ってしまいます。タイムサーバーの設定を行うと、BLEゲートウェイはインターネット上のタイムサーバー(NTPサーバー)と時刻同期し、正確な時刻情報をAWS IoTに送信できるようになります。</p>
 <p>BLEゲートウェイのWeb画面の「System」タブをクリックし、&#8221;NTP Setting&#8221; に下記を設定してください。</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -267,36 +229,37 @@ BLEゲートウェイには、時計(RTC) が内蔵されていないため、�
 </tbody>
 </table>
 <p>最後に、[Save NTP Setting] ボタンを押して、設定を保存します。</p>
-<p>まだ、Rebootしないで下さい。</p>
 <img alt="_images/time-server.png" src="_images/time-server.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>まだ、Rebootしないで下さい。</p>
 </div>
 <div class="section" id="id6">
 <h2>3.8. WiFi設定<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>これまで、アクセスポイント(親機)モードになっているBLEゲートウェイにWiFi接続し、設定を行ってきました。このままでは、BLEゲートウエイはインターネットに接続出来ません。BLEゲートウェイをStation(子機)モードに設定し、インターネットに接続可能なWiFiアクセスポイントに接続します。</p>
+<p>これまで、アクセスポイント(親機)モードになっているBLEゲートウェイにWiFi接続し、設定を行ってきました。このままでは、BLEゲートウエイはインターネットに接続出来ません。BLEゲートウェイをStation(子機)モードに変更し、インターネットに接続可能なWiFiアクセスポイントに接続しましょう。</p>
 <p>[Wi-Fi] タブをクリックし、Wi-Fi設定画面に移動します。</p>
 <img alt="_images/wifi.png" src="_images/wifi.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;Wi-Fi Mode&#8221;を&#8221;Station&#8221;に変更し、[Scan] ボタンを押して下さい。周囲のアクセスポイントを探索します。探索が終了すると、&#8221;Done.&#8221;と表示されます。&#8221;Site survey&#8221;から、接続対象のアクセスポイントを選んでください。接続対象のアクセスポイントの情報は、別途、トレーナーから指示があります。</p>
+<p>&#8220;Wi-Fi Mode&#8221;を &#8220;Station&#8221; (子機モード)に変更し、[Scan] ボタンを押して下さい。周囲のアクセスポイントの探索を開始します。探索が終了すると、&#8221;Done.&#8221;と表示されます。&#8221;Site survey&#8221;から、接続対象のアクセスポイントを選んでください。接続対象のアクセスポイントの情報は、別途、トレーナーから指示があります。</p>
 <img alt="_images/site.png" src="_images/site.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;Security protocol&#8221;は、自動的に設定されます。
-&#8220;Security key&#8221;にWiFiのパスワードを入力し、[Save] ボタンを押して設定を保存します。</p>
+<p>&#8220;Security protocol&#8221;(暗号化プロトコル)は、自動的に設定されます。
+&#8220;Security key&#8221;にWiFiのパスワード(PSK)を入力し、[Save] ボタンを押して設定を保存します。</p>
 <img alt="_images/wifi-save.png" src="_images/wifi-save.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>まだ、Rebootしないで下さい。</p>
 </div>
 <div class="section" id="id7">
 <h2>3.9. 最終確認<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ゲートウェイの設定を再度確認して下さい。
-ゲストWiFiを使用している場合、Reboot後にゲートウェイのIPアドレスを知る事が難しいため、BLEゲートウェイの再設の変更が出来なくなる場合があります。その場合、ゲートウェイを初期化して、最初から設定をやり直す必要がありますので、ご注意下さい。</p>
+ゲストWiFiを使用している場合、Reboot後にゲートウェイのIPアドレスを知る事が難しいため、BLEゲートウェイの再設定が出来なくなる場合があります。その場合、ゲートウェイを初期化して、最初から設定をやり直す必要がありますので、ご注意下さい。</p>
 </div>
 <div class="section" id="id8">
 <h2>3.10. ゲートウェイを再起動する<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -306,6 +269,7 @@ BLEゲートウェイには、時計(RTC) が内蔵されていないため、�
 <div class="line"><br /></div>
 </div>
 <p>念のため、一度、USBケーブルを抜いて再起動して下さい。</p>
+<p>PCとBLEゲートウェイのWiFi接続が解除されるので、PC側は、指定のWiFiアクセスポイントに接続し直して下さい。</p>
 </div>
 <div class="section" id="id9">
 <h2>3.11. センサーの電源を入れる<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>

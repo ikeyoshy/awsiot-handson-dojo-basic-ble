@@ -48,14 +48,15 @@
             
   <div class="section" id="id1">
 <h1>6. シナリオ2: センサーデータを可視化する-1<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<p>このシナリオでは、BLEゲートウェイが送信するバイナリデータをLambdaでJSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで変換後のトピックをサブスクライブしグラフ表示します。Webアプリケーションは、AWS IoTデバイスととして動作し、JSON形式に変換されたトピックをサブスクライブしてグラフ表示します。</p>
+<p>このシナリオでは、IoTデータのリアルタイムモニタリングを行います。</p>
+<p>BLEゲートウェイが送信するバイナリデータをLambdaでJSON形式に変換し、トピック名を変えてAWS IoTへパブリッシュします。Webアプリケーションで、このトピックをサブスクライブし、グラフ表示します。Webアプリケーションは、AWS IoTデバイスとして動作し、JSON形式に変換されたトピックをサブスクライブして受け取り、グラフ表示します。センサーデータは、Lambdaで処理された後、ほぼリアルタイムでグラフに反映されます。</p>
 <img alt="_images/overview2.png" src="_images/overview2.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <div class="section" id="lambda">
 <h2>6.1. データ変換用のLambda関数を準備する<a class="headerlink" href="#lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>レンジャーシステムズ製のBLEゲートウェイがpublishするトピックは、&#8221;sensor/&lt;参加者番号&gt;&#8221; でしたが、Lambda関数でJSON形式に変換し、トピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、AWS IoTに再度publishします。</p>
+<p>レンジャーシステムズ製のBLEゲートウェイがパブリッシュするトピックは、&#8221;sensor/&lt;参加者番号&gt;&#8221; でしたが、Lambda関数でJSON形式に変換し、トピック名 &#8220;sensor/&lt;参加者番号&gt;/json&#8221; として、AWS IoTに再度パブリッシュします。</p>
 <p>まず、Lambda関数を下記のリンクからPCにダウンロードして下さい。このzipファイルは、後ほどLambdaの設定画面でアップロードします。</p>
 <p><a class="reference external" href="https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/sensor-raw-data-to-json-mqtt-publish.zip">https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/sensor-raw-data-to-json-mqtt-publish.zip</a></p>
 <p>サービス一覧から[Lambda] をクリックして開きます。</p>
@@ -140,12 +141,8 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>[編集] をクリックし、下記のポリシードキュメントを入力して下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
+<p>[編集] をクリックし、下記のポリシードキュメントをコピペして下さい。[許可] をクリックするとIAMの設定画面は閉じます。</p>
 <p>このIAMロールでは、Lambda関数のアクセス権限を設定します。Lambda関数で変換したデータをAWS IoTへパブリッシュするので、AWS IoTへのアクセスを許可し、CloudWatchログへのログの出力を許可しています。</p>
-<img alt="_images/lambda-role-21.png" src="_images/lambda-role-21.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -167,6 +164,10 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<img alt="_images/lambda-role-21.png" src="_images/lambda-role-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -306,7 +307,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>JSON形式に変換されたデータ、下記のフォーマットになっています。</p>
+<p>JSON形式に変換されたデータは、下記のフォーマットになっています。</p>
 <div class="highlight-python"><pre>{
   "dst_mac": "AC83F3A041D2",             ← ゲートウェイのMACアドレス
   "timestamp": "2017-06-12T06:21:22",    ← タイムスタンプ
@@ -369,19 +370,19 @@
 </tr>
 </tbody>
 </table>
-<p>アクセスキーID、シークレットアクセスキーは、IAMユーザー作成時にダウンロードしたcsvファイルに記録されています。アクセスキーIDは、後から確認できますが、シークレットアクセスキーは、IAMユーザー作成時にしか参照できないので、紛失した場合は、IAMユーザーを新たに作って下さい。</p>
+<p>アクセスキーID、シークレットアクセスキーは、IAMユーザー作成時にダウンロードしたCSVファイルに記録されています。アクセスキーIDは、後から確認できますが、シークレットアクセスキーは、IAMユーザー作成時にしか参照できないので、紛失した場合は、IAMユーザーを新たに作って下さい。</p>
 <dl class="docutils">
 <dt>※ アクセスキーは、AWSにアクセスするための認証情報です。</dt>
 <dd>詳しくは、下記をご参照下さい。
 <a class="reference external" href="https://aws.amazon.com/jp/developers/access-keys/">https://aws.amazon.com/jp/developers/access-keys/</a></dd>
 </dl>
-<p>暫くすると、温度、湿度のグラフが表示されます。電波強度は、Gatewayが受信したBeaconの電波強度です。
+<p>暫くすると、温度、湿度のグラフが表示されます。電波強度は、BLEゲートウェイが受信したBeaconの電波の強さです。
 温湿度センサーは、5秒毎にBeaconを送信するため、グラフも5秒周期で更新されます。下の２つのグラフは温度と湿度です。電波強度は、RSSIです。温度、湿度の変化は緩やかですが、RSSIは、温湿度センサーの位置や確度を変えるだけで大きく変化します。</p>
 <img alt="_images/web-app-linechart.png" src="_images/web-app-linechart.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>ここでこのシナリオは終わりです。時間がある方は、次のシナリオを試してみて下さい。</p>
+<p>ここで、このシナリオは終わりです。</p>
 </div>
 </div>
 
