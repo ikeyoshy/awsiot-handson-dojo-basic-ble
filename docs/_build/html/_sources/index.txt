@@ -88,7 +88,7 @@ http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com
 
 * AWS マネジメントコンソールのIAMから、「ユーザー」をクリックします。
 * 「ユーザーを追加」ボタンをクリックします。
-* ユーザー名を"iot-subscribe-user"を付けます。
+* ユーザー名を "iot-subscribe-user" とします。
 * 「プログラムによるアクセス」、「AWS マネジメントコンソールへのアクセス」、「自動生成パスワード」にチェックを入れて、「次のステップ：アクセス権限」をクリックします。
 * 「既存のポリシーを直接アタッチ」をクリックします。
 * 「AdministratorAccess」にチェックを入れ、「次のステップ：確認」をクリックします。
