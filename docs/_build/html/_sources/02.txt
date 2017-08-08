@@ -123,7 +123,7 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 項目            値
 ============= ============================
 Name	          awsiot-handson-policy-<参加者番号>
-Action	        iot:\*
+Action	        iot:*
   Resource ARN	  \*
 Effect	        Allow (チェックを入れて下さい)
 ============= ============================
