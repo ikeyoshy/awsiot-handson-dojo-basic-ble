@@ -163,9 +163,11 @@ Kinesis Firehose用のAWS IoT ルールを作成
 設定項目         値
 ============= ====================================
 Name	         iotrule_firehose_es_<参加者番号>
-Attribute	     * (＊ アスタリスク)
+Attribute	     \*
 Topic filter   sensor/<参加者番号>
 ============= ====================================
+
+"*"は、半角の＊(アスタリスク)です。
 
 .. image:: images/07/create-rule.png
 
