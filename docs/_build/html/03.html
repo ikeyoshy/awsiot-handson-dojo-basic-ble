@@ -116,6 +116,49 @@ SSIDは、「BLE-WIFI_YY_ZZ」になります。</p>
 <h2>3.4. AWS IoTへ接続するための設定<a class="headerlink" href="#aws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>「Applicatoins」タブをクリックし、ゲートウェイがAWS IoTに接続するための設定を行って下さい。最後に、[Save] ボタンを押して設定を保存します。</p>
 <p>Rebootを促すメッセージが出ますが、まだ、Rebootしないで下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Application</td>
+<td>MQTT Client</td>
+</tr>
+<tr><td>Host/IP</td>
+<td>記録しておいたEndpoint情報</td>
+</tr>
+<tr><td><strong>Port</strong></td>
+<td>8883 　(最初は、1883になっているので8883に書き換えて下さい)</td>
+</tr>
+<tr><td><strong>Publish Topic</strong></td>
+<td>sensor/&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Client ID</td>
+<td>ranger-gw-&lt;参加者番号&gt;  　　(AWS IoTで作成したデバイス名)</td>
+</tr>
+<tr><td>Username</td>
+<td>空欄</td>
+</tr>
+<tr><td>Password</td>
+<td>空欄</td>
+</tr>
+<tr><td>MQTTS</td>
+<td>Enable 　　　 　　  (標準プロトコルのMQTTを指定)</td>
+</tr>
+<tr><td>Root CA</td>
+<td>AWSIoT Root CA</td>
+</tr>
+<tr><td>Use Certificate</td>
+<td>Enable</td>
+</tr>
+</tbody>
+</table>
 <img alt="_images/applications.png" src="_images/applications.png" />
 <div class="line-block">
 <div class="line"><br /></div>
