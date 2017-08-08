@@ -52,7 +52,15 @@
 AWS IoTのコンソール画面で、IoTデバイスを作成します。証明書を作成し、アクセス権(ポリシー) を付与し、登録したデバイスに関連付ける設定を行います。作成した証明書は後ほどBLEゲートウェイにインストールします。これにより、BLEゲートウェイがAWS IoTに安全に接続し、暗号化通信によるセキュアなデータ通信が可能になります。</p>
 <div class="section" id="aws">
 <h2>2.1. AWS マネジメントコンソールにサインイン<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>まずは、WiFiに接続して、下記のURLにアクセスし、アカウントID、ユーザー名、パスワードを入力し、AWSマネージメントコンソールにサインインして下さい。ルートアカウントでログインする場合は、「ルートアカウント認証情報を使用してサインイン」をクリックして下さい。</p>
+<p>まずは、WiFiに接続して、AWS マネジメントコンソールにサインインして下さい。</p>
+<div class="section" id="iam">
+<h3>2.1.1. IAMユーザーではなく、ルートアカウントを使用する場合<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ルートアカウントでログインする場合は、下記のURLからAWSにサインインして下さい。</p>
+<p><a class="reference external" href="https://console.aws.amazon.com/console/home">https://console.aws.amazon.com/console/home</a></p>
+</div>
+<div class="section" id="id1">
+<h3>2.1.2. 複数の参加者で1つのAWSアカウントを共用する場合<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>下記のURLにアクセスし、アカウントID、ユーザー名、パスワードを入力し、AWSマネージメントコンソールにサインインして下さい。</p>
 <p>複数の参加者で1つのAWSアカウントを共用している場合、ルートユーザーにAWSマネジメントコンソールにログインするURLを教えてもらってください。通常、下記の様なURLになっています。</p>
 <p><a class="reference external" href="https:/">https:/</a>/&lt;12桁のAWS ID&gt;.signin.aws.amazon.com/console</p>
 <table border="1" class="docutils">
@@ -82,8 +90,9 @@ AWS IoTのコンソール画面で、IoTデバイスを作成します。証明�
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id1">
-<h2>2.2. デバイスの作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div>
+<div class="section" id="id2">
+<h2>2.2. デバイスの作成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTで使用するIoTデバイスを登録します。</p>
 <p>AWSマネージメントコンソールを開き、右上のリージョン一覧から
 [米国東部(バージニア北部)]を選択します。</p>
@@ -152,8 +161,8 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="id2">
-<h2>2.3. ポリシーの作成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h2>2.3. ポリシーの作成<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>デバイスに対して、AWS IoTの各種操作を許可するためのポリシーを作成します。</p>
 <p>メニューから[Security]-[Policies]をクリックします。以下の様な画面が表示された場合は、[Create a policy] をクリックします。</p>
 <img alt="_images/create-policy.png" src="_images/create-policy.png" />
@@ -205,8 +214,8 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <p>ここで作成するポリシーは、AWS IoTへの全てのアクセス権限(AWS IoTへの接続、データの送受信、デバイスシャドウの操作) を持っています。実運用では、セキュリティー向上のために、デバイスに必要とされる権限だけを付与することを勧めします。</p>
 <p>ここで作成したポリシーは、次のステップで作成する証明書と関連付けされます。最終的にデバイスと関連付けされ、デバイスのアクセス権限を規定することになります。</p>
 </div>
-<div class="section" id="id3">
-<h2>2.4. 証明書の作成<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h2>2.4. 証明書の作成<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>AWS IoTで使用するX.509証明書を作成します。デバイスはこの証明書を使用してAWS IoTとの間で相互に認証を行いAWS IoTに接続し、暗号化通信を行います。この証明書は、後にBELゲートウェイにインストールします。</p>
 <p>メニューから[Security]-[Cetificate]をクリックします。以下の様な画面が表示された場合は、[Create a crtificate]をクリックします。</p>
 <img alt="_images/crreate-certificate.png" src="_images/crreate-certificate.png" />
@@ -234,8 +243,8 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <p>今回は、AWS IoTによって証明書を作成しますが、お客様が作成した証明書を使用する事も出来ます。その際、証明書を作成するために使用したCA証明書と作成した証明書をAWS IoTに登録する必要があります。</p>
 <p>実運用時、１つの証明書を全てのデバイスで共用する事も可能ですが、ポリシー管理や証明書が失効した場合などにきめ細かく管理するために、各デバイスで異なる証明書を使用するすることをお勧めします。何かしらのセキュリティー問題が発生した場合、該当するデバイスの証明書を無効にするだけで、デバイスはAWS IoTへの接続ができなくなります。</p>
 </div>
-<div class="section" id="id4">
-<h2>2.5. デバイス、ポリシーを証明書に割当てる<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h2>2.5. デバイス、ポリシーを証明書に割当てる<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>作成したデバイス、ポリシーを証明書に割当てます。</p>
 <p>メニューから[Security]-[Certificates]をクリックします。証明書一覧から「証明書の作成」のセクションで保存した証明書のIDに一致する証明書をクリックして開きます。</p>
 <img alt="_images/attach-policy-thing.png" src="_images/attach-policy-thing.png" />
@@ -275,11 +284,15 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">2. AWS IoT基本設定</a><ul>
-<li><a class="reference external" href="#aws">2.1. AWS マネジメントコンソールにサインイン</a></li>
-<li><a class="reference external" href="#id1">2.2. デバイスの作成</a></li>
-<li><a class="reference external" href="#id2">2.3. ポリシーの作成</a></li>
-<li><a class="reference external" href="#id3">2.4. 証明書の作成</a></li>
-<li><a class="reference external" href="#id4">2.5. デバイス、ポリシーを証明書に割当てる</a></li>
+<li><a class="reference external" href="#aws">2.1. AWS マネジメントコンソールにサインイン</a><ul>
+<li><a class="reference external" href="#iam">2.1.1. IAMユーザーではなく、ルートアカウントを使用する場合</a></li>
+<li><a class="reference external" href="#id1">2.1.2. 複数の参加者で1つのAWSアカウントを共用する場合</a></li>
+</ul>
+</li>
+<li><a class="reference external" href="#id2">2.2. デバイスの作成</a></li>
+<li><a class="reference external" href="#id3">2.3. ポリシーの作成</a></li>
+<li><a class="reference external" href="#id4">2.4. 証明書の作成</a></li>
+<li><a class="reference external" href="#id5">2.5. デバイス、ポリシーを証明書に割当てる</a></li>
 </ul>
 </li>
 </ul>
