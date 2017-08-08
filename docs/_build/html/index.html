@@ -100,18 +100,21 @@
 <div class="line"><br /></div>
 </div>
 </div>
-<div class="section" id="iam">
-<h3>IAMユーザーの作成<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h3>
-<p>複数の参加者で1つのAWSアカウントを共用する場合は、他の参加者のためにIAMユーザーを作成して頂く必要があります。IAMユーザーでは無く、ルートアカウントを使用して参加される場合でも、ハンズオン内でグラフ表示を行うときにアクセスキーID、シークレットアクセスキーを使用しますので、IAMユーザーを作成して下さい。</p>
+<div class="section" id="aws">
+<h3>複数の参加者で1つのAWSアカウントを共用する場合<a class="headerlink" href="#aws" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>複数の参加者で1つのAWSアカウントを共用する場合は、他の参加者のためにIAMユーザーを作成して頂く必要があります。</p>
+<div class="section" id="awsiam">
+<h4>複数の参加者で1つのAWSアカウントを共用する場合のIAMユーザーの作成方法<a class="headerlink" href="#awsiam" title="このヘッドラインへのパーマリンク">¶</a></h4>
 <ul class="simple">
 <li>AWS マネジメントコンソールのIAMから、「ユーザー」をクリックします。</li>
-<li>「ユーザーの追加」ボタンをクリックします。</li>
+<li>「ユーザーを追加」ボタンをクリックします。</li>
 <li>ユーザー名を付けます。</li>
-<li>「自動生成パスワード」、「AWS マネジメントコンソールへのアクセス」を有効にして、「次のステップ：アクセス権限」をクリックします。</li>
+<li>「プログラムによるアクセス」、「AWS マネジメントコンソールへのアクセス」、「自動生成パスワード」にチェックを入れて、「次のステップ：アクセス権限」をクリックします。</li>
 <li>「既存のポリシーを直接アタッチ」をクリックします。</li>
-<li>「AdministratorAccess」を選択し、「次のステップ：確認」をクリックします。</li>
+<li>「AdministratorAccess」にチェックを入れ、「次のステップ：確認」をクリックします。</li>
 <li>「ユーザーの作成」をクリックします。</li>
-<li>「csvのダウンロード」をクリックし、閉じます。</li>
+<li>ユーザー名、アクセスキー ID、シークレットアクセスキーが表示されますので、「csvのダウンロード」をクリックし、CSVフィルをダウンロードします。</li>
+<li>閉じます。</li>
 </ul>
 <p>ルートユーザーの方は、IAMユーザーで参加される方に、下記の連絡をお願い致します。これらは、ダウンロードしたCSVファイルに記載されていますので、CSVファイルを配布されるのが良いでしょう。</p>
 <ul class="simple">
@@ -122,9 +125,29 @@
 <li>アクセスキーID</li>
 <li>シークレットアクセスキー</li>
 </ul>
+</div>
+<div class="section" id="iam">
+<h4>ルートアカウントを使用して参加される場合のIAMユーザーの作成方法<a class="headerlink" href="#iam" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>IAMユーザーではなく、ルートアカウントを使用して参加される場合でも、ハンズオン内でグラフ表示を行うときにアクセスキーID、シークレットアクセスキーを使用しますので、IAMユーザーを作成して下さい。</p>
+<ul class="simple">
+<li>AWS マネジメントコンソールのIAMから、「ユーザー」をクリックします。</li>
+<li>「ユーザーを追加」ボタンをクリックします。</li>
+<li>ユーザー名を付けます。</li>
+<li>「プログラムによるアクセス」にチェックを入れて、「次のステップ：アクセス権限」をクリックします。</li>
+<li>「既存のポリシーを直接アタッチ」をクリックします。</li>
+<li>「検索」フィールドに、&#8221;AWSIOT&#8221;と入力して、「AWSIoTFullAccess」にチェックを入れ、「次のステップ：確認」をクリックします。</li>
+<li>「ユーザーの作成」をクリックします。</li>
+<li>ユーザー名、アクセスキー ID、シークレットアクセスキーが表示されますので、「csvのダウンロード」をクリックし、CSVフィルをダウンロードします。</li>
+<li>閉じます。</li>
+</ul>
+<img alt="_images/IAM_user.png" src="_images/IAM_user.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <p>※ アクセスキー ID、シークレットアクセスキーは、ハンズオン内でグラフ表示を行うシナリオで使用します。その際、保存したCSVファイルを参照して下さい。</p>
 <p>参考：AWS アカウント内での IAM ユーザーの作成方法</p>
 <p><a class="reference external" href="http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html">http://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/id_users_create.html</a></p>
+</div>
 </div>
 </div>
 <div class="section" id="id4">
@@ -148,7 +171,11 @@
 <li><a class="reference external" href="#id2">注意事項</a></li>
 <li><a class="reference external" href="#id3">事前準備</a><ul>
 <li><a class="reference external" href="#web">Webブラウザの確認</a></li>
-<li><a class="reference external" href="#iam">IAMユーザーの作成</a></li>
+<li><a class="reference external" href="#aws">複数の参加者で1つのAWSアカウントを共用する場合</a><ul>
+<li><a class="reference external" href="#awsiam">複数の参加者で1つのAWSアカウントを共用する場合のIAMユーザーの作成方法</a></li>
+<li><a class="reference external" href="#iam">ルートアカウントを使用して参加される場合のIAMユーザーの作成方法</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference external" href="#id4">参考情報</a></li>
