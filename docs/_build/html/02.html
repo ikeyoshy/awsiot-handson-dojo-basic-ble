@@ -166,6 +166,31 @@ Endpointは、AWS アカウント固有のURLです。複数の参加者で1つ�
 <div class="line"><br /></div>
 </div>
 <p>フォームにそれぞれ以下のパラメータを入力し、[Create] をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">値</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>awsiot-handson-policy-&lt;参加者番号&gt;</td>
+</tr>
+<tr><td>Action</td>
+<td>iot:*</td>
+</tr>
+<tr><td>Resource ARN</td>
+<td>*</td>
+</tr>
+<tr><td>Effect</td>
+<td>Allow (チェックを入れて下さい)</td>
+</tr>
+</tbody>
+</table>
 <p>「*」は、半角の＊(アスタリスク)です。</p>
 <img alt="_images/create-policy-3.png" src="_images/create-policy-3.png" />
 <div class="line-block">
