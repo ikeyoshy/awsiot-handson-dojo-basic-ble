@@ -72,6 +72,8 @@ Rebootを促すメッセージが出ますが、まだ、Rebootしないで下�
 
 |
 
+Endpointは、`Endpointを記録する <http://awsiot-handson-dojo-basic-ble.readthedocs.io/en/latest/02.html?highlight=Endpoint#endpoint>`_ で記録しておいたAWS IoTのEndpoint情報です。
+
 .. image:: images/03/applications.png
 
 |

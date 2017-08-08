@@ -289,6 +289,8 @@ Topic                     sensor/<参加者番号>/json
 Display last n data       200 (グラフに表示する過去のデータ数)
 ======================= ======================================
 
+Endpointは、`Endpointを記録する <http://awsiot-handson-dojo-basic-ble.readthedocs.io/en/latest/02.html?highlight=Endpoint#endpoint>`_ で記録しておいたAWS IoTのEndpoint情報です。
+
 アクセスキーID、シークレットアクセスキーは、`IAMユーザーの作成 <http://awsiot-handson-dojo-basic-ble.readthedocs.io/en/latest/index.html#iam>`_ で作成したもので、IAMユーザー作成時にダウンロードしたCSVファイルに記録されています。アクセスキーIDは、後から確認できますが、シークレットアクセスキーは、IAMユーザー作成時にしか参照できないので、紛失した場合は、IAMユーザーを新たに作って下さい。
 
 ※ アクセスキーは、AWSにアクセスするための認証情報です。
