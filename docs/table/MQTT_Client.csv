@@ -1,0 +1,1 @@
+項目,値Application,MQTT ClientHost/IP,記録しておいたEndpoint情報**Port**,8883 　(最初は、1883になっているので8883に書き換えて下さい)**Publish Topic**,sensor/<参加者番号>Client ID,ranger-gw-<参加者番号>  　　(AWS IoTで作成したデバイス名)Username,空欄Password,空欄MQTTS,Enable 　　　(標準プロトコルのMQTTを指定)Root CA,AWSIoT Root CAUse Certificate,Enable
