@@ -84,11 +84,12 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>バケット名に、&#8221;sensor-data-&lt;参加者番号&gt;&#8221;、リージョンは、[米国東部(バージニア北部)] を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。</p>
+<p>バケット名に、&#8221;sensor-data-&lt;参加者番号&gt;-&lt;ユニークな文字&gt;&#8221;、リージョンは、[米国東部(バージニア北部)] を選択し、[次へ]をクリックします。次の画面でも[次へ]をクリックして下さい。
+S3のバケット名は、全世界でユニークな名前で有る必要があるため、「-&lt;ユニークな文字&gt;」をバケット名に追加し、他とコンフリクトしないようにして下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="33%" />
-<col width="67%" />
+<col width="29%" />
+<col width="71%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -97,7 +98,7 @@
 </thead>
 <tbody valign="top">
 <tr><td>バケット名</td>
-<td>sensor-data-&lt;参加者番号&gt;</td>
+<td>sensor-data-&lt;参加者番号&gt;-&lt;ユニークな文字&gt;</td>
 </tr>
 <tr><td>リージョン</td>
 <td>米国東部(バージニア北部)</td>
@@ -113,7 +114,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>&#8220;sensor-data-&lt;参加者番号&gt;&#8221; のバケットがリージョン：[米国東部(バージニア北部)] に作成されているか確認して下さい。複数の参加者で1つのAWSアカウントを共用している場合、他のIAMユーザーのバケットも表示されます。</p>
+<p>&#8220;sensor-data-&lt;参加者番号&gt;-&lt;ユニークな文字&gt;&#8221; のバケットがリージョン：[米国東部(バージニア北部)] に作成されているか確認して下さい。複数の参加者で1つのAWSアカウントを共用している場合、他のIAMユーザーのバケットも表示されます。</p>
 <img alt="_images/s3-create-bucket-4.png" src="_images/s3-create-bucket-4.png" />
 <div class="line-block">
 <div class="line"><br /></div>
@@ -281,8 +282,8 @@
 <p>Destination(データの吐き出し先)をS3として、Delivery stream nameを設定し、先ほど作成したS3バケットを選んで、[Next] をクリックして下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="39%" />
-<col width="61%" />
+<col width="37%" />
+<col width="63%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">項目</th>
@@ -297,7 +298,7 @@
 <td>sensor-data-to-s3-&lt;参加者番号&gt;</td>
 </tr>
 <tr><td>S3 bucket</td>
-<td>sensor-data-&lt;参加者番号&gt;</td>
+<td>sensor-data-&lt;参加者番号&gt;-&lt;ユニークな文字&gt;</td>
 </tr>
 </tbody>
 </table>
