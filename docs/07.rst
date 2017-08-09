@@ -84,7 +84,7 @@ Delivery stream name     sensor-data-to-es-<参加者番号>
 Elasticsearch domain     firehose-to-es-domain-<参加者番号>
 Index                    sensordata
 Type                     scenario2
-S3 bucket                sensor-data-<参加者番号>
+S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
 ======================= =======================================
 
 .. image:: images/07/cretae-delivery-stream.png
