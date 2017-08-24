@@ -99,7 +99,9 @@ Step 1 で、Delivery stream nameとして、FromIotToS3-<参加者番号> を�
 Delivery stream name	   sensor-data-to-es-<参加者番号>
 ======================= =======================================
 
+.. image:: images/07/create-delivery-stream-1.png
 
+|
 
 
 ======================= =======================================
@@ -113,9 +115,7 @@ Type                     scenario2
 S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
 ======================= =======================================
 
-.. image:: images/07/create-delivery-stream-1.png
 
-|
 
 Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
 
