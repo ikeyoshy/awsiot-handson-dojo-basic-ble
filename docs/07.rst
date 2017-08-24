@@ -91,8 +91,6 @@ Kinesis Firehoseの設定
 
 |
 
-[Create Delivery Stream] をクリックして下さい。
-
 DestinationをElasticsearch Serviceとして、Delivery stream nameを設定し、先ほど設定したElasticsearch ドメインを選んで、[Next] をクリックして下さい。
 
 ======================= =======================================
@@ -106,7 +104,7 @@ Type                     scenario2
 S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
 ======================= =======================================
 
-.. image:: images/07/cretae-delivery-stream.png
+.. image:: images/07/create-delivery-stream-1.png
 
 |
 
@@ -122,9 +120,9 @@ Error Logging          Disable
 IAM role               Firehose delivery IAM role
 =================== =======================================
 
-.. image:: images/07/cretae-delivery-stream-2.png
+.. image:: images/07/create-delivery-stream-2.png
 
-.. image:: images/07/cretae-delivery-stream-3.png
+.. image:: images/07/create-delivery-stream-3.png
 
 |
 
@@ -145,19 +143,19 @@ IAM ロール              新しい IAMロールの作成
 
 Firehoseの設定画面で、[Next] をクリックして下さい。
 
-.. image:: images/07/cretae-delivery-stream-4.png
+.. image:: images/07/create-delivery-stream-4.png
 
 |
 
 最後に、[Create Delivery Stream] をクリックして下さい。
 
-.. image:: images/07/cretae-delivery-stream-5.png
+.. image:: images/07/create-delivery-stream-5.png
 
 |
 
 Elasticsearch Delivery Streamsの作成が開始されました。
 
-.. image:: images/07/cretae-delivery-stream-6.png
+.. image:: images/07/create-delivery-stream-6.png
 
 |
 
