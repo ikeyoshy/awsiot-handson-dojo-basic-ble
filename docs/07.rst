@@ -91,7 +91,7 @@ Kinesis Firehoseの設定
 
 |
 
-Step 1 で、Delivery stream nameとして、FromIotToS3-<参加者番号> を設定し、他の設定は、そのままにして [Next] をクリックします。
+Step 1 で、"Delivery stream name" として、"FromIotToS3-<参加者番号>" を設定し、他の設定は、そのままにして [Next] をクリックします。
 
 ======================= =======================================
 項目                      設定
@@ -100,6 +100,8 @@ Delivery stream name	   sensor-data-to-es-<参加者番号>
 ======================= =======================================
 
 .. image:: images/07/create-delivery-stream-1.png
+
+.. image:: images/07/create-delivery-stream-2.png
 
 |
 
@@ -114,7 +116,6 @@ Index                    sensordata
 Type                     scenario2
 S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
 ======================= =======================================
-
 
 
 Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
