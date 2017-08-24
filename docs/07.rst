@@ -50,7 +50,8 @@ Elasticsearch Serviceの画面が開きますので、[新しいドメインの�
 |
 
 次の画面では、何も入力せずに、[次へ] をクリックして下さい。
-Set the domain access policy toで、"Allow open access to the domain"を選択して下さい。
+
+「アクセスポリシーの設定」では、 [テンプレートを選択] で、 **特定のIPからのドメインのアクセスを許可** を選択して下さい。
 
 .. image:: images/07/domain-access-policy.png
 
