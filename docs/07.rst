@@ -19,13 +19,13 @@ ElasticSearch Serviceのドメインを作成する
 
 |
 
-Elasticsearch Serviceの画面が開きますので、[Get started] をクリックして下さい。
+Elasticsearch Serviceの画面が開きますので、[新しいドメインの作成] をクリックして下さい。
 
 .. image:: images/07/es-get-started.png
 
 |
 
-Create Elasticsearch domain画面になります。
+「Elasticsearch ドメインの作成」画面になります。
 
 Elasticsearch domain nameに、"firehose-to-es-domain-<参加者番号>" と入力して、[Next]をクリックして下さい。
 
