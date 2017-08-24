@@ -105,6 +105,29 @@ Delivery stream name	   sensor-data-to-es-<参加者番号>
 
 |
 
+Step 2 では、Lambda関数を用いた、データ変換の設定を行います。
+
+Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+Data transformation    Enable
+Lambda function        ranger-raw-data-to-json-<参加者番号>
+=================== =======================================
+
+
+
+
+=================== =======================================
+項目                    設定
+=================== =======================================
+Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
+Error Logging          Disable
+IAM role               Firehose delivery IAM role
+=================== =======================================
+
+
 
 ======================= =======================================
 項目                      設定
@@ -118,17 +141,6 @@ S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
 ======================= =======================================
 
 
-Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。
-
-=================== =======================================
-項目                    設定
-=================== =======================================
-Data transformation    Enable
-Lambda function        ranger-raw-data-to-json-<参加者番号>
-Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
-Error Logging          Disable
-IAM role               Firehose delivery IAM role
-=================== =======================================
 
 .. image:: images/07/create-delivery-stream-2.png
 
