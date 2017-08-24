@@ -79,13 +79,11 @@ Elasticsearch ドメインが出来るまで、10数分かかります。
 Kinesis Firehoseの設定
 ===============================
 
-マネージメントコンソールのサービス一覧から[Kinesis]を開きます。[Firehoseに移動]をクリックします。
+マネージメントコンソールのサービス一覧から[Kinesis]を開きます。[Firehoseに移動] をクリックします。
 
 .. image:: images/07/kinesis-firehose-1.png
 
 |
-
-Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。
 
 [Create Delivery Stream] をクリックして下さい。
 
