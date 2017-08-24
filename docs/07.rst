@@ -116,18 +116,13 @@ Data transformation    Enable
 Lambda function        ranger-raw-data-to-json-<参加者番号>
 =================== =======================================
 
+.. image:: images/07/create-delivery-stream-3.png
 
+|
 
+Step 3 で、Destination を Elasticsearch Service として、
 
-=================== =======================================
-項目                    設定
-=================== =======================================
-Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
-Error Logging          Disable
-IAM role               Firehose delivery IAM role
-=================== =======================================
-
-
+S3バケットを選択し、[Next] をクリックします。
 
 ======================= =======================================
 項目                      設定
@@ -141,8 +136,18 @@ S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
 ======================= =======================================
 
 
+=================== =======================================
+項目                    設定
+=================== =======================================
+Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
+Error Logging          Disable
+IAM role               Firehose delivery IAM role
+=================== =======================================
 
-.. image:: images/07/create-delivery-stream-2.png
+
+
+
+
 
 .. image:: images/07/create-delivery-stream-3.png
 
