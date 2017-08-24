@@ -57,13 +57,13 @@ Elasticsearch Serviceの画面が開きますので、[新しいドメインの�
 
 |
 
-確認画面が表示されるので、I accept the risk をチェックし、[OK] を押して下さい。
+IPアドレスの入力画面が表示されるので、先ほど記録した “グローバルIPアドレス” を入力し、[OK] を押して下さい。
 
-.. image:: images/07/domain-access-policy-risk-confirm.png
+.. image:: images/07/domain-access-ip_input.png
 
 |
 
-access policyが表示されるので、[Next]をクリックして下さい。
+access policyが表示されるので、[次へ] をクリックして下さい。
 
 .. image:: images/07/domain-access-policy-2.png
 
