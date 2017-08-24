@@ -69,8 +69,8 @@ access policyが表示されるので、[次へ] をクリックして下さい�
 
 |
 
-確認画面が出てきますので、[Confirm and create]をクリックして下さい。
-Elasticsearch ドメインが出来るまで、数分かかります。
+確認画面が出てきますので、[確認] をクリックして下さい。
+Elasticsearch ドメインが出来るまで、10数分かかります。
 
 .. image:: images/07/confirm-create.png
 
