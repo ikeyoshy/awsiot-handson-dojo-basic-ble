@@ -297,7 +297,7 @@ tempreature, humidity, rssi, @timestamp のフィールドが表示されてい�
 
 メニューにある[Visualize]をクリックし、[+ Create a visualization]をクリックします。
 
-.. image:: images/kibana-create-a-visualization.png
+.. image:: images/07/kibana-create-a-visualization.png
 
 |
 
