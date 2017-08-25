@@ -224,21 +224,21 @@ Kinesis Firehose用のAWS IoT ルールを作成
 
 |
 
-"Send messages to an Amazon Kinesis Firehose stream" を選択し、[Confgure action] をクリックします。
+"Amazon Kinesis Firehoseストリームにメッセージを送信する" を選択し、[アクションの設定] をクリックします。
 
 .. image:: images/05/select-action.png
 
 |
 
-Stream nameで、sensor-data-to-es-<参加者番号> を選択し、シナリオ1で作成したIAM roleを選択し、[Update role] をクリックします。
+"ストリーム名" として、sensor-data-to-es-<参加者番号> を選択し、シナリオ1で作成したIAM roleを選択し、[Update role] をクリックします。
 Successfully updated role. と表示されたら、[Add action] をクリックします。
 
-============= ====================================
-設定項目         値
-============= ====================================
-Stream name     sensor-data-to-es-<参加者番号>
-IAM role name   IOT_to_Kinesis_Firehose-<参加者番号>
-============= ====================================
+============== ====================================
+設定項目          値
+============== ====================================
+ストリーム名       sensor-data-to-es-<参加者番号>
+IAM ロール名      IOT_to_Kinesis_Firehose-<参加者番号>
+============== ====================================
 
 .. image:: images/07/add-action.png
 
@@ -271,10 +271,10 @@ Kibanaで表示させるindexを指定します。以下の値を入力して、
 60秒周期でElasticSearch Serviceにデータが追加される設定になっているため、@timestamp 現れるまで数分かかることがあります。
 
 ======================  =========================
-設定項目                  値
+設定項目                   値
 ======================  =========================
-Index name or pattern   sensordata
-Time-field names        @timestamp (リストから選択)
+Index name or pattern     sensordata
+Time-field names          @timestamp (リストから選択)
 ======================  =========================
 
 .. image:: images/07/kibana-index-create.png
