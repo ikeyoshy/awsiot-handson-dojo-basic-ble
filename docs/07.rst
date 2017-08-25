@@ -367,7 +367,7 @@ Beaconの電波強度(rssi)も同様に追加します。
 
 |
 
-[ Sensor Data - temp - humid - rssi]をクリックし、下側にグラフが追加されたのを確認します。
+[ Sensor Data - temp - humid - rssi] をクリックし、下側にグラフが追加されたのを確認します。
 
 .. image:: images/07/kibana-dashboard-add-temphumidrssi.png
 
