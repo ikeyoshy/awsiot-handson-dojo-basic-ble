@@ -305,7 +305,7 @@ IAM ロール              新しい IAMロールの作成
 
 設定したIAM ロールが選択されていることを確認し、[Next] をクリックして下さい。
 
-.. image:: images/0457/create-delivery-stream-4.png
+.. image:: images/05/create-delivery-stream-4.png
 
 |
 
