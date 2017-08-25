@@ -92,13 +92,17 @@ https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-t
 
 |
 
-下記のような画面が表示されるので、[今すぐ始める] をクリックします。
+下記のような画面が表示されるので、[関数の作成] をクリックします。
 
 .. image:: images/05/lambda-2.png
 
 |
 
 この画面が表示されない場合は、Lambdaの関数の画面から、[関数の作成] ボタンをクリックします。
+
+.. image:: images/05/lambda-2-1.png
+
+|
 
 Lambda関数の作成画面が表示されるので、サーチボックスに"Firehose"と入力し、"kinesis-firehose-syslog-to-json-python"をクリックします。
 
