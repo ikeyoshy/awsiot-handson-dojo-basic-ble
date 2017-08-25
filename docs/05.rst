@@ -123,7 +123,7 @@ https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-t
 項目                            設定
 ============================ =======================================
 名前                            ranger-raw-data-to-json-<参加者番号>
-ランタイム                       Python 2.7
+ランタイム                       **Python 2.7**
 コード エントリ タイプ             ZIPファイルをアップロード
 関数パッケージ                    ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)
 ロール                           カスタムロールの作成
