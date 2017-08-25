@@ -246,7 +246,7 @@ IAM ロール名      IOT_to_Kinesis_Firehose-<参加者番号>
 
 |
 
-Create a rule画面に戻ります。[Create rule]  をクリックして、ルールを作成します。
+「ルールを作成する」画面に戻ります。[ルールを作成する] をクリックして、ルールを作成します。
 
 .. image:: images/07/create-rule-3.png
 
