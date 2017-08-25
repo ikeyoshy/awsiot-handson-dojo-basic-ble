@@ -126,7 +126,6 @@ https://s3-ap-northeast-1.amazonaws.com/awsiot-handson-dojo-jp/ranger-raw-data-t
 ランタイム                       **Python 2.7**
 コード エントリ タイプ             ZIPファイルをアップロード
 関数パッケージ                    ranger-raw-data-to-json.zip (先ほどダウンロードしたもの)
-ロール                           カスタムロールの作成
 ============================ =======================================
 
 .. image:: images/05/lambda-5.png
