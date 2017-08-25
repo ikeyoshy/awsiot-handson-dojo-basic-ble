@@ -349,15 +349,21 @@ Beaconの電波強度(rssi)も同様に追加します。
 
 |
 
-①[Save] ボタンをクリックし、[Title] に ②"Sensor Data - temp - humid - rssi" と入力し、③[Save]をクリックします。
+①[Save] ボタンをクリックし、[Title] に ②"Sensor Data - temp - humid - rssi" と入力し、③"Save a new visualization"にチェックを入れ。④[Save]をクリックします。
 
 .. image:: images/07/kibana-save-temphumidrssi.png
 
 |
 
-メニューにある[Dashboard]をクリックし、[Add] ボタンをクリックします。
+メニューにある[Dashboard]をクリックします。[+ Create a dashboard] します。
 
 .. image:: images/07/kibana-dashboard.png
+
+|
+
+[Add] ボタンをクリックします。
+
+.. image:: images/07/kibana-dashboard-add.png
 
 |
 
