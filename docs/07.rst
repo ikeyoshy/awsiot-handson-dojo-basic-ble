@@ -257,13 +257,13 @@ Kibanaでデータを確認
 
 マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。
 
-ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。
+"ElasticSearch ドメイン" の [検索可能なドキュメント] の数字が 1より大きくなっていることを確認します。[Cクラスターの状態] が [黄色] になっていのはシングルノード構成のためでありハンズオンでは問題ありません。
 
 .. image:: images/07/es-dashboard.png
 
 |
 
-[Domain]のいリンクをクリックして開きます。[Kibana]のリンクをクリックして開きます。
+[ドメイン] のリンクをクリックして "firehose-to-es-domain-<参加者番号>" を開きます。[Kibana]のリンクをクリックして開きます。
 
 .. image:: images/07/kibana-link.png
 
@@ -289,13 +289,19 @@ tempreature, humidity, rssi, @timestamp のフィールドが表示されてい�
 
 |
 
-メニューにある[Discover]をクリックし、データが届いている事を確認します。
+メニューにある [Discover] をクリックし、データが届いている事を確認します。
 
 .. image:: images/07/kibana-discover.png
 
 |
 
-メニューにある[Visualize]をクリックし、グラフの種類として[Line chart]を選択します。
+メニューにある[Visualize]をクリックし、[+ Create a visualization]をクリックします。
+
+.. image:: images/kibana-create-a-visualization.png
+
+|
+
+グラフの種類として[Line chart]を選択します。
 
 .. image:: images/07/kibana-visualize.png
 
