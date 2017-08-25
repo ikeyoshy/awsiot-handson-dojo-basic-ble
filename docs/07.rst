@@ -146,19 +146,21 @@ Backup S3 bucket         sensor-data-<参加者番号>-<ユニークな文字列
 
 |
 
+Step 4 で、
+
 =================== ==============================================================
 項目                    設定
 =================== ==============================================================
 Buffer interval        60 (Elasticsearch Serviceに60秒周期でデータが追加されます)
 Error Logging          Disable
-IAM role               Firehose delivery IAM role
+IAM role               [Create new, or Choose] ボタンを押す
 =================== ==============================================================
 
-.. image:: images/07/create-delivery-stream-3.png
+.. image:: images/07/create-delivery-stream-3-2.png
 
 |
 
-IAM role で、"Firehose delivery IAM role" を選択すると、IAM roleの設定画面が開きます。
+IAM role で、[Create new, or Choose] ボタンを押すと、IAM ロール の設定画面が開きます。
 
 "新しい IAMロールの作成" を選択し、ロール名を入力して、[許可] をクリックすると、Firehoseの設定画面に戻ります。
 
