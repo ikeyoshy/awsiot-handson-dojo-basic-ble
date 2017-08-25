@@ -54,58 +54,135 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<div class="section" id="ip">
+<h2>7.1. グローバルIPアドレスを調べる<a class="headerlink" href="#ip" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Kibanaを特定のIPアドレスからだけアクセスさせるために、PCのグローバルIPアドレスを調べます。下記のURLにアクセスしてください。(PCを社内WiFiに接続している場合、Kibanaからアクセスできない場合がありますので、トレーナーが準備したWiFiに接続し直して下さい。)</p>
+<p>SSID = awshandson もしくは、awshandson5、パスワード = awshandson</p>
+<p><a class="reference external" href="https://www.cman.jp/network/support/go_access.cgi">https://www.cman.jp/network/support/go_access.cgi</a></p>
+<img alt="_images/grobal_ip.png" src="_images/grobal_ip.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>グローバルIPアドレスが表示されるので、ノートパッドなどに記録しておいて下さい。</p>
+</div>
 <div class="section" id="elasticsearch-service">
-<h2>7.1. ElasticSearch Serviceのドメインを作成する<a class="headerlink" href="#elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>7.2. ElasticSearch Serviceのドメインを作成する<a class="headerlink" href="#elasticsearch-service" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>サービス一覧から[ElasticSearch Service] をクリックして開きます。</p>
 <img alt="_images/es1.png" src="_images/es1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Elasticsearch Serviceの画面が開きますので、[Get started] をクリックして下さい。</p>
+<p>Elasticsearch Serviceの画面が開きますので、[新しいドメインの作成] をクリックして下さい。</p>
 <img alt="_images/es-get-started1.png" src="_images/es-get-started1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Create Elasticsearch domain画面になります。</p>
-<p>Elasticsearch domain nameに、&#8221;firehose-to-es-domain-&lt;参加者番号&gt;&#8221; と入力して、[Next]をクリックして下さい。</p>
+<p>「Elasticsearch ドメインの作成」画面になります。</p>
+<p>[Elasticsearch ドメイン名]に、&#8221;firehose-to-es-domain-&lt;参加者番号&gt;&#8221; と入力して、[次へ] をクリックして下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Elasticsearch ドメイン名</td>
+<td>sensor-data-to-es-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
 <img alt="_images/cretate-es-domain1.png" src="_images/cretate-es-domain1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>次の画面では、何も入力せずに、[Next]をクリックして下さい。
-Set the domain access policy toで、&#8221;Allow open access to the domain&#8221;を選択して下さい。</p>
+<p>次の画面では、何も入力せずに、[次へ] をクリックして下さい。</p>
+<p>「アクセスポリシーの設定」では、 [テンプレートを選択] で、 <strong>特定のIPからのドメインのアクセスを許可</strong> を選択して下さい。</p>
 <img alt="_images/domain-access-policy1.png" src="_images/domain-access-policy1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>確認画面が表示されるので、I accept the risk をチェックし、[OK] を押して下さい。</p>
-<img alt="_images/domain-access-policy-risk-confirm1.png" src="_images/domain-access-policy-risk-confirm1.png" />
+<p>IPアドレスの入力画面が表示されるので、先ほど記録した “グローバルIPアドレス” を入力し、[OK] を押して下さい。</p>
+<img alt="_images/domain-access-ip_input.png" src="_images/domain-access-ip_input.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>access policyが表示されるので、[Next]をクリックして下さい。</p>
+<p>access policyが表示されるので、[次へ] をクリックして下さい。</p>
 <img alt="_images/domain-access-policy-21.png" src="_images/domain-access-policy-21.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>確認画面が出てきますので、[Confirm and create]をクリックして下さい。
-Elasticsearch ドメインが出来るまで、数分かかります。</p>
+<p>確認画面が出てきますので、[確認] をクリックして下さい。
+Elasticsearch ドメインが出来るまで、10数分かかります。</p>
 <img alt="_images/confirm-create1.png" src="_images/confirm-create1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
 <div class="section" id="kinesis-firehose">
-<h2>7.2. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
-<p>サービス一覧から[Kinesis]をクリックして開きます。</p>
-<p>Kinesisの画面が開きますので、[Firehose コンソールに移動] をクリックして下さい。</p>
-<p>[Create Delivery Stream] をクリックして下さい。</p>
-<img alt="_images/create-delivery-stream.png" src="_images/create-delivery-stream.png" />
+<h2>7.3. Kinesis Firehoseの設定<a class="headerlink" href="#kinesis-firehose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マネージメントコンソールのサービス一覧から [Kinesis] を開きます。[Firehose コンソールに移動] をクリックします。</p>
+<img alt="_images/kinesis-firehose-1.png" src="_images/kinesis-firehose-1.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>[Create Delivery Stream] をクリックして下さい。</p>
-<p>DestinationをElasticsearch Serviceとして、Delivery stream nameを設定し、先ほど設定したElasticsearch ドメインを選んで、[Next] をクリックして下さい。</p>
+<img alt="_images/create-delivery-stream1.png" src="_images/create-delivery-stream1.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Step 1 で、&#8221;Delivery stream name&#8221; として、&#8221;sensor-data-to-es-&lt;参加者番号&gt;&#8221; を設定し、他の設定は、そのままにして [Next] をクリックします。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Delivery stream name</td>
+<td>sensor-data-to-es-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/create-delivery-stream-1.png" src="_images/create-delivery-stream-1.png" />
+<img alt="_images/create-delivery-stream-21.png" src="_images/create-delivery-stream-21.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Step 2 では、Lambda関数を用いた、データ変換の設定を行います。</p>
+<p>Lambdaでデータ変換を行いますので、Data transformation を <strong>有効</strong> にして、Lambda関数を選んで下さい。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">項目</th>
+<th class="head">設定</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Data transformation</td>
+<td>Enable</td>
+</tr>
+<tr><td>Lambda function</td>
+<td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
+</tr>
+</tbody>
+</table>
+<img alt="_images/create-delivery-stream-31.png" src="_images/create-delivery-stream-31.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Step 3 で、Destination を Elasticsearch Service として、</p>
+<p>S3バケットを選択し、[Next] をクリックします。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="35%" />
@@ -137,11 +214,6 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </tr>
 </tbody>
 </table>
-<img alt="_images/cretae-delivery-stream1.png" src="_images/cretae-delivery-stream1.png" />
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Lambdaでデータ変換を行いますので、Data transformation を有効にして、Lambda関数を選んで下さい。</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="24%" />
@@ -153,12 +225,6 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td>Data transformation</td>
-<td>Enable</td>
-</tr>
-<tr><td>Lambda function</td>
-<td>ranger-raw-data-to-json-&lt;参加者番号&gt;</td>
-</tr>
 <tr><td>Buffer interval</td>
 <td>60 (Elasticsearch Serviceに60秒周期でデータが追加されます)</td>
 </tr>
@@ -170,8 +236,7 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 </tr>
 </tbody>
 </table>
-<img alt="_images/cretae-delivery-stream-21.png" src="_images/cretae-delivery-stream-21.png" />
-<img alt="_images/cretae-delivery-stream-31.png" src="_images/cretae-delivery-stream-31.png" />
+<img alt="_images/create-delivery-stream-31.png" src="_images/create-delivery-stream-31.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -201,23 +266,23 @@ Elasticsearch ドメインが出来るまで、数分かかります。</p>
 <div class="line"><br /></div>
 </div>
 <p>Firehoseの設定画面で、[Next] をクリックして下さい。</p>
-<img alt="_images/cretae-delivery-stream-41.png" src="_images/cretae-delivery-stream-41.png" />
+<img alt="_images/create-delivery-stream-41.png" src="_images/create-delivery-stream-41.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>最後に、[Create Delivery Stream] をクリックして下さい。</p>
-<img alt="_images/cretae-delivery-stream-51.png" src="_images/cretae-delivery-stream-51.png" />
+<img alt="_images/create-delivery-stream-51.png" src="_images/create-delivery-stream-51.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Elasticsearch Delivery Streamsの作成が開始されました。</p>
-<img alt="_images/cretae-delivery-stream-61.png" src="_images/cretae-delivery-stream-61.png" />
+<img alt="_images/create-delivery-stream-61.png" src="_images/create-delivery-stream-61.png" />
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 </div>
 <div class="section" id="kinesis-firehoseaws-iot">
-<h2>7.3. Kinesis Firehose用のAWS IoT ルールを作成<a class="headerlink" href="#kinesis-firehoseaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>7.4. Kinesis Firehose用のAWS IoT ルールを作成<a class="headerlink" href="#kinesis-firehoseaws-iot" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>サービス一覧から[AWS IoT]をクリックして開きます。</p>
 <img alt="_images/iot-servicemenu&#64;2x.png" src="_images/iot-servicemenu&#64;2x.png" />
 <div class="line-block">
@@ -293,7 +358,7 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
 </div>
 </div>
 <div class="section" id="kibana">
-<h2>7.4. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>7.5. Kibanaでデータを確認<a class="headerlink" href="#kibana" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>マネージメントコンソールのサービス一覧から[Elasticsearch Service]を開きます。</p>
 <p>ElasticSearchDomainの[Searchable documents]の数字が1より大きくなっていることを確認します。[Cluster health]が[Yellow]になっていのはシングルノード構成のためでありハンズオンでは問題ありません。</p>
 <img alt="_images/es-dashboard1.png" src="_images/es-dashboard1.png" />
@@ -427,10 +492,11 @@ Successfully updated role. と表示されたら、[Add action] をクリック�
             <h3><a href="index.html">目次</a></h3>
             <ul>
 <li><a class="reference external" href="#">7. シナリオ2+: センサーデータを可視化する-2</a><ul>
-<li><a class="reference external" href="#elasticsearch-service">7.1. ElasticSearch Serviceのドメインを作成する</a></li>
-<li><a class="reference external" href="#kinesis-firehose">7.2. Kinesis Firehoseの設定</a></li>
-<li><a class="reference external" href="#kinesis-firehoseaws-iot">7.3. Kinesis Firehose用のAWS IoT ルールを作成</a></li>
-<li><a class="reference external" href="#kibana">7.4. Kibanaでデータを確認</a></li>
+<li><a class="reference external" href="#ip">7.1. グローバルIPアドレスを調べる</a></li>
+<li><a class="reference external" href="#elasticsearch-service">7.2. ElasticSearch Serviceのドメインを作成する</a></li>
+<li><a class="reference external" href="#kinesis-firehose">7.3. Kinesis Firehoseの設定</a></li>
+<li><a class="reference external" href="#kinesis-firehoseaws-iot">7.4. Kinesis Firehose用のAWS IoT ルールを作成</a></li>
+<li><a class="reference external" href="#kibana">7.5. Kibanaでデータを確認</a></li>
 </ul>
 </li>
 </ul>
