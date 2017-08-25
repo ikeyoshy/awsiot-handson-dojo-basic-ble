@@ -17,7 +17,7 @@ Kibanaを特定のIPアドレスからだけアクセスさせるために、PC�
 
 ::
 
-    SSID = awshandson もしくは、awshandson5、パスワード = awshandson
+    SSID = awshandson　もしくは　awshandson5、パスワード = awshandson
 
 |
 
