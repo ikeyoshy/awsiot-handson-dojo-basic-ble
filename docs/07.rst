@@ -73,7 +73,7 @@ IPアドレスの入力画面が表示されるので、先ほど記録した �
 
 |
 
-access policyが表示されるので、[次へ] をクリックして下さい。
+アクセスポリシー が表示されるので、先ほど入力した“グローバルIPアドレス”を確認して、[次へ] をクリックして下さい。
 
 .. image:: images/07/domain-access-policy-2.png
 
@@ -117,7 +117,7 @@ Delivery stream name	   sensor-data-to-es-<参加者番号>
 
 Step 2 では、Lambda関数を用いた、データ変換の設定を行います。
 
-Lambdaでデータ変換を行いますので、Data transformation を **有効** にして、Lambda関数を選んで下さい。
+Lambdaでデータ変換を行いますので、Data transformation を **Enabled** にして、Lambda関数を選んで下さい。
 
 =================== =======================================
 項目                    設定
