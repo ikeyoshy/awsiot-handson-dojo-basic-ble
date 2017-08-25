@@ -89,7 +89,7 @@ D80A          温度 (0x0AD8 = 27.76℃)
 
 AWS IoTのテスト画面で、"Subscription topic"に "#" と入力し、[Subscribe to topic] ボタンを押すと、BLEゲートウェイがAWS IoTに送信した全てのメッセージを見ることができます。複数の参加者で1つのAWSアカウントを共用している場合は、他のユーザーのBLEゲートウェイからのデータも見ることができます。
 
-.. image:: images/04/test-4.png
+.. image:: images/04/test-3.png
 
 |
 
