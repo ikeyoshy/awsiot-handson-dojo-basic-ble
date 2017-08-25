@@ -241,6 +241,8 @@ IAM ロール名      IOT_to_Kinesis_Firehose-<参加者番号>
 ============== ====================================
 
 .. image:: images/07/add-action.png
+.. image:: images/07/role-update_completed.png
+
 
 |
 
