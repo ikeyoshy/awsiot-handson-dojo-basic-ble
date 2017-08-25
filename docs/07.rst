@@ -379,7 +379,7 @@ Beaconの電波強度(rssi)も同様に追加します。
 
 |
 
-[Save] ボタンをクリックし、[Title]を[Sensor Data]と入力し、[Save]をクリックします。
+①[Save] ボタンをクリックし、[Title] に ②[Sensor Data] と入力し、③[Save] をクリックします。
 
 .. image:: images/07/kibana-dashboard-save.png
 
