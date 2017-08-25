@@ -122,7 +122,7 @@ Lambdaでデータ変換を行いますので、Data transformation を **Enable
 =================== =======================================
 項目                    設定
 =================== =======================================
-Data transformation    Enable
+Data transformation    **Enabled**
 Lambda function        ranger-raw-data-to-json-<参加者番号>
 =================== =======================================
 
@@ -130,21 +130,22 @@ Lambda function        ranger-raw-data-to-json-<参加者番号>
 
 |
 
-Step 3 で、Destination を **Amazon Elasticsearch Service** を選択し、
-
-S3バケットを選択し、[Next] をクリックします。
+Step 3 で、Destination として **Amazon Elasticsearch Service** を選択し、下記の情報を入力し、[Next] をクリックします。
 
 ======================= =======================================
 項目                      設定
 ======================= =======================================
 Destination              Amazon Elasticsearch Service
-Delivery stream name     sensor-data-to-es-<参加者番号>
-Elasticsearch domain     firehose-to-es-domain-<参加者番号>
+Domain                   firehose-to-es-domain-<参加者番号>
 Index                    sensordata
 Type                     scenario2
-S3 bucket                sensor-data-<参加者番号>-<ユニークな文字>
+Backup S3 bucket         sensor-data-<参加者番号>-<ユニークな文字列>
 ======================= =======================================
 
+.. image:: images/07/create-delivery-stream-3-1.png
+.. image:: images/07/create-delivery-stream-3-2.png
+
+|´
 
 =================== =======================================
 項目                    設定
