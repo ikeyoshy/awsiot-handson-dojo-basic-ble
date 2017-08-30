@@ -78,6 +78,11 @@ http://awsiot-linechart.s3-website-ap-northeast-1.amazonaws.com
 
 |
 
+Chromeのポップアップのブロックは、無効にして下さい。下記の説明に従って、ポップアップを「許可」して下さい。
+
+http://bit.ly/2vDJD0I
+
+
 複数の参加者で1つのAWSアカウントを共用する場合
 ----------------------------------------------------
 
