@@ -45,7 +45,8 @@ BLEゲートウェイをAWS IoTに登録し、AWS IoTへの接続の設定を行
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 レンジャーシステムズ株式会社が提供するBLE/WiFiゲートウェイです。本ハンズオンでは、センサーからBLE(Bluetooth Low Energy) 経由で温度/湿度データ収集し、AWS IoTへの温度/湿度データの送信に利用します。レンジャーシステムズ株式会社のゲートウェイは、AWS IoTに直接接続可能で、AWSとの親和性が高い製品です。他にLTE版のゲートウエイもあります。
-    http://www.ranger-systems.co.jp/iot/
+
+http://www.ranger-systems.co.jp/iot/
 
 |
 
@@ -61,7 +62,8 @@ AWSアカウント
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 センサーデータの保存先として使用するAWSを利用・管理するためのアカウント。アカウント作成の手順はこちらの通りです。
-    https://aws.amazon.com/jp/register-flow/
+
+https://aws.amazon.com/jp/register-flow/
 
 |
 
@@ -69,7 +71,8 @@ AWS IoT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 接続されたデバイスが安全かつ簡単にクラウドアプリケーションやその他のデバイスとやりとりするためのマネージド型IoTプラットフォームです。本ハンズオンでは、デバイスからのセンサーデータの収集のために利用します。
-    https://aws.amazon.com/jp/iot/
+
+https://aws.amazon.com/jp/iot/
 
 .. image:: images/01/AWS_IoT.png
 
@@ -80,38 +83,37 @@ Amazon Kinesis Firehose
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Amazon Kinesis Firehose は、ストリーミングデータを AWS にロードする最も簡単な方法です。本ハンズオンでは、AWS IoTで取得した温湿度センサーのデータを加工し、S3に保存したり、ElasticSearch Serviceに保存し可視化するために使用します。
-    https://aws.amazon.com/jp/kinesis/firehose/
 
-|
+https://aws.amazon.com/jp/kinesis/firehose/
+
 
 Amazon Elasticsearch Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 オープンソースのElasticsearchを利用できるマネージド型のサービスです。本ハンズオンでは、データのストアとElasticsearchで利用できるKibanaを利用してデータの可視化に利用します。
-    https://aws.amazon.com/jp/elasticsearch-service/
 
-|
+https://aws.amazon.com/jp/elasticsearch-service/
+
 
 Amazon S3 (Simple Storage Service)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 スケーラブルなクラウドストレージです。Webのコンテンツを配置してWebサーバとしても利用できます。本ハンズオンでは、センサーから取得したデータの保存先として使用します。
-    https://aws.amazon.com/jp/sns/
 
-|
+https://aws.amazon.com/jp/sns/
+
 
 AWS Lambda
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 お客様のコードをイベント発生時やリクエストごとに実行できる管理不要なコンピューティングプラットフォームです。本ハンズオンでは、センサーデータの加工に使用します。
-    https://aws.amazon.com/jp/lambda/
 
-|
+https://aws.amazon.com/jp/lambda/
+
 
 Amazon CloudWatch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 AWSクラウドリソースとAWSで実行するアプリケーションのモニタリングサービスです。メトリクスの収集、ログファイルの収集が可能です。本ハンズオンではCloudWatch Logsを利用してAWS IoTやLambdaのログを収集、閲覧します。
-    https://aws.amazon.com/jp/cloudwatch/
 
-|
+https://aws.amazon.com/jp/cloudwatch/
